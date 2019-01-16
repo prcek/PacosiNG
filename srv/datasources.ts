@@ -1,15 +1,15 @@
 
 import { DataSource } from 'apollo-datasource';
-import { IStore } from './store'; 
+import { IStore } from './store';
 
-const timeout = (ms: number) => new Promise(res => setTimeout(res, ms))
+const timeout = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export class HeroAPI implements DataSource {
     bigArray: string[];
     context: any;
     constructor(private store: IStore) {
-        console.log("new HeroAPI");
-        this.bigArray = new Array(100000).fill('a');     
+        console.log('new HeroAPI');
+        this.bigArray = new Array(100000).fill('a');
     }
     initialize(config) {
         this.context = config.context;
@@ -24,5 +24,5 @@ export class HeroAPI implements DataSource {
 export function createDataSources(store: IStore) {
     return  {
         hero: new HeroAPI(store)
-    }
+    };
 }

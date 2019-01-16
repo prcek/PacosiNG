@@ -7,7 +7,7 @@ import { createStore } from './store';
 
 let global_counter = 1;
 
-export async function createAndRegisterApolloServer(app:Express) {
+export async function createAndRegisterApolloServer(app: Express) {
 
     const store = await createStore();
 
@@ -16,7 +16,7 @@ export async function createAndRegisterApolloServer(app:Express) {
         dataSources: () => (createDataSources(store)),
         context: ({ req }) => {
             // get the user token from the headers
-            console.log("setting context ");
+            console.log('setting context ');
             const val = 'pepa' + global_counter;
             global_counter++;
             return { user: { name: val} };
@@ -24,8 +24,7 @@ export async function createAndRegisterApolloServer(app:Express) {
         introspection: true,
         playground: true
     });
-    
-   
-    apollo_server.applyMiddleware({app,path:'/graphql'});
+
+    apollo_server.applyMiddleware({app, path: '/graphql'});
 
 }

@@ -5,5 +5,5 @@ export interface IStore  {
     x: number;
 }
 export async function createStore(): Promise<IStore> {
-    return { model1:"a",model2:"b",x:1};
+    return { model1: 'a', model2: 'b', x: 1};
 }
