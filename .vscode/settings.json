@@ -1,0 +1,6 @@
+{
+    "typescript.referencesCodeLens.enabled": false,
+    "typescript.implementationsCodeLens.enabled": true,
+    "javascript.referencesCodeLens.enabled": true,
+    "editor.codeLens": true
+}

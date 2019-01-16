@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig_cli.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "types": []
