@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_srv": "tsc -p ./tsconfig_srv.json"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "core-js": "^2.5.4",
     "graphql": "^14.1.0",
     "reflect-metadata": "^0.1.13",
+    "response-time": "^2.3.2",
     "rxjs": "^6.3.3",
     "tslib": "^1.9.3",
     "zone.js": "^0.8.27"
