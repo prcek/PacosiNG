@@ -8,6 +8,8 @@ import { createDataSources } from './datasources';
 import { schema } from './schema';
 import { createStore } from './store';
 
+let global_counter = 1;
+
 
 (async () => {
     
@@ -22,7 +24,9 @@ import { createStore } from './store';
         context: ({ req }) => {
             // get the user token from the headers
             console.log("setting context ");
-            return { user: { name: 'pepa'} };
+            const val = 'pepa' + global_counter;
+            global_counter++;
+            return { user: { name: val} };
         },
         introspection: true,
         playground: true

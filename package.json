@@ -16,6 +16,7 @@
     "cookie-parser": "^1.4.3",
     "graphql": "^14.0.2",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.3.3",
     "tslib": "^1.9.3",
     "zone.js": "^0.8.27"
   }
