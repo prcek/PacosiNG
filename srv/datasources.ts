@@ -16,7 +16,7 @@ export class HeroAPI implements DataSource {
         console.log(this.store);
     }
     async getHello() {
-        await timeout(1000);
+        await timeout(10);
         return this.context.user.name;
     }
 }

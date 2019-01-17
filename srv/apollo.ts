@@ -19,7 +19,7 @@ export async function createAndRegisterApolloServer(app: Express) {
             console.log('setting context ');
             const val = 'pepa' + global_counter;
             global_counter++;
-            return { user: { name: val} };
+            return { user: { name: val}, big: new Array(100000).fill('b') };
         },
         introspection: true,
         playground: true
