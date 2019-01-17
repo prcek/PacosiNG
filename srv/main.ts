@@ -9,14 +9,15 @@ import { readFileSync } from 'fs';
 import {createAndRegisterApolloServer} from './apollo';
 
 import { renderModuleFactory } from '@angular/platform-server';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, InjectionToken } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 
-
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('../ssr/main');
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN } = require('../ssr/main');
 const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
+console.log('testtoken', TEST_TOKEN);
 
 (async () => {
 
@@ -33,7 +34,9 @@ const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
         url: options.req.url,
         // DI so that we can get lazy-loading to work differently (since we need it to just instantly render it)
         extraProviders: [
-          provideModuleMap(LAZY_MODULE_MAP)
+          provideModuleMap(LAZY_MODULE_MAP),
+          { provide: APP_BASE_HREF, useValue: 'pepa'},
+          { provide: TEST_TOKEN, useValue: 'tttt'}
         ]
       }).then(html => {
         console.log('renderModuleFactory done');

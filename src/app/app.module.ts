@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { TEST_TOKEN } from './token';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -12,7 +14,9 @@ import { AppComponent } from './app.component';
     BrowserModule.withServerTransition({appId: 'my-app'}),
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ /*{
+    provide: TEST_TOKEN, useValue: 'cli value'
+  }*/],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
