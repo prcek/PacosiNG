@@ -10,7 +10,7 @@ import { GraphQLModule } from './graphql.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatButtonModule} from '@angular/material/button';
 
 
@@ -26,6 +26,7 @@ import {MatButtonModule} from '@angular/material/button';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     MatButtonModule,
 // last
     GraphQLModule,
