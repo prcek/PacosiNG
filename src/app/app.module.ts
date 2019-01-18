@@ -7,10 +7,14 @@ import { AppComponent } from './app.component';
 
 import { TEST_TOKEN } from './token';
 import { GraphQLModule } from './graphql.module';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { MainPageComponent } from './main-page/main-page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginPageComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
