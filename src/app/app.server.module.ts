@@ -11,6 +11,7 @@ import { GraphQLServerModule } from './graphql.server.module';
     AppModule,
     ServerModule,
     ModuleMapLoaderModule,
+// last
     GraphQLServerModule,
   ],
   providers: [{
