@@ -7,12 +7,12 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 
 import {createAndRegisterApolloServer} from './apollo';
-
 import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode, InjectionToken } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
+enableProdMode();
 
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN } = require('../ssr/main');
