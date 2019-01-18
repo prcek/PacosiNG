@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,6 +22,7 @@ import {MatButtonModule} from '@angular/material/button';
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
+    BrowserTransferStateModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
