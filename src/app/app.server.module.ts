@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
 import { TEST_TOKEN } from './token';
 import { GraphQLServerModule } from './graphql.server.module';
+import { FlexLayoutServerModule } from '@angular/flex-layout/server';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { GraphQLServerModule } from './graphql.server.module';
     ModuleMapLoaderModule,
 // last
     GraphQLServerModule,
+    FlexLayoutServerModule,
   ],
   providers: [{
     provide: TEST_TOKEN, useValue: 'sss'

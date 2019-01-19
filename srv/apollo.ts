@@ -16,7 +16,7 @@ export async function createAndRegisterApolloServer(app: Express) {
         dataSources: () => (createDataSources(store)),
         context: ({ req }) => {
             // get the user token from the headers
-            console.log('setting context ');
+            console.log('setting context ', req.cookies);
             const val = 'pepa' + global_counter;
             global_counter++;
             return { user: { name: val}, big: new Array(100000).fill('b') };

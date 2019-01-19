@@ -11,6 +11,8 @@ import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode, InjectionToken } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
+import {ngExpressEngine} from '@nguniversal/express-engine';
 
 enableProdMode();
 
@@ -24,8 +26,15 @@ console.log('testtoken', TEST_TOKEN);
     const app = express();
     const PORT = process.env.PORT || 4000;
 
-
-
+    app.engine('html', ngExpressEngine({
+      bootstrap: AppServerModuleNgFactory,
+      providers: [
+        provideModuleMap(LAZY_MODULE_MAP),
+        { provide: APP_BASE_HREF, useValue: 'pepa'},
+        { provide: TEST_TOKEN, useValue: 'tttt'}
+      ]
+    }));
+/*
     app.engine('html', (_, options, callback) => {
       console.log('renderModuleFactory start');
       renderModuleFactory(AppServerModuleNgFactory, {
@@ -43,7 +52,7 @@ console.log('testtoken', TEST_TOKEN);
         callback(null, html);
       });
     });
-
+*/
     app.set('view engine', 'html');
     app.set('views', DIST_FOLDER);
     app.use(responseTime());
@@ -56,7 +65,18 @@ console.log('testtoken', TEST_TOKEN);
 
     app.get('*', (req, res) => {
       console.log('main get *');
-      res.render(join(DIST_FOLDER, 'index.html'), { req });
+      res.render(join(DIST_FOLDER, 'index.html'), {
+        req ,
+        res ,
+        providers: [
+          {
+            provide: REQUEST, useValue: (req)
+          },
+          {
+            provide: RESPONSE, useValue: (res)
+          },
+        ]
+      });
     });
 
     app.listen(PORT, () => {
