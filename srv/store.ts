@@ -3,6 +3,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
+import { IUser } from './types';
 
 async function startLocalMongoDB(): Promise<string> {
     const mongod = new MongoMemoryServer();
@@ -25,12 +26,9 @@ async function createMongooseConnection(mongoUri: string): Promise<mongoose.Conn
     return mongoose_connection;
 }
 
-export interface IUserModel extends mongoose.Document {
-    login: string;
+export interface IUserModel extends mongoose.Document, IUser {
     password: string;
-    sudo: boolean;
-    roles: string[];
-  }
+}
 
 function createModels(connection: mongoose.Connection) {
     const userSchema = new mongoose.Schema({
