@@ -54,7 +54,7 @@ export async function createStore(): Promise<IStore> {
     return { model1: 'a', model2: 'b', x: 1, userModel: models.UserModel};
 }
 
-export async function setupDevStoreData(store: IStore): Promise<boolean> {
-    const adminUser = await store.userModel.create({login: 'admin', password: 'secret', sudo: true, roles: ['super']});
+export async function setupDevStoreRawData(store: IStore): Promise<boolean> {
+    // const adminUser = await store.userModel.create({login: 'admin', password: 'secret', sudo: true, roles: ['super']});
     return true;
 }
