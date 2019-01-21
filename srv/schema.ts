@@ -1,6 +1,6 @@
 
 
-import { gql, makeExecutableSchema } from 'apollo-server';
+import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
 import { IContextBase } from './types';
 
@@ -25,20 +25,20 @@ interface IContext extends IContextBase {
 }
 
 // A map of functions which return data for the schema.
-const resolvers = {
+const resolvers: IResolvers<any, IContext> = {
   Query: {
-    hello: async (parent, args, context: IContext, info) => {
+    hello: async (parent, args, context, info) => {
         return await context.dataSources.hero.getHello();
     },
-    users: async (parent, args, context: IContext, info) => {
+    users: async (parent, args, context, info) => {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
-    me: async (parent, args, context: IContext, info) => {
+    me: async (parent, args, context, info) => {
       return await context.dataSources.user.getMe();
     },
   }
 };
 
 
-export const schema = makeExecutableSchema({typeDefs, resolvers});
+export const schema = makeExecutableSchema<IContext>({typeDefs, resolvers});
