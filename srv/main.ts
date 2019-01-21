@@ -14,7 +14,11 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 import {ngExpressEngine} from '@nguniversal/express-engine';
 
-enableProdMode();
+const isProduction = false; // TODO:  process.env.NODE_ENV=="production";
+
+if (isProduction) {
+  enableProdMode();
+}
 
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN } = require('../ssr/main');
@@ -61,7 +65,7 @@ console.log('testtoken', TEST_TOKEN);
       maxAge: '1y'
     }));
 
-    await createAndRegisterApolloServer(app);
+    await createAndRegisterApolloServer(app, isProduction);
 
     app.get('*', (req, res) => {
       console.log('main get *');

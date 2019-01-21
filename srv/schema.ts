@@ -8,6 +8,12 @@ const typeDefs = gql`
   type Query {
     "A simple type for getting started!"
     hello: String
+    users: [User]
+  }
+  type User {
+    login: String
+    sudo: Boolean
+    roles: [String]
   }
 `;
 
@@ -16,7 +22,10 @@ const resolvers = {
   Query: {
     hello: async (parent, args, context, info) => {
         return await context.dataSources.hero.getHello();
-    }
+    },
+    users: async (parent, args, context, info) => {
+        return await context.dataSources.user.getAllUsers();
+    },
   }
 };
 

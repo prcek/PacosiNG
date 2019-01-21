@@ -3,13 +3,15 @@ import {Express} from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { createDataSources } from './datasources';
 import { schema } from './schema';
-import { createStore } from './store';
+import { createStore, setupDevStoreData } from './store';
 
 let global_counter = 1;
 
-export async function createAndRegisterApolloServer(app: Express) {
+export async function createAndRegisterApolloServer(app: Express, productionMode: boolean) {
 
     const store = await createStore();
+    const store_setup = await setupDevStoreData(store);
+    console.log('setupDevStoreData', store_setup);
 
     const apollo_server = new ApolloServer({
         schema,
