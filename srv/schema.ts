@@ -2,7 +2,7 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase } from './types';
+import { IContextBase, ILoginResponse, IUser } from './types';
 
 
 // The GraphQL schema
@@ -13,6 +13,15 @@ const typeDefs = gql`
     users: [User]
     me: User
   }
+  type Mutation {
+    login(login: String! password: String!): LoginResponse!
+  }
+  ### ILoginResponse interface
+  type LoginResponse {
+    ok: Boolean
+    token: String
+  }
+  ### IUser interface
   type User {
     login: String
     sudo: Boolean
@@ -30,14 +39,19 @@ const resolvers: IResolvers<any, IContext> = {
     hello: async (parent, args, context, info) => {
         return await context.dataSources.hero.getHello();
     },
-    users: async (parent, args, context, info) => {
+    users: async (parent, args, context, info): Promise<IUser[]> => {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
-    me: async (parent, args, context, info) => {
+    me: async (parent, args, context, info): Promise<IUser> => {
       return await context.dataSources.user.getMe();
     },
+  },
+  Mutation: {
+    login: async (_, { login, password }, { dataSources }): Promise<ILoginResponse> =>
+        dataSources.user.login(login, password),
   }
+
 };
 
 

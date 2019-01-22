@@ -4,8 +4,9 @@ import { ApolloServer } from 'apollo-server-express';
 import { createDataSources } from './datasources';
 import { schema } from './schema';
 import { createStore, setupDevStoreRawData, IStore } from './store';
-import { IContextBase } from './types';
+import { IContextBase, IToken, IUser } from './types';
 import { Context } from 'apollo-server-core';
+import { decodeAuthToken } from './datasources/user';
 
 let global_counter = 1;
 
@@ -17,15 +18,30 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
     const apollo_server = new ApolloServer({
         schema,
         dataSources: () => (createDataSources(store)),
-        context: ({ req }): Context<IContextBase> => {
+        context: async ({ req }): Promise<Context<IContextBase>> => {
             // get the user token from the headers
-            console.log('setting context ', req.cookies);
-            const val = 'pepa' + global_counter;
+            let token = null;
+
+            if ( req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+                token =  req.headers.authorization.split(' ')[1];
+            } else if (req.cookies && req.cookies.auth) {
+                token = req.cookies.auth;
+            }
+            let user: IUser = null;
+            if (token) {
+                user = decodeAuthToken(token);
+            }
+
+
             global_counter++;
-            return { user: { login: val, sudo: false, roles: []}, big: new Array(100000).fill('b') };
+            return { user, global_counter, big: new Array(100000).fill('b') };
         },
         introspection: true,
-        playground: true
+        playground: {
+            settings: {
+                'request.credentials': 'include'
+            }
+        }
     });
 
     apollo_server.applyMiddleware({app, path: '/graphql'});
