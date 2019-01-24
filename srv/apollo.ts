@@ -7,14 +7,19 @@ import { createStore, setupDevStoreRawData, IStore } from './store';
 import { IContextBase, IToken, IUser } from './types';
 import { Context } from 'apollo-server-core';
 import { decodeAuthToken } from './datasources/user';
+import { config } from './config';
 
 let global_counter = 1;
 
 
 export async function createAndRegisterApolloServer(app: Express, productionMode: boolean) {
 
-    const store = await createStore();
-    await createStoreDummyData(store);
+    const store = await createStore(productionMode);
+    if (productionMode) {
+       // await createStoreDummyData(store);
+    } else {
+        await createStoreDummyData(store);
+    }
     const apollo_server = new ApolloServer({
         schema,
         dataSources: () => (createDataSources(store)),

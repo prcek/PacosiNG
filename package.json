@@ -35,6 +35,7 @@
     "bcrypt-nodejs": "0.0.3",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.5.4",
+    "dotenv": "^6.2.0",
     "graphql": "^14.1.0",
     "hammerjs": "^2.0.8",
     "jsonwebtoken": "^8.4.0",

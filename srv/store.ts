@@ -4,6 +4,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
 import { IUser } from './types';
+import { config } from './config';
 
 async function startLocalMongoDB(): Promise<string> {
     const mongod = new MongoMemoryServer();
@@ -47,8 +48,9 @@ export interface IStore  {
     userModel: mongoose.Model<IUserModel>;
     x: number;
 }
-export async function createStore(): Promise<IStore> {
-    const uri = await startLocalMongoDB();
+export async function createStore(productionMode: boolean): Promise<IStore> {
+
+    const uri = productionMode ? config.mongodb_uri : await startLocalMongoDB();
     const mdb = await createMongooseConnection(uri);
     const models = createModels(mdb);
     return { model1: 'a', model2: 'b', x: 1, userModel: models.UserModel};

@@ -13,10 +13,9 @@ import { APP_BASE_HREF } from '@angular/common';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 import {ngExpressEngine} from '@nguniversal/express-engine';
+import { config } from './config';
 
-const isProduction = false; // TODO:  process.env.NODE_ENV=="production";
-
-if (isProduction) {
+if (config.is_production) {
   enableProdMode();
 }
 
@@ -65,7 +64,7 @@ console.log('testtoken', TEST_TOKEN);
       maxAge: '1y'
     }));
 
-    await createAndRegisterApolloServer(app, isProduction);
+    await createAndRegisterApolloServer(app, config.is_production);
 
     app.get('*', (req, res) => {
       console.log('main get *');
