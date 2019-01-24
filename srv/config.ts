@@ -3,13 +3,13 @@ require('dotenv').config();
 
 export interface IConfig {
     is_production: boolean;
-    url_base: string;
+    app_url_base: string;
     mongodb_uri: string;
 }
 
 export const config: IConfig = {
-    is_production: true, // TODO:  process.env.NODE_ENV=="production";
-    url_base: 'x',
+    is_production: process.env.NODE_ENV === 'production',
+    app_url_base: process.env.APP_URL_BASE || 'http://localhost:4000',
     mongodb_uri: process.env.MONGODB_URI
 };
 

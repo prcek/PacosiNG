@@ -8,11 +8,11 @@ import { Request, Response } from 'express';
 import { HttpHeaders } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 
-const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
+// const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
 export function createApolloServer(httpLink: HttpLink, injector: Injector, req: Request, base_ref: string ) {
   console.log('SERVER createApollo Options', base_ref);
   // injector.get()
-
+  const uri = base_ref + '/graphql';
   let auth = null;
   if (req.cookies && req.cookies.auth) {
     auth = new ApolloLink((operation, forward) => {

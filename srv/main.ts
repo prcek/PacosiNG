@@ -33,7 +33,7 @@ console.log('testtoken', TEST_TOKEN);
       bootstrap: AppServerModuleNgFactory,
       providers: [
         provideModuleMap(LAZY_MODULE_MAP),
-        { provide: APP_BASE_HREF, useValue: 'pepa'},
+        { provide: APP_BASE_HREF, useValue: config.app_url_base},
         { provide: TEST_TOKEN, useValue: 'tttt'}
       ]
     }));
