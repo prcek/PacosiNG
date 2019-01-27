@@ -20,6 +20,7 @@ function deleteCookie(name: string): void { setCookie(name, '', -1); }
 })
 export class AuthService {
   private isBrowser: boolean;
+  public redirectUrl: string;  // filled by auth guard (when redirecting to /login)
   constructor(
     @Optional() @Inject(REQUEST) private req,
     @Inject(PLATFORM_ID) platformId,
@@ -36,4 +37,5 @@ export class AuthService {
     }
     return false;
   }
+
 }
