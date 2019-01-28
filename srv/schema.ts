@@ -20,6 +20,7 @@ const typeDefs = gql`
   type LoginResponse {
     ok: Boolean
     token: String
+    user: User
   }
   ### IUser interface
   type User {

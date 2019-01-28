@@ -18,11 +18,14 @@ interface ILoginResponse {
   login: {
     ok: boolean;
     token: string;
+    user: IUserInfo;
   };
 }
 
 export interface IUserInfo {
   login: string;
+  sudo: boolean;
+  roles: string[];
 }
 
 const AUTH_USER_INFO_KEY = makeStateKey<IUserInfo>('auth_user_info');
@@ -97,6 +100,11 @@ export class AuthService {
           login(login:$login password:$password) {
             ok
             token
+            user {
+              login
+              sudo
+              roles
+            }
           }
         }
       `,
@@ -110,9 +118,7 @@ export class AuthService {
         if (r.data && r.data.login && r.data.login.ok) {
           console.log('OK - login response', r.data.login);
           setCookie('auth', r.data.login.token);
-          this.userInfo = {
-            login: login
-          };
+          this.userInfo = r.data.login.user;
           this.userInfoSource.next(this.userInfo);
           o.next(true);
         } else {

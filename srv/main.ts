@@ -73,7 +73,7 @@ console.log('testtoken', TEST_TOKEN);
       if (req.cookies && req.cookies.auth) {
         const user = decodeAuthToken(req.cookies.auth);
         if (user) {
-          aui = { login: user.login };
+          aui = { login: user.login, sudo: user.sudo, roles: user.roles };
         }
       }
       res.render(join(DIST_FOLDER, 'index.html'), {

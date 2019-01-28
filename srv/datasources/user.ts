@@ -60,16 +60,16 @@ export class UserAPI implements DataSource {
 
         const user = await this.store.userModel.findOne({login});
         if (!user) {
-          return { ok: false, token: null};
+          return { ok: false, token: null, user: null};
         }
         if (!bcrypt.compareSync( password, user.password )) {
-          return { ok: false, token: null};
+          return { ok: false, token: null, user: null};
         }
         const token: IToken = {
             version: TOKEN_VERSION,
             user: { login, roles: user.roles, sudo: user.sudo},
         };
         const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
-        return {ok: true, token: stoken};
+        return {ok: true, token: stoken, user: token.user};
     }
 }

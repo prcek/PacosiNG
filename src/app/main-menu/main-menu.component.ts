@@ -25,5 +25,5 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.userSubs.unsubscribe();
   }
 
-  get login(): string { return this.user ? this.user.login : 'no auth'; }
+  get login(): string { return this.user ? JSON.stringify(this.user) : 'no auth'; }
 }

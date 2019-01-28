@@ -12,6 +12,7 @@ export interface IToken  {
 export interface ILoginResponse {
     ok: boolean;
     token: string;
+    user: IUser;
 }
 
 export interface IContextBase {
