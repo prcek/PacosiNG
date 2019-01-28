@@ -14,13 +14,14 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 import {ngExpressEngine} from '@nguniversal/express-engine';
 import { config } from './config';
+import { decodeAuthToken } from './datasources/user';
 
 if (config.is_production) {
   enableProdMode();
 }
 
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN } = require('../ssr/main');
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN, AUTH_USER_INFO_TOKEN } = require('../ssr/main');
 const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
 console.log('testtoken', TEST_TOKEN);
 
@@ -68,6 +69,13 @@ console.log('testtoken', TEST_TOKEN);
 
     app.get('*', (req, res) => {
       console.log('main get *');
+      let aui = null;
+      if (req.cookies && req.cookies.auth) {
+        const user = decodeAuthToken(req.cookies.auth);
+        if (user) {
+          aui = { login: user.login };
+        }
+      }
       res.render(join(DIST_FOLDER, 'index.html'), {
         req ,
         res ,
@@ -78,6 +86,9 @@ console.log('testtoken', TEST_TOKEN);
           {
             provide: RESPONSE, useValue: (res)
           },
+          {
+            provide: AUTH_USER_INFO_TOKEN, useValue: (aui)
+          }
         ]
       });
     });
