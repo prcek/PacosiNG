@@ -1,21 +1,26 @@
-<p>
-  login-page works! {{ isAuth }}
-</p>
 
-<div class="flexDemoContainer">
-  <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex>
-    <div fxFlex> I'm above on mobile, and left on larger devices. </div>
-    <div fxFlex> I'm below on mobile, and right on larger devices. </div>
-  </div>
-</div>
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card class="form-container">
+    <form  (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <mat-card-header>
+            <mat-card-title>Shiba Inu (diag: {{diagnostic}})</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+           
+                <mat-form-field appearance="standard">
+                  <mat-label>login</mat-label>
+                  <input matInput type="text" id="login" required [(ngModel)]="form.login" name="login" > 
+                </mat-form-field>
+          
+                <mat-form-field appearance="standard">
+                  <mat-label>password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" id="password" required [(ngModel)]="form.password" name="password">
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+                <button *ngIf="!submitted" type="submit" mat-raised-button color="warn"  [disabled]="!loginForm.form.valid">login</button>
+                <div *ngIf="submitted"> .... </div>
+        </mat-card-content>
+    </form>
+  </mat-card>  
 
-
-<div class="flexDemoContainer">
-  <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column">
-    <button mat-raised-button color="primary">Primary</button>
-    <button mat-raised-button color="primary">Primary</button>
-    <button mat-raised-button color="primary">Primary</button>
-    <button mat-raised-button color="primary">Primary</button>
-    <button mat-raised-button color="primary">Primary</button>
-  </div>
 </div>

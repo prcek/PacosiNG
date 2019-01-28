@@ -8,10 +8,28 @@ import { AuthService } from '../auth.service';
 })
 export class LoginPageComponent implements OnInit {
   isAuth: boolean;
+  form = {
+    login: '',
+    password: ''
+  };
+
+  submitted = false;
+  hide = true;
+
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
     this.isAuth = this.auth.isAuth();
+    this.form.password = '';
   }
+
+  onSubmit() {
+    this.submitted = true;
+    // this.authService.doLogin('x', 'y').subscribe(res => {
+    //   this.submitted = false;
+    //   console.log('login result (login form) is ', res);
+    // });
+  }
+  get diagnostic() { return JSON.stringify({form: this.form, submitted: this.submitted, isAuth: this.isAuth}); }
 
 }

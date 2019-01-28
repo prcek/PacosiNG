@@ -14,6 +14,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenuComponent } from './main-menu/main-menu.component';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,8 +35,13 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    FormsModule,
     MatButtonModule,
     MatToolbarModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
 // last
     GraphQLModule,
   ],
