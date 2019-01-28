@@ -25,10 +25,10 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    // this.authService.doLogin('x', 'y').subscribe(res => {
-    //   this.submitted = false;
-    //   console.log('login result (login form) is ', res);
-    // });
+    this.auth.doLogin(this.form.login, this.form.password).subscribe(res => {
+       this.submitted = false;
+       console.log('login result (login form) is ', res);
+    });
   }
   get diagnostic() { return JSON.stringify({form: this.form, submitted: this.submitted, isAuth: this.isAuth}); }
 
