@@ -10,7 +10,7 @@
     "debug_srv": "tsc -p ./tsconfig_srv.json && node --nolazy --inspect-brk=9229 dist/srv/main.js",
     "postinstall": "npm run dist",
     "start:heroku": "node dist/srv/main.js",
-    "dist": "ng run pacosi:build:production && ng run pacosi:server && npm run build_srv"
+    "dist": "ng run pacosi:build:production && ng run pacosi:server:production && npm run build_srv"
   },
   "author": "",
   "license": "ISC",
