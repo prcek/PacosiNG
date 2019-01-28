@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService, IUserInfo } from '../auth.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-main-menu',
@@ -10,8 +12,9 @@ import { Subscription } from 'rxjs';
 export class MainMenuComponent implements OnInit, OnDestroy {
   user: IUserInfo;
   userSubs: Subscription;
-  constructor(private auth: AuthService) {
-
+  dev_mode: boolean;
+  constructor(private auth: AuthService, private router: Router) {
+    this.dev_mode = ! environment.production;
   }
 
   ngOnInit() {
@@ -25,5 +28,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.userSubs.unsubscribe();
   }
 
-  get login(): string { return this.user ? JSON.stringify(this.user) : 'no auth'; }
+  onLogout() {
+    console.log('logout button');
+    this.auth.doLogout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+
+  get isAuth(): boolean { return this.user ? true : false; }
+  get login(): string { return this.user ? this.user.login : ''; }
 }

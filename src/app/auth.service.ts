@@ -5,10 +5,11 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 
 import { Subject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { FetchResult } from 'apollo-link';
+import { environment } from '../environments/environment';
+import * as jwtdecode from 'jwt-decode';
+
 
 interface ILoginVariables {
   login: string;
@@ -20,6 +21,9 @@ interface ILoginResponse {
     token: string;
     user: IUserInfo;
   };
+}
+interface IDevToken {
+  user: IUserInfo;
 }
 
 export interface IUserInfo {
@@ -72,8 +76,27 @@ export class AuthService {
       }
       this.tstate.onSerialize(AUTH_USER_INFO_KEY, () => { console.log('AuthService.onSerialize', this.userInfo); return this.userInfo; });
     } else if (this.isBrowser) {
-      console.log('AuthService.onDeSerialize', this.tstate.get(AUTH_USER_INFO_KEY, null));
-      this.userInfo = this.tstate.get(AUTH_USER_INFO_KEY, null);
+      if (environment.production) {
+        console.log('AuthService.onDeSerialize', this.tstate.get(AUTH_USER_INFO_KEY, null));
+        this.userInfo = this.tstate.get(AUTH_USER_INFO_KEY, null);
+        this.tstate.remove(AUTH_USER_INFO_KEY);
+      } else {
+        console.log('Auth service (dev mode) init from cookie');
+        const token = getCookie('auth');
+        if (token) {
+          try {
+            const dt = <IDevToken>jwtdecode(token);
+            console.log(dt);
+            if (dt && dt.user) {
+              this.userInfo = dt.user;
+            }
+          } catch (e) {
+            console.log('can\'t decode token', token);
+          }
+        } else {
+          console.log('auth token missing');
+        }
+      }
     }
   }
   isAuth(): boolean {

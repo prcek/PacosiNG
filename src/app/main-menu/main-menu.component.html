@@ -1,7 +1,13 @@
 <mat-toolbar color="primary">
-  <span>Custom Toolbar!</span>
-  <a routerLink="/">Home</a>
-  <a routerLink="/main">Main</a>
-  <a routerLink="/login">Login</a>
-  <span> {{login}}</span>
+  <span>Toolbar!</span>
+  <a *ngIf="isAuth" mat-button routerLink="/">Home</a>
+  <a *ngIf="isAuth" mat-button routerLink="/main">Main</a>
+  <span class="spacer"></span>
+  <span *ngIf="dev_mode">DEV MODE</span>
+  <a mat-button *ngIf="!isAuth" routerLink="/login">Login</a>
+  <span *ngIf="isAuth">{{login}}</span>
+  <button mat-icon-button *ngIf="isAuth" (click)="onLogout()">
+    <mat-icon>power_settings_new</mat-icon>
+  </button>
+  
 </mat-toolbar>

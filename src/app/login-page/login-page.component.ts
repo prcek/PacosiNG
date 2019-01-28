@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -16,7 +17,7 @@ export class LoginPageComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.isAuth = this.auth.isAuth();
@@ -28,6 +29,9 @@ export class LoginPageComponent implements OnInit {
     this.auth.doLogin(this.form.login, this.form.password).subscribe(res => {
        this.submitted = false;
        console.log('login result (login form) is ', res);
+       if (res) {
+        this.router.navigate(['/']);
+       }
     });
   }
   get diagnostic() { return JSON.stringify({form: this.form, submitted: this.submitted, isAuth: this.isAuth}); }
