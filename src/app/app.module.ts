@@ -19,6 +19,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { UsersPageComponent } from './users-page/users-page.component';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     LoginPageComponent,
     MainPageComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    UsersPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -42,6 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatTableModule,
 // last
     GraphQLModule,
   ],
