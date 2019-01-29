@@ -72,4 +72,21 @@ export class UserAPI implements DataSource {
         const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
         return {ok: true, token: stoken, user: token.user};
     }
+
+    async relogin(): Promise<ILoginResponse> {
+        if (this.context.user) {
+            const login = this.context.user.login;
+            const user = await this.store.userModel.findOne({login});
+            if (!user) {
+                return { ok: false, token: null, user: null};
+            }
+            const token: IToken = {
+                version: TOKEN_VERSION,
+                user: { login, roles: user.roles, sudo: user.sudo},
+            };
+            const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
+            return {ok: true, token: stoken, user: token.user};
+        }
+        return {ok: false, token: null, user: null};
+    }
 }

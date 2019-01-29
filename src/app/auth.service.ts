@@ -4,7 +4,9 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, timer } from 'rxjs';
+import { tap, filter, switchMap } from 'rxjs/operators';
+
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
@@ -22,6 +24,14 @@ interface ILoginResponse {
     user: IUserInfo;
   };
 }
+interface IReloginResponse {
+  relogin: {
+    ok: boolean;
+    token: string;
+    user: IUserInfo;
+  };
+}
+
 interface IDevToken {
   user: IUserInfo;
 }
@@ -57,6 +67,7 @@ export class AuthService {
   private isServer: boolean;
   public redirectUrl: string;  // filled by auth guard (when redirecting to /login)
   private userInfoSource = new Subject<IUserInfo>();
+  private tick$ = timer(10000, 5 * 60000);
   // private effectiveUserSource = new Subject<IUser>();
   userInfo$ = this.userInfoSource.asObservable();
   userInfo: IUserInfo;
@@ -97,8 +108,54 @@ export class AuthService {
           console.log('auth token missing');
         }
       }
+      this.tick$.pipe(
+        // tap((x) => console.log('tap', x)),
+        filter(() => this.isAuth()),
+        // tap((x) => console.log('ftap', x)),
+        switchMap(() => this.renewToken()),
+        tap((x) => console.log('renew token result', x)),
+        ).subscribe();
     }
+
   }
+
+  renewToken(): Observable<boolean> {
+    const x =  this.apollo.mutate<IReloginResponse>({
+      mutation:  gql`
+        mutation {
+          relogin {
+            ok
+            token
+            user {
+              login
+              sudo
+              roles
+            }
+          }
+        }
+      `
+    });
+
+    return Observable.create((o) => {
+      x.subscribe(r => {
+        if (r.data && r.data.relogin && r.data.relogin.ok) {
+          console.log('OK - relogin response', r.data.relogin);
+          setCookie('auth', r.data.relogin.token);
+          this.userInfo = r.data.relogin.user;
+          this.userInfoSource.next(this.userInfo);
+          o.next(true);
+        } else {
+          console.log('Failed - relogin response', r);
+          o.next(false);
+        }
+        o.complete();
+      }, err => {
+        o.error(err);
+        o.complete();
+      });
+    });
+  }
+
   isAuth(): boolean {
 
     if (this.userInfo) {

@@ -15,6 +15,7 @@ const typeDefs = gql`
   }
   type Mutation {
     login(login: String! password: String!): LoginResponse!
+    relogin: LoginResponse!
   }
   ### ILoginResponse interface
   type LoginResponse {
@@ -51,6 +52,9 @@ const resolvers: IResolvers<any, IContext> = {
   Mutation: {
     login: async (_, { login, password }, { dataSources }): Promise<ILoginResponse> =>
         dataSources.user.login(login, password),
+
+    relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
+        dataSources.user.relogin(),
   }
 
 };
