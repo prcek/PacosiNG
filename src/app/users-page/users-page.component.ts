@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IUserInfo } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-page',
@@ -12,8 +13,10 @@ export class UsersPageComponent implements OnInit {
     {login: 'guest', sudo: false, roles: ['view']},
   ];
   displayedColumns: string[] = ['login', 'sudo', 'roles', 'actions'];
-  constructor() { }
-
+  constructor(private router: Router) { }
+  onEdit(user: IUserInfo) {
+    this.router.navigate(['/users/' + user.login]);
+  }
   ngOnInit() {
   }
 
