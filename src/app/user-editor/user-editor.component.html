@@ -1,0 +1,26 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+    <div>
+    user-editor works! Form Status: {{ userForm.status }} Form Value: {{ userForm.value  | json }}
+    </div>
+    <mat-card class="form-container">
+        <form [formGroup]="userForm"  (ngSubmit)="onSubmit()">
+          <mat-card-header>
+              <mat-card-title>Shiba Inu</mat-card-title>
+          </mat-card-header>
+          <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+            <mat-form-field>
+                <mat-label>login</mat-label>
+                <input matInput type="text" id="login" formControlName="login"> 
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>name</mat-label>
+                <input matInput type="text" id="name" formControlName="name" required> 
+            </mat-form-field>
+
+            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!userForm.valid">submit</button>
+          </mat-card-content>
+        </form>
+    </mat-card>
+  </div>
+  

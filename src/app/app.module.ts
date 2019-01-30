@@ -14,7 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MainMenuComponent } from './main-menu/main-menu.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { UserEditorComponent } from './user-editor/user-editor.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { UserPageComponent } from './user-page/user-page.component';
     MainPageComponent,
     MainMenuComponent,
     UsersPageComponent,
-    UserPageComponent
+    UserPageComponent,
+    UserEditorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -40,6 +42,7 @@ import { UserPageComponent } from './user-page/user-page.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
     MatToolbarModule,
