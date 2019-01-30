@@ -1,4 +1,4 @@
-<p>
-  user-page works!  - login: {{user.login}}
+<p *ngIf="user">
+  user-page works!  - login: {{user.login}}/{{user.name}}//{{user.roles}}
 </p>
 <button mat-raised-button color="primary" (click)="goBack()">back</button>

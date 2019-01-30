@@ -1,6 +1,7 @@
 
 export interface IUser {
     login: string;
+    name: string;
     sudo: boolean;
     roles: string[];
 }

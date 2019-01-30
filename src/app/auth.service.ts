@@ -39,6 +39,7 @@ interface IDevToken {
 export interface IUserInfo {
   login: string;
   sudo: boolean;
+  name: string;
   roles: string[];
 }
 
@@ -130,6 +131,7 @@ export class AuthService {
               login
               sudo
               roles
+              name
             }
           }
         }
@@ -146,6 +148,9 @@ export class AuthService {
           o.next(true);
         } else {
           console.log('Failed - relogin response', r);
+          deleteCookie('auth');
+          this.userInfo = null;
+          this.userInfoSource.next(this.userInfo);
           o.next(false);
         }
         o.complete();
@@ -184,6 +189,7 @@ export class AuthService {
               login
               sudo
               roles
+              name
             }
           }
         }

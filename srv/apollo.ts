@@ -56,7 +56,7 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
 
 export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const dataSources = createDataSources(store);
-    const auser = await dataSources.user.createUser('admin', 'secret', true, ['super']);
+    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super']);
     console.log('dummy user created', auser);
     return true; // store_setup_res;
 }

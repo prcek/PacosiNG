@@ -48,10 +48,11 @@ export class UserAPI implements DataSource {
     async getMe(): Promise<IUser> {
         return this.context.user;
     }
-    async createUser(login: string, password: string, sudo: boolean, roles: string[]): Promise<IUser> {
+    async createUser(login: string, password: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
         return this.store.userModel.create({
             login,
             password: encryptPassword(password),
+            name,
             sudo,
             roles
         });
@@ -67,7 +68,7 @@ export class UserAPI implements DataSource {
         }
         const token: IToken = {
             version: TOKEN_VERSION,
-            user: { login, roles: user.roles, sudo: user.sudo},
+            user: { login, name: user.name, roles: user.roles, sudo: user.sudo},
         };
         const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
         return {ok: true, token: stoken, user: token.user};
@@ -82,7 +83,7 @@ export class UserAPI implements DataSource {
             }
             const token: IToken = {
                 version: TOKEN_VERSION,
-                user: { login, roles: user.roles, sudo: user.sudo},
+                user: { login, name: user.name, roles: user.roles, sudo: user.sudo},
             };
             const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
             return {ok: true, token: stoken, user: token.user};

@@ -35,6 +35,7 @@ function createModels(connection: mongoose.Connection) {
     const userSchema = new mongoose.Schema({
         login: {type: String, index: true, unique: true},
         password: String,
+        name: String,
         sudo: Boolean,
         roles: [String],
     });

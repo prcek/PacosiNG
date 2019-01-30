@@ -26,6 +26,7 @@ const typeDefs = gql`
   ### IUser interface
   type User {
     login: String
+    name: String
     sudo: Boolean
     roles: [String]
   }
