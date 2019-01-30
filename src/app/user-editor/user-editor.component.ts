@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IUser } from '../user.service';
 
 @Component({
   selector: 'app-user-editor',
@@ -7,9 +8,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./user-editor.component.css']
 })
 export class UserEditorComponent implements OnInit {
+
+  @Input() user: IUser;
+
   userForm = new FormGroup({
-    login: new FormControl(''),
-    name: new FormControl('', Validators.required),
+    login: new FormControl({value: '', disabled: true}),
+    name: new FormControl({value: ''}, {validators: Validators.required}),
+    sudo: new FormControl(false)
   });
 
   submitted = false;
@@ -17,6 +22,12 @@ export class UserEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('UserEditorComponent.ngOnInit', this.user);
+    this.userForm.setValue({
+      login: this.user.login,
+      name: this.user.name,
+      sudo: this.user.sudo,
+    });
   }
   onSubmit() {
     // TODO: Use EventEmitter with form value

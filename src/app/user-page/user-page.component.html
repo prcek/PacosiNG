@@ -1,5 +1,5 @@
 <p *ngIf="user">
   user-page works!  - login: {{user.login}}/{{user.name}}//{{user.roles}}
+  <app-user-editor [user]="user"></app-user-editor>
 </p>
 <button mat-raised-button color="primary" (click)="goBack()">back</button>
-<app-user-editor></app-user-editor>

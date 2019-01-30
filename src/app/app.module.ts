@@ -20,6 +20,7 @@ import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { UserEditorComponent } from './user-editor/user-editor.component';
@@ -51,6 +52,7 @@ import { UserEditorComponent } from './user-editor/user-editor.component';
     MatInputModule,
     MatIconModule,
     MatTableModule,
+    MatCheckboxModule,
 // last
     GraphQLModule,
   ],
