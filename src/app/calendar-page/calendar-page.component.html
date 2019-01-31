@@ -1,0 +1,5 @@
+<button mat-raised-button color="primary" (click)="goBack()">back</button>
+<p *ngIf="calendar">
+  calendar-page works! {{ calendar | json }}
+  <app-calendar-editor [calendar]="calendar" (updated)="goBack()"></app-calendar-editor>
+</p>

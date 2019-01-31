@@ -1,0 +1,19 @@
+.form-container {
+    max-width: 400px;
+    width: 100%;
+}
+
+.container {
+    padding: 10px;
+}
+
+.section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+.red {
+    color: red;
+}

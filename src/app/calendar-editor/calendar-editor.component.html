@@ -1,0 +1,26 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <div>
+  calendar-editor works! Form Status: {{ calendarForm.status }} Form Value: {{ calendarForm.value  | json }}
+  </div>
+  <mat-card class="form-container">
+      <form [formGroup]="calendarForm"  (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-title>Shiba Inu</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+          <mat-form-field>
+              <mat-label>name</mat-label>
+              <input matInput type="text" id="name" formControlName="name"> 
+          </mat-form-field>
+  
+
+        
+        
+          
+
+          <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">submit</button>
+          <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
+        </mat-card-content>
+      </form>
+  </mat-card>
+</div>

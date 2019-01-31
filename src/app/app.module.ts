@@ -26,6 +26,9 @@ import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { UserEditorComponent } from './user-editor/user-editor.component';
 import { YesnoPipe } from './yesno.pipe';
+import { CalendarsPageComponent } from './calendars-page/calendars-page.component';
+import { CalendarPageComponent } from './calendar-page/calendar-page.component';
+import { CalendarEditorComponent } from './calendar-editor/calendar-editor.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { YesnoPipe } from './yesno.pipe';
     UsersPageComponent,
     UserPageComponent,
     UserEditorComponent,
-    YesnoPipe
+    YesnoPipe,
+    CalendarsPageComponent,
+    CalendarPageComponent,
+    CalendarEditorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
