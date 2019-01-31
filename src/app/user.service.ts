@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { switchMap, map, filter, tap} from 'rxjs/operators';
+import { switchMap, map, filter, tap, delay} from 'rxjs/operators';
 
 
 export interface IUser {
@@ -33,6 +33,7 @@ export class UserService {
     return this.getUsers().pipe(switchMap(u => u), filter(u => u.login === login));
   }
   updateUser(user: IUser): Observable<boolean> {
-    return of(true);
+    return of(true).pipe(delay(1000), switchMap((x) => throwError('testovaci chyba ukladani')));
+    // return of(true).pipe(delay(2000));
   }
 }

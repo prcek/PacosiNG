@@ -34,6 +34,7 @@
             
 
             <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!userForm.valid">submit</button>
+            <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
           </mat-card-content>
         </form>
     </mat-card>

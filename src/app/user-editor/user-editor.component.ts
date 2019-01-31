@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '../user.service';
+import { IUser, UserService } from '../user.service';
 
 export interface Role {
   value: string;
@@ -13,7 +13,7 @@ export interface Role {
   styleUrls: ['./user-editor.component.css']
 })
 export class UserEditorComponent implements OnInit {
-
+  @Output() updated = new EventEmitter<IUser>(true);
   @Input() user: IUser;
   roles: Role[] = [
     {value: 'super', viewValue: 'Super'},
@@ -27,10 +27,10 @@ export class UserEditorComponent implements OnInit {
     sudo: new FormControl(false),
     roles: new FormControl({value: []}, {validators: Validators.required}),
   });
-
+  error_msg: string;
   submitted = false;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     console.log('UserEditorComponent.ngOnInit', this.user);
@@ -43,6 +43,22 @@ export class UserEditorComponent implements OnInit {
   }
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    console.log(this.userForm.value);
+    const uu: IUser = this.userForm.value;
+    this.submitted = true;
+    this.userForm.disable();
+    this.error_msg = null;
+    console.log('UserEditorComponent.onSubmit', uu);
+    this.userService.updateUser(uu).subscribe((r) => {
+      this.updated.emit(uu);
+      this.submitted = false;
+      this.userForm.enable();
+      this.userForm.get('login').disable();
+    }, (err) => {
+      this.submitted = false;
+      this.userForm.enable();
+      this.userForm.get('login').disable();
+      this.error_msg = err;
+    });
+
   }
 }
