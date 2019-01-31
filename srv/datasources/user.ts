@@ -57,6 +57,14 @@ export class UserAPI implements DataSource {
             roles
         });
     }
+    async updateUser(login: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
+        const user = await this.store.userModel.findOne({login});
+        if (!user) {
+            throw new Error('Something bad happened');
+        }
+        user.set({name, sudo, roles});
+        return user.save();
+    }
     async login(login: string, password: string): Promise<ILoginResponse> {
 
         const user = await this.store.userModel.findOne({login});

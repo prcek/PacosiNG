@@ -16,6 +16,7 @@ const typeDefs = gql`
   type Mutation {
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
+    updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
   }
   ### ILoginResponse interface
   type LoginResponse {
@@ -56,6 +57,9 @@ const resolvers: IResolvers<any, IContext> = {
 
     relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
         dataSources.user.relogin(),
+
+    updateUser: (_, { login, name, sudo, roles }, { dataSources }): Promise<IUser> =>
+        dataSources.user.updateUser(login, name, sudo, roles),
   }
 
 };

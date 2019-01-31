@@ -43,13 +43,13 @@ export class UserEditorComponent implements OnInit {
   }
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    const uu: IUser = this.userForm.value;
+    const uu: IUser = this.userForm.getRawValue();
     this.submitted = true;
     this.userForm.disable();
     this.error_msg = null;
     console.log('UserEditorComponent.onSubmit', uu);
     this.userService.updateUser(uu).subscribe((r) => {
-      this.updated.emit(uu);
+      this.updated.emit(r);
       this.submitted = false;
       this.userForm.enable();
       this.userForm.get('login').disable();
