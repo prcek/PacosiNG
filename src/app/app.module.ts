@@ -25,6 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { UserEditorComponent } from './user-editor/user-editor.component';
+import { YesnoPipe } from './yesno.pipe';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { UserEditorComponent } from './user-editor/user-editor.component';
     MainMenuComponent,
     UsersPageComponent,
     UserPageComponent,
-    UserEditorComponent
+    UserEditorComponent,
+    YesnoPipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

@@ -10,7 +10,7 @@
     </ng-container>
     <ng-container matColumnDef="sudo">
       <th mat-header-cell *matHeaderCellDef> Sudo </th>
-      <td mat-cell *matCellDef="let element"> {{element.sudo}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.sudo | yesno}} </td>
     </ng-container>
     <ng-container matColumnDef="roles">
       <th mat-header-cell *matHeaderCellDef> Roles </th>
