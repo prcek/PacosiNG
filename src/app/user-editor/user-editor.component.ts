@@ -23,9 +23,9 @@ export class UserEditorComponent implements OnInit {
 
   userForm = new FormGroup({
     login: new FormControl({value: '', disabled: true}),
-    name: new FormControl({value: ''}, {validators: Validators.required}),
+    name: new FormControl('', {validators: Validators.required}),
     sudo: new FormControl(false),
-    roles: new FormControl({value: []}, {validators: Validators.required}),
+    roles: new FormControl([], {validators: Validators.required}),
   });
   error_msg: string;
   submitted = false;
