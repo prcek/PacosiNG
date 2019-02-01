@@ -5,6 +5,14 @@ export interface IUser {
     sudo: boolean;
     roles: string[];
 }
+
+export interface ICalendar {
+    _id: any;
+    name: string;
+    span: number;
+}
+
+
 export interface IToken  {
     version: number;
     user: IUser;

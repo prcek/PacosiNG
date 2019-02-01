@@ -3,7 +3,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
-import { IUser } from './types';
+import { IUser, ICalendar } from './types';
 import { config } from './config';
 
 async function startLocalMongoDB(): Promise<string> {
@@ -31,6 +31,9 @@ export interface IUserModel extends mongoose.Document, IUser {
     password: string;
 }
 
+export interface ICalendarModel extends mongoose.Document, ICalendar {
+}
+
 function createModels(connection: mongoose.Connection) {
     const userSchema = new mongoose.Schema({
         login: {type: String, index: true, unique: true},
@@ -40,21 +43,26 @@ function createModels(connection: mongoose.Connection) {
         roles: [String],
     });
     const UserModel = connection.model<IUserModel>('User', userSchema, 'users');
-    return { UserModel} ;
+
+    const calendarSchema = new mongoose.Schema({
+        name: String,
+        span: Number,
+    });
+    const CalendarModel = connection.model<ICalendarModel>('Calendar', calendarSchema, 'calendars');
+
+    return { UserModel, CalendarModel} ;
 }
 
 export interface IStore  {
-    model1: string;
-    model2: string;
     userModel: mongoose.Model<IUserModel>;
-    x: number;
+    calendarModel: mongoose.Model<ICalendarModel>;
 }
 export async function createStore(productionMode: boolean): Promise<IStore> {
 
     const uri = productionMode ? config.mongodb_uri : await startLocalMongoDB();
     const mdb = await createMongooseConnection(uri);
     const models = createModels(mdb);
-    return { model1: 'a', model2: 'b', x: 1, userModel: models.UserModel};
+    return { userModel: models.UserModel, calendarModel: models.CalendarModel };
 }
 
 export async function setupDevStoreRawData(store: IStore): Promise<boolean> {

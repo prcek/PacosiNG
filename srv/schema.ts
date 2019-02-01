@@ -2,7 +2,7 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase, ILoginResponse, IUser } from './types';
+import { IContextBase, ILoginResponse, IUser, ICalendar} from './types';
 
 
 // The GraphQL schema
@@ -11,12 +11,15 @@ const typeDefs = gql`
     "A simple type for getting started!"
     hello: String
     users: [User]
+    calendars: [Calendar]
     me: User
   }
   type Mutation {
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
     updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
+    updateCalendar(_id: ID! name: String span: Int): Calendar!
+    createCalendar(name: String! span: Int!): Calendar!
   }
   ### ILoginResponse interface
   type LoginResponse {
@@ -30,6 +33,11 @@ const typeDefs = gql`
     name: String
     sudo: Boolean
     roles: [String]
+  }
+  type Calendar {
+    _id: ID,
+    name: String,
+    span: Int,
   }
 `;
 
@@ -47,6 +55,9 @@ const resolvers: IResolvers<any, IContext> = {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
+    calendars: async (parent, args, context, info): Promise<ICalendar[]> => {
+        return await context.dataSources.calendar.getAllCalendars();
+    },
     me: async (parent, args, context, info): Promise<IUser> => {
       return await context.dataSources.user.getMe();
     },
@@ -60,6 +71,14 @@ const resolvers: IResolvers<any, IContext> = {
 
     updateUser: (_, { login, name, sudo, roles }, { dataSources }): Promise<IUser> =>
         dataSources.user.updateUser(login, name, sudo, roles),
+
+
+    updateCalendar: (_, { _id, name, span }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.updateCalendar(_id, name, span),
+
+    createCalendar: (_, { name, span }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.createCalendar(name, span),
+
   }
 
 };
