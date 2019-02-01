@@ -12,7 +12,10 @@
               <mat-label>name</mat-label>
               <input matInput type="text" id="name" formControlName="name"> 
           </mat-form-field>
-
+          <mat-form-field>
+            <mat-label>span</mat-label>
+            <input matInput type="number" id="span" formControlName="span"> 
+          </mat-form-field>
           <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">submit</button>
           <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
         </mat-card-content>
