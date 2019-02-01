@@ -20,6 +20,6 @@ export class CalendarsPageComponent implements OnInit {
         .subscribe(calendars => this.calendars = calendars);
   }
   onEdit(cal: ICalendar) {
-    this.router.navigate(['/calendars/' + cal.id]);
+    this.router.navigate(['/calendars/' + cal._id]);
   }
 }

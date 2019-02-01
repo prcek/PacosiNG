@@ -32,7 +32,7 @@ export class CalendarEditorComponent implements OnInit {
 
   onSubmit() {
      // TODO: Use EventEmitter with form value
-     const uc: ICalendar = {id: this.calendar.id, ...this.calendarForm.getRawValue()};
+     const uc: ICalendar = {_id: this.calendar._id, ...this.calendarForm.getRawValue()};
      this.submitted = true;
      this.calendarForm.disable();
      this.error_msg = null;
