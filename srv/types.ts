@@ -10,6 +10,9 @@ export interface ICalendar {
     _id: any;
     name: string;
     span: number;
+    day_len: number;
+    day_begin: number;
+    week_days: number[];
 }
 
 

@@ -5,7 +5,7 @@
   <mat-card class="form-container">
       <form [formGroup]="calendarForm"  (ngSubmit)="onSubmit()">
         <mat-card-header>
-            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-title>Kalendář {{calendar._id}}</mat-card-title>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
           <mat-form-field>
@@ -16,6 +16,27 @@
             <mat-label>span</mat-label>
             <input matInput type="number" id="span" formControlName="span"> 
           </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-label>day_begin</mat-label>
+            <input matInput type="number" id="day_begin" formControlName="day_begin"> 
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>day_len</mat-label>
+            <input matInput type="number" id="day_len" formControlName="day_len"> 
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>week_days</mat-label>
+            <mat-select placeholder="week_days"  formControlName="week_days" multiple>
+                <mat-option *ngFor="let week_day of week_days" [value]="week_day.value">
+                    {{week_day.viewValue}}
+                  </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">submit</button>
           <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
         </mat-card-content>

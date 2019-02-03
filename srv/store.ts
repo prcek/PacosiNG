@@ -47,6 +47,9 @@ function createModels(connection: mongoose.Connection) {
     const calendarSchema = new mongoose.Schema({
         name: String,
         span: Number,
+        day_begin: Number,
+        day_len: Number,
+        week_days: [Number],
     });
     const CalendarModel = connection.model<ICalendarModel>('Calendar', calendarSchema, 'calendars');
 

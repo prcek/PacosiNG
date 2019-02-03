@@ -9,7 +9,7 @@ import { CalendarService, ICalendar } from '../calendar.service';
 })
 export class CalendarsPageComponent implements OnInit {
   calendars: ICalendar[];
-  displayedColumns: string[] = ['id', 'name', 'span', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
   constructor(private router: Router, private calendarService: CalendarService) { }
 
   ngOnInit() {

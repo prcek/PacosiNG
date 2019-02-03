@@ -58,9 +58,9 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const dataSources = createDataSources(store);
     const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super']);
     console.log('dummy user created', auser);
-    const cal1 = await dataSources.calendar.createCalendar('cal1', 15);
-    const cal2 = await dataSources.calendar.createCalendar('cal2', 10);
-    const cal3 = await dataSources.calendar.createCalendar('cal3', 30);
+    const cal1 = await dataSources.calendar.createCalendar('cal1', 15, 4 * 7, 4 * 10, [1, 2, 3, 4, 5]);
+    const cal2 = await dataSources.calendar.createCalendar('cal2', 10, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
+    const cal3 = await dataSources.calendar.createCalendar('cal3', 30, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
     console.log('dummy cals created', cal1, cal2, cal3);
 
     return true; // store_setup_res;

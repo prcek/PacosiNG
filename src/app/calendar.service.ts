@@ -8,6 +8,9 @@ export interface ICalendar {
   _id: string;
   name: string;
   span: number;
+  day_begin: number;
+  day_len: number;
+  week_days: number[];
 }
 
 /*
@@ -27,7 +30,7 @@ export class CalendarService {
   getCalendars(): Observable<ICalendar[]> {
     console.log('CalendarService.getCalendars');
     return this.apollo.query<{calendars: ICalendar[]}>({
-      query: gql`{ calendars { _id name span }}`,
+      query: gql`{ calendars { _id name span day_begin day_len week_days }}`,
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendars));
   }
   getCalendar(_id: string): Observable<ICalendar> {
@@ -36,8 +39,9 @@ export class CalendarService {
   updateCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
       mutation: gql`
-        mutation($_id: ID! $name: String $span: Int) {
-          updateCalendar(_id: $_id name: $name span: $span) { _id name span }
+        mutation($_id: ID! $name: String $span: Int $day_begin: Int $day_len: Int $week_days: [Int]) {
+          updateCalendar(_id: $_id name: $name span: $span
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id name span day_begin day_len week_days }
         }
       `,
       variables: {

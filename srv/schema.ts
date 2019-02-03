@@ -18,8 +18,8 @@ const typeDefs = gql`
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
     updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
-    updateCalendar(_id: ID! name: String span: Int): Calendar!
-    createCalendar(name: String! span: Int!): Calendar!
+    updateCalendar(_id: ID! name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
+    createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
   }
   ### ILoginResponse interface
   type LoginResponse {
@@ -35,9 +35,12 @@ const typeDefs = gql`
     roles: [String]
   }
   type Calendar {
-    _id: ID,
-    name: String,
-    span: Int,
+    _id: ID
+    name: String
+    span: Int
+    day_begin: Int
+    day_len: Int
+    week_days: [Int]
   }
 `;
 
@@ -73,11 +76,11 @@ const resolvers: IResolvers<any, IContext> = {
         dataSources.user.updateUser(login, name, sudo, roles),
 
 
-    updateCalendar: (_, { _id, name, span }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.updateCalendar(_id, name, span),
+    updateCalendar: (_, { _id, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.updateCalendar(_id, name, span, day_begin, day_len, week_days),
 
-    createCalendar: (_, { name, span }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.createCalendar(name, span),
+    createCalendar: (_, { name, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.createCalendar(name, span, day_begin, day_len, week_days),
 
   }
 

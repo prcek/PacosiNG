@@ -16,18 +16,23 @@ export class CalendarAPI implements DataSource {
         return this.store.calendarModel.find({});
     }
 
-    async createCalendar(name: string, span: number): Promise<ICalendar> {
+    async createCalendar(name: string, span: number,
+        day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({
             name,
             span,
+            day_begin,
+            day_len,
+            week_days
         });
     }
-    async updateCalendar(_id: string, name: string, span: number): Promise<ICalendar> {
+    async updateCalendar(_id: string, name: string, span: number,
+        day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         const cal = await this.store.calendarModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({name, span});
+        cal.set({name, span, day_begin, day_len, week_days});
         return cal.save();
     }
 

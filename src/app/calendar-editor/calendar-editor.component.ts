@@ -2,6 +2,12 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ICalendar, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+export interface WeekDay {
+  value: number;
+  viewValue: string;
+}
+
+
 @Component({
   selector: 'app-calendar-editor',
   templateUrl: './calendar-editor.component.html',
@@ -10,11 +16,25 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class CalendarEditorComponent implements OnInit {
   @Output() updated = new EventEmitter<ICalendar>();
   @Input() calendar: ICalendar;
+  @Input() newMode: boolean;
 
+
+  week_days: WeekDay[] = [
+    {value: 0, viewValue: 'Ne'},
+    {value: 1, viewValue: 'Po'},
+    {value: 2, viewValue: 'Út'},
+    {value: 3, viewValue: 'St'},
+    {value: 4, viewValue: 'Čt'},
+    {value: 5, viewValue: 'Pá'},
+    {value: 6, viewValue: 'So'}
+  ];
 
   calendarForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required}),
     span: new FormControl(15, { validators: [Validators.required, Validators.min(5), Validators.max(60)]}),
+    day_begin: new FormControl(7 * 4, { validators: [Validators.required, Validators.min(0), Validators.max(60)]}),
+    day_len: new FormControl(10 * 4, { validators: [Validators.required, Validators.min(1), Validators.max(100)]}),
+    week_days: new FormControl([1, 2, 3, 4, 5], {validators: Validators.required}),
   });
   error_msg: string;
   submitted = false;
@@ -26,7 +46,10 @@ export class CalendarEditorComponent implements OnInit {
     console.log('CalendarEditorComponent.ngOnInit', this.calendar);
     this.calendarForm.setValue({
       name: this.calendar.name,
-      span: this.calendar.span
+      span: this.calendar.span,
+      day_begin: this.calendar.day_begin,
+      day_len: this.calendar.day_len,
+      week_days: this.calendar.week_days,
     });
   }
 
