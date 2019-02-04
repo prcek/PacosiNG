@@ -25,10 +25,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { UserEditorComponent } from './user-editor/user-editor.component';
-import { YesnoPipe } from './yesno.pipe';
+import { YesnoPipe } from './pipes/yesno.pipe';
 import { CalendarsPageComponent } from './calendars-page/calendars-page.component';
 import { CalendarPageComponent } from './calendar-page/calendar-page.component';
 import { CalendarEditorComponent } from './calendar-editor/calendar-editor.component';
+import { TstimePipe } from './pipes/tstime.pipe';
+import { WeekDaysPipe } from './pipes/week-days.pipe';
+import { WeekDayPipe } from './pipes/week-day.pipe';
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import { CalendarEditorComponent } from './calendar-editor/calendar-editor.compo
     YesnoPipe,
     CalendarsPageComponent,
     CalendarPageComponent,
-    CalendarEditorComponent
+    CalendarEditorComponent,
+    TstimePipe,
+    WeekDaysPipe,
+    WeekDayPipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

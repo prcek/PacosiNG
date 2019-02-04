@@ -15,17 +15,17 @@
 
     <ng-container matColumnDef="day_begin">
       <th mat-header-cell *matHeaderCellDef> day_begin </th>
-      <td mat-cell *matCellDef="let element"> {{element.day_begin}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.day_begin | tstime:element.span}} </td>
     </ng-container>
 
     <ng-container matColumnDef="day_len">
-      <th mat-header-cell *matHeaderCellDef> day_len </th>
-      <td mat-cell *matCellDef="let element"> {{element.day_len}} </td>
+      <th mat-header-cell *matHeaderCellDef> day_end </th>
+      <td mat-cell *matCellDef="let element"> {{element.day_len | tstime:element.span:element.day_begin}} </td>
     </ng-container>
 
     <ng-container matColumnDef="week_days">
       <th mat-header-cell *matHeaderCellDef> week_days </th>
-      <td mat-cell *matCellDef="let element"> {{element.week_days}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.week_days | weekDays}} </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
