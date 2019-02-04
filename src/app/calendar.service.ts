@@ -13,6 +13,14 @@ export interface ICalendar {
   week_days: number[];
 }
 
+export interface IOpeningHoursTemplate {
+  _id: string;
+  calendar_id: string;
+  week_day: number;
+  begin: number;
+  len: number;
+}
+
 /*
 const CALENDARS: ICalendar[] = [
   { id: '1', name: 'jedna', span: 15},
@@ -49,5 +57,10 @@ export class CalendarService {
       }
     }).pipe(tap(r => console.log('CalendarService.updateCalendar res=', r)),  map(res => res.data.updateCalendar));
   }
-
+  getOpeningHoursTemplates(): Observable<IOpeningHoursTemplate[]> {
+    console.log('CalendarService.getOpeningHoursTemplates');
+    return this.apollo.query<{openingHoursTemplates: IOpeningHoursTemplate[]}>({
+      query: gql`{ openingHoursTemplates { _id calendar_id week_day begin len }}`,
+    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.openingHoursTemplates));
+  }
 }

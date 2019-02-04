@@ -1,4 +1,5 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <div>{{ ohtemplates | json }}</div>
   <table mat-table [dataSource]="calendars" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> id </th>
