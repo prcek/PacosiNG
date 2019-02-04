@@ -3,7 +3,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
-import { IUser, ICalendar } from './types';
+import { IUser, ICalendar, IOpeningHoursTemplate } from './types';
 import { config } from './config';
 
 async function startLocalMongoDB(): Promise<string> {
@@ -34,6 +34,10 @@ export interface IUserModel extends mongoose.Document, IUser {
 export interface ICalendarModel extends mongoose.Document, ICalendar {
 }
 
+export interface IOpeningHoursTemplateModel extends mongoose.Document, IOpeningHoursTemplate {
+}
+
+
 function createModels(connection: mongoose.Connection) {
     const userSchema = new mongoose.Schema({
         login: {type: String, index: true, unique: true},
@@ -53,19 +57,39 @@ function createModels(connection: mongoose.Connection) {
     });
     const CalendarModel = connection.model<ICalendarModel>('Calendar', calendarSchema, 'calendars');
 
-    return { UserModel, CalendarModel} ;
+
+    const openingHoursTemplateSchema = new mongoose.Schema({
+        calendar_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Calendar',
+            required: true
+        },
+        week_day: Number,
+        begin: Number,
+        len: Number,
+    });
+    const OpeningHoursTemplateModel = connection.model<IOpeningHoursTemplateModel>('OpeningHoursTemplate',
+        openingHoursTemplateSchema, 'ohtemplates');
+
+
+    return { UserModel, CalendarModel, OpeningHoursTemplateModel} ;
 }
 
 export interface IStore  {
     userModel: mongoose.Model<IUserModel>;
     calendarModel: mongoose.Model<ICalendarModel>;
+    openingHoursTemplateModel: mongoose.Model<IOpeningHoursTemplateModel>;
 }
 export async function createStore(productionMode: boolean): Promise<IStore> {
 
     const uri = productionMode ? config.mongodb_uri : await startLocalMongoDB();
     const mdb = await createMongooseConnection(uri);
     const models = createModels(mdb);
-    return { userModel: models.UserModel, calendarModel: models.CalendarModel };
+    return {
+        userModel: models.UserModel,
+        calendarModel: models.CalendarModel,
+        openingHoursTemplateModel: models.OpeningHoursTemplateModel
+    };
 }
 
 export async function setupDevStoreRawData(store: IStore): Promise<boolean> {

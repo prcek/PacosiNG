@@ -16,6 +16,18 @@ export interface ICalendar {
 }
 
 
+export interface IOpeningHoursTemplate extends IOpeningHours {
+    _id: any;
+    week_day: number;
+}
+
+export interface IOpeningHours {
+    calendar_id: any;
+    begin: number;
+    len: number;
+}
+
+
 export interface IToken  {
     version: number;
     user: IUser;

@@ -1,7 +1,7 @@
 
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
-import { IStore , ICalendarModel} from './../store';
-import { IContextBase, ICalendar } from './../types';
+import { IStore } from './../store';
+import { IContextBase, ICalendar , IOpeningHoursTemplate} from './../types';
 
 
 export class CalendarAPI implements DataSource {
@@ -14,6 +14,9 @@ export class CalendarAPI implements DataSource {
     }
     async getAllCalendars(): Promise<ICalendar[]> {
         return this.store.calendarModel.find({});
+    }
+    async getAllOHTemplates(): Promise<IOpeningHoursTemplate[]> {
+        return this.store.openingHoursTemplateModel.find({});
     }
 
     async createCalendar(name: string, span: number,
@@ -34,6 +37,15 @@ export class CalendarAPI implements DataSource {
         }
         cal.set({name, span, day_begin, day_len, week_days});
         return cal.save();
+    }
+
+    async createOHTemplate(calendar_id: string, week_day: number, begin: number, len: number): Promise<IOpeningHoursTemplate> {
+        return this.store.openingHoursTemplateModel.create({
+            calendar_id,
+            week_day,
+            begin,
+            len
+        });
     }
 
 }

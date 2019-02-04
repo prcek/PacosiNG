@@ -2,7 +2,7 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase, ILoginResponse, IUser, ICalendar} from './types';
+import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate} from './types';
 
 
 // The GraphQL schema
@@ -12,6 +12,7 @@ const typeDefs = gql`
     hello: String
     users: [User]
     calendars: [Calendar]
+    openingHoursTemplates: [OpeningHoursTemplate]
     me: User
   }
   type Mutation {
@@ -42,6 +43,13 @@ const typeDefs = gql`
     day_len: Int
     week_days: [Int]
   }
+  type OpeningHoursTemplate {
+    _id: ID
+    calendar_id: ID
+    week_day: Int
+    begin: Int
+    len: Int
+  }
 `;
 
 interface IContext extends IContextBase {
@@ -60,6 +68,9 @@ const resolvers: IResolvers<any, IContext> = {
     },
     calendars: async (parent, args, context, info): Promise<ICalendar[]> => {
         return await context.dataSources.calendar.getAllCalendars();
+    },
+    openingHoursTemplates: async (parent, args, context, info): Promise<IOpeningHoursTemplate[]> => {
+        return await context.dataSources.calendar.getAllOHTemplates();
     },
     me: async (parent, args, context, info): Promise<IUser> => {
       return await context.dataSources.user.getMe();
