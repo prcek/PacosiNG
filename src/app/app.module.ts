@@ -32,7 +32,8 @@ import { CalendarEditorComponent } from './calendar-editor/calendar-editor.compo
 import { TstimePipe } from './pipes/tstime.pipe';
 import { WeekDaysPipe } from './pipes/week-days.pipe';
 import { WeekDayPipe } from './pipes/week-day.pipe';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { WeekDayPipe } from './pipes/week-day.pipe';
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    MatMomentDateModule,
     MatButtonModule,
     MatToolbarModule,
     MatCardModule,
@@ -69,6 +71,7 @@ import { WeekDayPipe } from './pipes/week-day.pipe';
     MatTableModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatDatepickerModule,
 // last
     GraphQLModule,
   ],
