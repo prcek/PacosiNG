@@ -1,4 +1,4 @@
-import { TimepickerDirective } from './timepicker.directive';
+import { TimepickerDirective } from './timepicker-input';
 /*
 describe('TimepickerDirective', () => {
   it('should create an instance', () => {
