@@ -6,7 +6,7 @@
     <mat-form-field>
       <input matInput required [disabled]="disabled" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="form.date" name="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker touchUi></mat-datepicker>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
@@ -18,7 +18,7 @@
     <mat-form-field>
       <input matInput required [disabled]="disabled" [appTimepicker]="picker3" timeSpan="10" placeholder="Choose a time" [(ngModel)]="form.time2" name="time2">
       <app-timepicker-toggle matSuffix [for]="picker3"></app-timepicker-toggle>
-      <app-timepicker #picker3></app-timepicker>
+      <app-timepicker #picker3 touchUi></app-timepicker>
     </mat-form-field>
 
     <button *ngIf="!submitted" type="submit" mat-raised-button color="warn"  [disabled]="!testForm.form.valid">login</button>

@@ -123,6 +123,12 @@ export class TimepickerComponent implements OnDestroy, CanColor {
   set _selected(value: number | null) { console.log('_selected', value); this._validSelected = value; }
   private _validSelected: number| null = null;
 
+  @Input()
+  get touchUi(): boolean { return this._touchUi; }
+  set touchUi(value: boolean) {
+    this._touchUi = coerceBooleanProperty(value);
+  }
+  private _touchUi = false;
 
   @Input()
   get opened(): boolean { return this._opened; }
@@ -171,8 +177,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
     if (this._document) {
       this._focusedElementBeforeOpen = this._document.activeElement;
     }
-  /* FIXME this.touchUi ? this._openAsDialog() : this._openAsPopup(); */
-    this._openAsPopup();
+    this.touchUi ? this._openAsDialog() : this._openAsPopup();
     this._opened = true;
     this.openedStream.emit();
   }
