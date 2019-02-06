@@ -9,7 +9,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class MainPageComponent implements OnInit {
   form = {
     date: '',
-    time: 5
+    time: 5,
+    time2: 10
   };
   submitted = false;
   disabled = false;

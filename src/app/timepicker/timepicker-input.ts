@@ -12,6 +12,8 @@ import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import { MAT_INPUT_VALUE_ACCESSOR } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
 import { ThemePalette } from '@angular/material/core';
+import { TimepickerComponent } from './timepicker.component';
+import { Subscription } from 'rxjs';
 
 
 export const APP_TIMEPICKER_VALUE_ACCESSOR: any = {
@@ -56,8 +58,10 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   @Output() readonly timeInput: EventEmitter<TimepickerInputEvent> =
       new EventEmitter<TimepickerInputEvent>();
   private _value: number | null;
+  private _timepickerSubscription = Subscription.EMPTY;
   @Input() timeSpan = 5;
   private _lastValueValid = false;
+  _timepicker: TimepickerComponent;
   private _disabled: boolean;
   private _validator: ValidatorFn | null;
   private _cvaOnChange: (value: any) => void = () => {};
@@ -74,9 +78,23 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   }
 
   @Input()
-  set appTimepicker(value: string) {
+  set appTimepicker(value: TimepickerComponent) {
     console.log('TimepickerDirective.appTimepicker', value);
+    if (!value) {
+      return;
+    }
+    this._timepicker = value;
+    this._timepicker._registerInput(this);
+    this._timepickerSubscription.unsubscribe();
+    this._timepickerSubscription = this._timepicker._selectedChanged.subscribe((selected: number) => {
+      this.value = selected;
+      this._cvaOnChange(selected);
+      this._onTouched();
+      this.timeInput.emit(new TimepickerInputEvent(this, this._elementRef.nativeElement));
+      this.timeChange.emit(new TimepickerInputEvent(this, this._elementRef.nativeElement));
+    });
   }
+
 
 
   @Input()
@@ -171,6 +189,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   }
 
   ngOnDestroy(): void {
+    this._timepickerSubscription.unsubscribe();
     this._valueChange.complete();
     this._disabledChange.complete();
   }
