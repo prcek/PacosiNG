@@ -1,9 +1,20 @@
 <div>
   main-page works!
-  <button mat-raised-button color="primary">click me!</button>
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
+  <div>{{diagnostic}}</div>
+  <form  (ngSubmit)="onSubmit()" #testForm="ngForm"> 
+    <mat-form-field>
+      <input matInput required [disabled]="disabled" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="form.date" name="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required [disabled]="disabled" [appTimepicker]="'picker2'" timeSpan="15" placeholder="Choose a time" [(ngModel)]="form.time" name="time">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <button *ngIf="!submitted" type="submit" mat-raised-button color="warn"  [disabled]="!testForm.form.valid">login</button>
+  </form>
 </div>

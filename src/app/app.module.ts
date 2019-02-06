@@ -34,6 +34,7 @@ import { WeekDaysPipe } from './pipes/week-days.pipe';
 import { WeekDayPipe } from './pipes/week-day.pipe';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { TimepickerDirective } from './timepicker-input';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     CalendarEditorComponent,
     TstimePipe,
     WeekDaysPipe,
-    WeekDayPipe
+    WeekDayPipe,
+    TimepickerDirective
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
