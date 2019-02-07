@@ -33,6 +33,7 @@
             <div *ngIf="ohtForm.errors?.invalidInterval && (ohtForm.touched || ohtForm.dirty)">
               spatny interval! (konec je drive nez zacatek)
             </div>
+            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!ohtForm.valid">submit</button>
         </mat-card-content>
     </form>
 </mat-card>

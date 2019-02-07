@@ -2,4 +2,14 @@
 <p>
   celendar-oht-page works! {{diag}}
 </p>
+
+<div *ngIf="template_groups">
+  <ul>
+    <li *ngFor="let group of template_groups">  {{group.week_day | weekDay}}
+      <ul><li *ngFor="let t of group.templates"> {{t|json}}</li></ul>
+    </li>
+  </ul>
+</div>
+
+
 <app-calendar-oht-editor *ngIf="calendar" [calendar]="calendar"></app-calendar-oht-editor>

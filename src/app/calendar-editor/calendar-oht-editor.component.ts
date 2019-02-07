@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ICalendar } from '../calendar.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ICalendar, IOpeningHoursTemplate } from '../calendar.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { WeekDay, ALL_WEEK_DAYS } from './common';
 
@@ -17,9 +17,9 @@ export const timeIntervalValidator: ValidatorFn = (control: FormGroup): Validati
 })
 export class CalendarOhtEditorComponent implements OnInit {
   @Input() calendar: ICalendar;
-
+  @Output() new_oht = new EventEmitter<IOpeningHoursTemplate>();
   week_days = ALL_WEEK_DAYS;
-
+  submitted = false;
 
   ohtForm = new FormGroup({
     week_day: new FormControl(null, { validators: Validators.required}),
@@ -34,6 +34,15 @@ export class CalendarOhtEditorComponent implements OnInit {
       throw Error('A CalendarOhtEditorComponent without calendar');
     }
     // this.ohtForm.setValidators(timeIntervalValidator);
+  }
+  onSubmit() {
+    this.new_oht.emit({
+      _id: null,
+      calendar_id: '1',
+      week_day: 1,
+      begin: 1,
+      len: 2
+    });
   }
 
 }

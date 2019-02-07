@@ -65,6 +65,10 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
 
     const c1oht1  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 40, 5);
     const c1oht2  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 50, 5);
+    const c1oht3  = await dataSources.calendar.createOHTemplate(cal1._id, 2, 30, 5);
+
+    const c2oht1  = await dataSources.calendar.createOHTemplate(cal2._id, 3, 40, 5);
+    const c2oht2  = await dataSources.calendar.createOHTemplate(cal2._id, 1, 50, 5);
 
     console.log('dummy cals created', cal1, cal2, cal3, c1oht1, c1oht2);
 
