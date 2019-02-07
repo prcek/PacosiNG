@@ -3,12 +3,27 @@
   celendar-oht-page works! {{diag}}
 </p>
 
+<ng-template #chip let-begin="begin" let-len="len">
+   {{begin | tstime:calendar.span}} - {{len | tstime:calendar.span:begin}}
+  
+</ng-template>
+
+  
 <div *ngIf="template_groups">
-  <ul>
-    <li *ngFor="let group of template_groups">  {{group.week_day | weekDay}}
-      <ul><li *ngFor="let t of group.templates"> {{t|json}}</li></ul>
-    </li>
-  </ul>
+    <h2> sablona provozni doby</h2>
+    <ng-container *ngFor="let group of template_groups">  
+      
+      <p>{{group.week_day | weekDay}}</p>
+
+      <mat-chip-list> 
+        <mat-chip *ngFor="let t of group.templates"> 
+          <ng-container *ngTemplateOutlet="chip;context:t"></ng-container>
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list> 
+     
+    </ng-container>
+  
 </div>
 
 
