@@ -37,6 +37,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { TimepickerDirective } from './timepicker/timepicker-input';
 import { TimepickerToggleComponent } from './timepicker/timepicker-toggle.component';
 import { TimepickerComponent, TimepickerContent, APP_TIMEPICKER_SCROLL_STRATEGY_FACTORY_PROVIDER } from './timepicker/timepicker.component';
+import { TimepickerPanelComponent } from './timepicker/timepicker-panel.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { TimepickerComponent, TimepickerContent, APP_TIMEPICKER_SCROLL_STRATEGY_
     TimepickerDirective,
     TimepickerToggleComponent,
     TimepickerComponent,
-    TimepickerContent
+    TimepickerContent,
+    TimepickerPanelComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

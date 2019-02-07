@@ -1,4 +1,7 @@
-<div class="app-timepicker-container">
-  timepicker content works! {{timepicker._selected}} {{timepicker.touchUi}}
-  <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
-</div>
+<mat-card class="app-timepicker-container">
+    <mat-card-content>
+        {{timepicker.touchUi}}
+        <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
+        <app-timepicker-panel [selected]="timepicker._selected"></app-timepicker-panel>
+    </mat-card-content>
+</mat-card>
