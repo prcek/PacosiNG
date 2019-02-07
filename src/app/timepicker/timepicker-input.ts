@@ -29,6 +29,12 @@ export const APP_TIMEPICKER_VALIDATORS: any = {
   multi: true
 };
 
+export interface TimepickerOptions {
+  timeSpan: number;
+  timeBegin: number;
+  timeLen: number;
+}
+
 export class TimepickerInputEvent {
   /** The new value for the target timepicker input. */
   value: number | null;
@@ -53,16 +59,20 @@ export class TimepickerInputEvent {
 export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Validator {
   _valueChange = new EventEmitter<number | null>();
   _disabledChange = new EventEmitter<boolean>();
+  _optionChange = new EventEmitter<TimepickerOptions>();
   @Output() readonly timeChange: EventEmitter<TimepickerInputEvent> =
       new EventEmitter<TimepickerInputEvent>();
   @Output() readonly timeInput: EventEmitter<TimepickerInputEvent> =
       new EventEmitter<TimepickerInputEvent>();
   private _value: number | null;
   private _timepickerSubscription = Subscription.EMPTY;
-  @Input() timeSpan = 5;
   private _lastValueValid = false;
+  private _lastValueRangeValid = false;
   _timepicker: TimepickerComponent;
   private _disabled: boolean;
+  private _timeSpan = 5;
+  private _timeBegin = 5;
+  private _timeLen = 10;
   private _validator: ValidatorFn | null;
   private _cvaOnChange: (value: any) => void = () => {};
   private _validatorOnChange = () => {};
@@ -74,7 +84,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
       @Optional() private _formField: MatFormField
     ) {
     console.log('TimepickerDirective.constructor', this.appTimepicker);
-    this._validator = Validators.compose([this._parseValidator]);
+    this._validator = Validators.compose([this._parseValidator, this._rangeValidator]);
   }
 
   @Input()
@@ -95,6 +105,30 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     });
   }
 
+  @Input()
+  get timeSpan(): number { return this._timeSpan; }
+  set timeSpan(value: number) {
+    if (this._timeSpan !== value) {
+      this._timeSpan = value;
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+    }
+  }
+  @Input()
+  get timeBegin(): number { return this._timeBegin; }
+  set timeBegin(value: number) {
+    if (this._timeBegin !== value) {
+      this._timeBegin = value;
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+    }
+  }
+  @Input()
+  get timeLen(): number { return this._timeLen; }
+  set timeLen(value: number) {
+    if (this._timeLen !== value) {
+      this._timeLen = value;
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+    }
+  }
 
 
   @Input()
@@ -129,6 +163,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     this._value = value;
     this._formatValue(value);
     this._lastValueValid = true;
+    this._lastValueRangeValid = this._checkValueRange(value);
     console.log('_lastValueValid set', this._lastValueValid);
     if (old_value !== value) {
       this._valueChange.emit(value);
@@ -142,6 +177,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     const val = this._parseValue(value);
     console.log('_onInput pv', val);
     this._lastValueValid = this._checkValue(value);
+    this._lastValueRangeValid = this._checkValueRange(val);
     console.log('_lastValueValid set', this._lastValueValid);
     if (val !== this._value) {
       this._value = val;
@@ -205,6 +241,11 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     return this._lastValueValid ?
         null : {'appTimepickerParse': {'text': this._elementRef.nativeElement.value}};
   }
+  private _rangeValidator: ValidatorFn = (): ValidationErrors | null => {
+    console.log('_rangeValidator', this._lastValueRangeValid);
+    return this._lastValueRangeValid ?
+        null : {'appTimepickerRange': {'text': this._elementRef.nativeElement.value}};
+  }
 
   private _parseValue(value: string | null): number | null {
     if (value) {
@@ -226,6 +267,19 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     }
     return false;
   }
+  private _checkValueRange(value: number | null): boolean {
+    if ((value == null)) {
+      return false;
+    }
+    if (value < this.timeBegin) {
+      return false;
+    }
+    if (value >= this.timeBegin + this.timeLen) {
+      return false;
+    }
+    return true;
+  }
+
   private _formatValue(value: number| null) {
     if (value !== null) {
       const time = (value * this.timeSpan);

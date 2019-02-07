@@ -10,13 +10,13 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required [disabled]="disabled" [appTimepicker]="picker2" timeSpan="15" placeholder="Choose a time" [(ngModel)]="form.time" name="time">
+      <input matInput required [disabled]="disabled" [appTimepicker]="picker2" [timeSpan]="15" [timeLen]="5" [timeBegin]="28" placeholder="Choose a time" [(ngModel)]="form.time" name="time">
       <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
       <app-timepicker #picker2></app-timepicker>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput required [disabled]="disabled" [appTimepicker]="picker3" timeSpan="10" placeholder="Choose a time" [(ngModel)]="form.time2" name="time2">
+      <input matInput required [disabled]="disabled" [appTimepicker]="picker3" [timeSpan]="10" placeholder="Choose a time" [(ngModel)]="form.time2" name="time2">
       <app-timepicker-toggle matSuffix [for]="picker3"></app-timepicker-toggle>
       <app-timepicker #picker3 touchUi></app-timepicker>
     </mat-form-field>

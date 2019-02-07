@@ -12,9 +12,9 @@ export interface TimePickValue {
 })
 export class TimepickerPanelComponent implements OnInit {
   @Input() selected: number;
-  @Input() begin = 4 * 7;
-  @Input() len = 4 * 10;
-  @Input() timeSpan = 15;
+  @Input() timeBegin = 4 * 7;
+  @Input() timeLen = 4 * 10;
+  @Input() timeSpan = 5;
   constructor() { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class TimepickerPanelComponent implements OnInit {
   }
 
   private _range(): number[] {
-   return R.range(this.begin, this.begin + this.len);
+   return R.range(this.timeBegin, this.timeBegin + this.timeLen);
   }
   private _calcTV_hour(val: number): TimePickValue {
     const minutes = (val * this.timeSpan);

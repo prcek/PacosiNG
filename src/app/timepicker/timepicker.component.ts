@@ -14,7 +14,7 @@ import {
   ComponentRef,
   NgZone,
   InjectionToken} from '@angular/core';
-import { TimepickerDirective } from './timepicker-input';
+import { TimepickerDirective, TimepickerOptions } from './timepicker-input';
 import { merge, Subscription, Subject } from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {DOCUMENT} from '@angular/common';
@@ -95,6 +95,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
   private _focusedElementBeforeOpen: HTMLElement | null = null;
   _color: ThemePalette;
   private _inputSubscription = Subscription.EMPTY;
+  private _optionSubscription = Subscription.EMPTY;
   private _dialogRef: MatDialogRef<TimepickerContent> | null;
   private _popupComponentRef: ComponentRef<TimepickerContent> | null;
   private _calendarPortal: ComponentPortal<TimepickerContent>;
@@ -122,6 +123,11 @@ export class TimepickerComponent implements OnDestroy, CanColor {
   get _selected(): number | null { return this._validSelected; }
   set _selected(value: number | null) { console.log('_selected', value); this._validSelected = value; }
   private _validSelected: number| null = null;
+
+  get options(): TimepickerOptions  { return this._options; }
+  set options(value: TimepickerOptions) { console.log('_options', value); this._options = value; }
+  private _options: TimepickerOptions;
+
 
   @Input()
   get touchUi(): boolean { return this._touchUi; }
@@ -164,6 +170,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
     }
     this._timepickerInput = input;
     this._inputSubscription = this._timepickerInput._valueChange.subscribe((value: number | null) => this._selected = value);
+    this._optionSubscription = this._timepickerInput._optionChange.subscribe((value: TimepickerOptions) => this.options = value);
   }
 
   open(): void {
@@ -327,6 +334,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
   ngOnDestroy(): void {
     this.close();
     this._inputSubscription.unsubscribe();
+    this._optionSubscription.unsubscribe();
     this._disabledChange.complete();
 
     if (this._popupRef) {
