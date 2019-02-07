@@ -26,6 +26,14 @@ export class CalendarsPageComponent implements OnInit {
       .subscribe(oht => this.ohtemplates = oht);
   }
   onEdit(cal: ICalendar) {
-    this.router.navigate(['/calendars/' + cal._id]);
+    this.router.navigate(['/calendars/edit/' + cal._id]);
   }
+
+  onEditOH(cal: ICalendar) {
+    this.router.navigate(['/calendars/oh/' + cal._id]);
+  }
+  onEditOHT(cal: ICalendar) {
+    this.router.navigate(['/calendars/oht/' + cal._id]);
+  }
+
 }

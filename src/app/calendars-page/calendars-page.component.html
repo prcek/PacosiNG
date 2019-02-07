@@ -33,6 +33,8 @@
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element"> 
         <button mat-icon-button (click)="onEdit(element)"><mat-icon>edit</mat-icon></button> 
+        <button mat-icon-button (click)="onEditOHT(element)"><mat-icon>update</mat-icon></button> 
+        <button mat-icon-button (click)="onEditOH(element)"><mat-icon>schedule</mat-icon></button> 
       </td>
     </ng-container>
 
