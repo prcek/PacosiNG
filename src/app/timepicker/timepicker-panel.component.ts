@@ -38,6 +38,18 @@ export class TimepickerPanelComponent implements OnInit {
     }
     return this._calcTV_minute(this.selected).value;
   }
+  click_hour(value: number) {
+    console.log('click_hour', value);
+  }
+  click_minute(value: number) {
+    console.log('click_minute', value);
+  }
+  onTest() {
+    console.log('hello!');
+  }
+  trackByFn(index, value) {
+    return value.value;
+  }
 
   private _range(): number[] {
    return R.range(this.timeBegin, this.timeBegin + this.timeLen);
