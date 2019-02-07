@@ -1,5 +1,5 @@
 <p>
-    Form Status: {{ ohtForm.status }} Form Value: {{ ohtForm.value  | json }}
+    Form Status: {{ ohtForm.status }} Form Value: {{ ohtForm.value  | json }} {{ ohtForm.errors  }}
 </p>
 <mat-card class="form-container">
     <form [formGroup]="ohtForm"  (ngSubmit)="onSubmit()">
@@ -26,7 +26,9 @@
                 <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
                 <app-timepicker #picker2></app-timepicker>
             </mat-form-field>
-
+            <div *ngIf="ohtForm.errors?.invalidInterval && (ohtForm.touched || ohtForm.dirty)">
+              spatny interval! (konec je drive nez zacatek)
+            </div>
         </mat-card-content>
     </form>
 </mat-card>
