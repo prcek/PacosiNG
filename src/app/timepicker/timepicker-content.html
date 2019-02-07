@@ -1,8 +1,23 @@
-<mat-card class="app-timepicker-container">
+<mat-card *ngIf="!timepicker.touchUi" class="app-timepicker-container">
     <mat-card-content>
-        {{timepicker.touchUi}}
-        {{timepicker.options | json}}
-        <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
-        <app-timepicker-panel [selected]="timepicker._selected" [timeBegin]="timepicker.options.timeBegin" [timeLen]="timepicker.options.timeLen" [timeSpan]="timepicker.options.timeSpan"></app-timepicker-panel>
+        <app-timepicker-panel 
+          [selected]="timepicker._selected" 
+          [timeBegin]="timepicker.options.timeBegin" 
+          [timeLen]="timepicker.options.timeLen" 
+          [timeSpan]="timepicker.options.timeSpan"
+          (close)="timepicker.close()"
+          >
+          
+        </app-timepicker-panel>
     </mat-card-content>
 </mat-card>
+
+<app-timepicker-panel *ngIf="timepicker.touchUi" 
+  [selected]="timepicker._selected" 
+  [timeBegin]="timepicker.options.timeBegin" 
+  [timeLen]="timepicker.options.timeLen" 
+  [timeSpan]="timepicker.options.timeSpan"
+  (close)="timepicker.close()"
+  >
+</app-timepicker-panel>
+  

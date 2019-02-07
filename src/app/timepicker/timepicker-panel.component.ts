@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as R from 'ramda';
 export interface TimePickValue {
   value: number;
@@ -15,6 +15,7 @@ export class TimepickerPanelComponent implements OnInit {
   @Input() timeBegin = 4 * 7;
   @Input() timeLen = 4 * 10;
   @Input() timeSpan = 5;
+  @Output() close = new EventEmitter<void>();
   constructor() { }
 
   ngOnInit() {
@@ -44,8 +45,15 @@ export class TimepickerPanelComponent implements OnInit {
   click_minute(value: number) {
     console.log('click_minute', value);
   }
-  onTest() {
-    console.log('hello!');
+
+  onOk() {
+    console.log('Ok');
+    this.close.emit();
+  }
+
+  onCancel() {
+    console.log('Cancel');
+    this.close.emit();
   }
   trackByFn(index, value) {
     return value.value;
