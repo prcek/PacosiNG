@@ -1,13 +1,17 @@
 
-<div>card content {{selected}} {{hours | json}}</div>
-<ul>
-    <li *ngFor="let hour of hours" [value]="hour.value">
-        {{hour.viewValue}} {{selected_hour==hour.value}}
-    </li>
-</ul>
-
-<ul>
-    <li *ngFor="let minute of minutes" [value]="minute.value">
-        {{minute.viewValue}} {{selected_minute==minute.value}}
-    </li>
-</ul>
+<div fxLayout='row'>
+        <div fxFlex="50%">
+          <div>hodina</div>
+          <button mat-button *ngFor="let hour of hours" [color]="selected_hour==hour.value?'primary':'basic'">
+            {{hour.viewValue}} 
+          </button>  
+        </div>
+        <div fxFlex="50%">
+          <div>minuta</div>
+          <button mat-button *ngFor="let minute of minutes" [color]="selected_minute==minute.value?'primary':'basic'">
+            {{minute.viewValue}} 
+          </button>  
+        </div>
+</div>   
+ 
+<div>card content {{selected}}</div>

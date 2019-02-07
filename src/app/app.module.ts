@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { TEST_TOKEN } from './token';
+// import { TEST_TOKEN } from './token';
 import { GraphQLModule } from './graphql.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
@@ -38,6 +38,8 @@ import { TimepickerDirective } from './timepicker/timepicker-input';
 import { TimepickerToggleComponent } from './timepicker/timepicker-toggle.component';
 import { TimepickerComponent, TimepickerContent, APP_TIMEPICKER_SCROLL_STRATEGY_FACTORY_PROVIDER } from './timepicker/timepicker.component';
 import { TimepickerPanelComponent } from './timepicker/timepicker-panel.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,8 @@ import { TimepickerPanelComponent } from './timepicker/timepicker-panel.componen
     MatCheckboxModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatGridListModule,
+    MatButtonToggleModule,
 // last
     GraphQLModule,
   ],

@@ -12,9 +12,9 @@ export interface TimePickValue {
 })
 export class TimepickerPanelComponent implements OnInit {
   @Input() selected: number;
-  @Input() begin = 0;
-  @Input() len = 6 * 24;
-  @Input() timeSpan = 5;
+  @Input() begin = 4 * 7;
+  @Input() len = 4 * 10;
+  @Input() timeSpan = 15;
   constructor() { }
 
   ngOnInit() {
