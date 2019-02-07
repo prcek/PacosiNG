@@ -1,16 +1,16 @@
 
 <div fxLayout='row'>
         <div fxFlex="50%">
-          <div>hodina</div>
+          <div class='mat-body-strong'>hodina</div>
           <button tabIndex="-1" mat-button *ngFor="let hour of hours"  (click)="click_hour(hour.value)" [color]="selected_hour==hour.value?'primary':'basic'">
             {{hour.viewValue}} 
           </button>  
         </div>
         <div fxFlex="50%">
-          <div>minuta</div>
-            <button tabIndex="-1" mat-button type="button" *ngFor="let minute of minutes" (click)="click_minute(minute.value)" [color]="selected_minute==minute.value?'primary':'basic'">
-                {{ minute.viewValue}}
-            </button>  
+          <div class='mat-body-strong'>minuta</div>
+          <button tabIndex="-1" mat-button type="button" *ngFor="let minute of minutes" (click)="click_minute(minute.value)" [color]="selected_minute==minute.value?'primary':'basic'">
+              {{ minute.viewValue}}
+          </button>  
         </div>
 </div>   
 <div fxLayout='row' fxLayoutAlign='end'>

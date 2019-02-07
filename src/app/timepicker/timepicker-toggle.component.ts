@@ -93,6 +93,6 @@ export class TimepickerToggleComponent implements AfterContentInit, OnChanges, O
       timepickerDisabled,
       inputDisabled,
       timepickerToggled
-    ).subscribe(() => { console.log('markForCheck', this); this._changeDetectorRef.markForCheck(); });
+    ).subscribe(() => { this._changeDetectorRef.markForCheck(); });
   }
 }
