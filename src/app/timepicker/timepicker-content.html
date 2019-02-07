@@ -6,6 +6,7 @@
           [timeLen]="timepicker.options.timeLen" 
           [timeSpan]="timepicker.options.timeSpan"
           (close)="timepicker.close()"
+          (new_value)="timepicker.select($event)"
           >
           
         </app-timepicker-panel>
@@ -18,6 +19,7 @@
   [timeLen]="timepicker.options.timeLen" 
   [timeSpan]="timepicker.options.timeSpan"
   (close)="timepicker.close()"
+  (new_value)="timepicker.select($event)"
   >
 </app-timepicker-panel>
   

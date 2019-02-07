@@ -2,18 +2,19 @@
 <div fxLayout='row'>
         <div fxFlex="50%">
           <div>hodina</div>
-          <button mat-button *ngFor="let hour of hours; trackBy: trackByFn"  (click)="click_hour(hour.value)" [color]="selected_hour==hour.value?'primary':'basic'">
+          <button tabIndex="-1" mat-button *ngFor="let hour of hours"  (click)="click_hour(hour.value)" [color]="selected_hour==hour.value?'primary':'basic'">
             {{hour.viewValue}} 
           </button>  
         </div>
         <div fxFlex="50%">
           <div>minuta</div>
-            <button mat-button type="button" *ngFor="let minute of minutes; trackBy: trackByFn" (click)="click_minute(minute.value)" [color]="selected_minute==minute.value?'primary':'basic'">
+            <button tabIndex="-1" mat-button type="button" *ngFor="let minute of minutes" (click)="click_minute(minute.value)" [color]="selected_minute==minute.value?'primary':'basic'">
                 {{ minute.viewValue}}
             </button>  
         </div>
 </div>   
+<div fxLayout='row' fxLayoutAlign='end'>
+    <button mat-button color="primary" (click)="onCancel()">Cancel</button>
+    <button mat-button [disabled]="!canOk" color="primary" (click)="onOk()">Ok</button>
+</div>
 
-<div>card content {{selected}} = {{selected_hour}}:{{selected_minute}}</div>
-<button mat-button color="primary" (click)="onOk()">Ok</button>
-<button mat-button color="primary" (click)="onCancel()">Cancel</button>

@@ -16,48 +16,71 @@ export class TimepickerPanelComponent implements OnInit {
   @Input() timeLen = 4 * 10;
   @Input() timeSpan = 5;
   @Output() close = new EventEmitter<void>();
+  @Output() new_value = new EventEmitter<number>();
+
+  hours: TimePickValue[];
+  minutes: TimePickValue[];
+  orig_selected_hour: number;
+  orig_selected_minute: number;
+  new_selected_hour: number = null;
+  new_selected_minute: number = null;
   constructor() { }
 
   ngOnInit() {
-  }
-  get hours(): TimePickValue[] {
-    return R.uniq(R.map((v) => this._calcTV_hour(v), this._range()));
-  }
-  get minutes(): TimePickValue[] {
-    return R.uniq(R.map((v) => this._calcTV_minute(v), this._range()));
+    console.log('TimepickerPanelComponent.ngOnInit', this.selected, this.timeSpan);
+    this.hours = R.uniq(R.map((v) => this._calcTV_hour(v), this._range()));
+    this.minutes = R.uniq(R.map((v) => this._calcTV_minute(v), this._range()));
+    if (isNaN(this.selected) || this.selected == null) {
+      console.log('setting null orig');
+      this.orig_selected_hour = null;
+      this.orig_selected_minute = null;
+    } else {
+      this.orig_selected_hour = this._calcTV_hour(this.selected).value;
+      this.orig_selected_minute = this._calcTV_minute(this.selected).value;
+    }
   }
 
   get selected_hour(): number {
-    if (isNaN(this.selected)) {
-      return null;
+    if (this.new_selected_hour !== null) {
+      return this.new_selected_hour;
     }
-    return this._calcTV_hour(this.selected).value;
+    return this.orig_selected_hour;
   }
   get selected_minute(): number {
-    if (isNaN(this.selected)) {
-      return null;
+    if (this.new_selected_minute !== null) {
+      return this.new_selected_minute;
     }
-    return this._calcTV_minute(this.selected).value;
+    return this.orig_selected_minute;
+  }
+
+  get canOk(): boolean {
+    const m = this.selected_minute;
+    const h = this.selected_hour;
+    return (h !== null && m !== null);
   }
   click_hour(value: number) {
-    console.log('click_hour', value);
+    this.new_selected_hour = value;
   }
   click_minute(value: number) {
-    console.log('click_minute', value);
+    this.new_selected_minute = value;
   }
 
   onOk() {
-    console.log('Ok');
+    const m = this.selected_minute;
+    const h = this.selected_hour;
+    if (h !== null && m !== null) {
+      const t = h * 60 + m;
+      if ((t % this.timeSpan) === 0) {
+        this.new_value.emit(t / this.timeSpan);
+      }
+    }
     this.close.emit();
   }
 
   onCancel() {
-    console.log('Cancel');
     this.close.emit();
   }
-  trackByFn(index, value) {
-    return value.value;
-  }
+
 
   private _range(): number[] {
    return R.range(this.timeBegin, this.timeBegin + this.timeLen);
