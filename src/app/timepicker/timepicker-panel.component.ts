@@ -27,11 +27,12 @@ export class TimepickerPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('TimepickerPanelComponent.ngOnInit', this.selected, this.timeSpan);
-    this.hours = R.uniq(R.map((v) => this._calcTV_hour(v), this._range()));
-    this.minutes = R.uniq(R.map((v) => this._calcTV_minute(v), this._range()));
+    // console.log('TimepickerPanelComponent.ngOnInit', this.selected, this.timeSpan);
+    const sf = R.compose(R.sortBy<TimePickValue>(R.prop('value')), R.uniq);
+    this.hours = sf(R.map((v) => this._calcTV_hour(v), this._range()));
+    this.minutes = sf(R.map((v) => this._calcTV_minute(v), this._range()));
     if (isNaN(this.selected) || this.selected == null) {
-      console.log('setting null orig');
+      // console.log('setting null orig');
       this.orig_selected_hour = null;
       this.orig_selected_minute = null;
     } else {

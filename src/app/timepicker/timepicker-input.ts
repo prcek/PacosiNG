@@ -14,7 +14,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { ThemePalette } from '@angular/material/core';
 import { TimepickerComponent } from './timepicker.component';
 import { Subscription } from 'rxjs';
-
+import {DOWN_ARROW} from '@angular/cdk/keycodes';
 
 export const APP_TIMEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -83,13 +83,13 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
       private _elementRef: ElementRef<HTMLInputElement>,
       @Optional() private _formField: MatFormField
     ) {
-    console.log('TimepickerDirective.constructor', this.appTimepicker);
+    // console.log('TimepickerDirective.constructor', this.appTimepicker);
     this._validator = Validators.compose([this._parseValidator, this._rangeValidator]);
   }
 
   @Input()
   set appTimepicker(value: TimepickerComponent) {
-    console.log('TimepickerDirective.appTimepicker', value);
+    // console.log('TimepickerDirective.appTimepicker', value);
     if (!value) {
       return;
     }
@@ -154,17 +154,17 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
 
   @Input()
   get value(): number | null {
-    console.log('TimepickerDirective.value get', this._value);
+    // console.log('TimepickerDirective.value get', this._value);
     return this._value;
   }
   set value(value: number | null) {
-    console.log('TimepickerDirective.value set', this._value);
+    // console.log('TimepickerDirective.value set', this._value);
     const old_value = this._value;
     this._value = value;
     this._formatValue(value);
     this._lastValueValid = true;
     this._lastValueRangeValid = this._checkValueRange(value);
-    console.log('_lastValueValid set', this._lastValueValid);
+    // console.log('_lastValueValid set', this._lastValueValid);
     if (old_value !== value) {
       this._valueChange.emit(value);
     }
@@ -173,12 +173,12 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
 
   @HostListener('input', ['$event.target.value'])
   _onInput(value: string) {
-    console.log('_onInput', value);
+    // console.log('_onInput', value);
     const val = this._parseValue(value);
-    console.log('_onInput pv', val);
+    // console.log('_onInput pv', val);
     this._lastValueValid = this._checkValue(value);
     this._lastValueRangeValid = this._checkValueRange(val);
-    console.log('_lastValueValid set', this._lastValueValid);
+    // console.log('_lastValueValid set', this._lastValueValid);
     if (val !== this._value) {
       this._value = val;
       this._cvaOnChange(val);
@@ -191,12 +191,12 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   }
   @HostListener('change')
   _onChange() {
-    console.log('_onChange');
+    // console.log('_onChange');
     this.timeChange.emit(new TimepickerInputEvent(this, this._elementRef.nativeElement));
   }
   @HostListener('blur')
   _onBlur() {
-    console.log('_onBlur');
+    // console.log('_onBlur');
     if (this.value) {
       this._formatValue(this.value);
     }
@@ -205,7 +205,12 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   }
   @HostListener('keydown', ['$event'])
   _onKeydown(event: KeyboardEvent) {
-    console.log('_onKeydown');
+    const isAltDownArrow = event.altKey && event.keyCode === DOWN_ARROW;
+
+    if (this._timepicker && isAltDownArrow && !this._elementRef.nativeElement.readOnly) {
+      this._timepicker.open();
+      event.preventDefault();
+    }
   }
 
   writeValue(value: number): void {
@@ -237,12 +242,12 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   }
 
   private _parseValidator: ValidatorFn = (): ValidationErrors | null => {
-    console.log('_parseValidator', this._lastValueValid);
+    // console.log('_parseValidator', this._lastValueValid);
     return this._lastValueValid ?
         null : {'appTimepickerParse': {'text': this._elementRef.nativeElement.value}};
   }
   private _rangeValidator: ValidatorFn = (): ValidationErrors | null => {
-    console.log('_rangeValidator', this._lastValueRangeValid);
+    // console.log('_rangeValidator', this._lastValueRangeValid);
     return this._lastValueRangeValid ?
         null : {'appTimepickerRange': {'text': this._elementRef.nativeElement.value}};
   }

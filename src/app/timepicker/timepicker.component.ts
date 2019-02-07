@@ -121,11 +121,11 @@ export class TimepickerComponent implements OnDestroy, CanColor {
 
 
   get _selected(): number | null { return this._validSelected; }
-  set _selected(value: number | null) { console.log('_selected', value); this._validSelected = value; }
+  set _selected(value: number | null) {  this._validSelected = value; }
   private _validSelected: number| null = null;
 
   get options(): TimepickerOptions  { return this._options; }
-  set options(value: TimepickerOptions) { console.log('_options', value); this._options = value; }
+  set options(value: TimepickerOptions) {  this._options = value; }
   private _options: TimepickerOptions;
 
 
@@ -174,7 +174,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
   }
 
   open(): void {
-    console.log('TimepickerComponent.open');
+    // console.log('TimepickerComponent.open');
     if (this._opened || this.disabled) {
       return;
     }
@@ -189,7 +189,7 @@ export class TimepickerComponent implements OnDestroy, CanColor {
     this.openedStream.emit();
   }
   close(): void {
-    console.log('TimepickerComponent.close');
+    // console.log('TimepickerComponent.close');
     if (!this._opened) {
       return;
     }
