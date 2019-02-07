@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CelendarOhtPageComponent } from './celendar-oht-page.component';
+import { CalendarOhtPageComponent } from './calendar-oht-page.component';
 
 describe('CelendarOhtPageComponent', () => {
-  let component: CelendarOhtPageComponent;
-  let fixture: ComponentFixture<CelendarOhtPageComponent>;
+  let component: CalendarOhtPageComponent;
+  let fixture: ComponentFixture<CalendarOhtPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CelendarOhtPageComponent ]
+      declarations: [ CalendarOhtPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CelendarOhtPageComponent);
+    fixture = TestBed.createComponent(CalendarOhtPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

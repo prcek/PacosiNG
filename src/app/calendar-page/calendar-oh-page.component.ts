@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-celendar-oht-page',
-  templateUrl: './celendar-oht-page.component.html',
-  styleUrls: ['./celendar-oht-page.component.css']
+  selector: 'app-calendar-oh-page',
+  templateUrl: './calendar-oh-page.component.html',
+  styleUrls: ['./calendar-oh-page.component.css']
 })
-export class CelendarOhtPageComponent implements OnInit {
+export class CalendarOhPageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private location: Location, private calendarService: CalendarService) { }
 
@@ -17,4 +17,5 @@ export class CelendarOhtPageComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
 }

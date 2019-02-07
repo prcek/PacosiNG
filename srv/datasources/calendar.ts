@@ -15,10 +15,15 @@ export class CalendarAPI implements DataSource {
     async getAllCalendars(): Promise<ICalendar[]> {
         return this.store.calendarModel.find({});
     }
+    async getOneCalendar(_id: string): Promise<ICalendar> {
+        return this.store.calendarModel.findById(_id);
+    }
     async getAllOHTemplates(): Promise<IOpeningHoursTemplate[]> {
         return this.store.openingHoursTemplateModel.find({});
     }
-
+    async getCalendarOHTemplates(calendar_id: string): Promise<IOpeningHoursTemplate[]> {
+        return this.store.openingHoursTemplateModel.find({calendar_id: calendar_id});
+    }
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({

@@ -40,8 +40,8 @@ import { TimepickerComponent, TimepickerContent, APP_TIMEPICKER_SCROLL_STRATEGY_
 import { TimepickerPanelComponent } from './timepicker/timepicker-panel.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { CelendarOhtPageComponent } from './calendar-page/celendar-oht-page.component';
-import { CelendarOhPageComponent } from './calendar-page/celendar-oh-page.component';
+import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
+import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
 
 @NgModule({
   declarations: [
@@ -64,8 +64,8 @@ import { CelendarOhPageComponent } from './calendar-page/celendar-oh-page.compon
     TimepickerComponent,
     TimepickerContent,
     TimepickerPanelComponent,
-    CelendarOhtPageComponent,
-    CelendarOhPageComponent
+    CalendarOhtPageComponent,
+    CalendarOhPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

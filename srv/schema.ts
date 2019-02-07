@@ -12,7 +12,9 @@ const typeDefs = gql`
     hello: String
     users: [User]
     calendars: [Calendar]
+    calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
+    calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
     me: User
   }
   type Mutation {
@@ -69,9 +71,17 @@ const resolvers: IResolvers<any, IContext> = {
     calendars: async (parent, args, context, info): Promise<ICalendar[]> => {
         return await context.dataSources.calendar.getAllCalendars();
     },
+    calendar: async (parent, { _id} , context, info): Promise<ICalendar> => {
+      return await context.dataSources.calendar.getOneCalendar(_id);
+    },
     openingHoursTemplates: async (parent, args, context, info): Promise<IOpeningHoursTemplate[]> => {
         return await context.dataSources.calendar.getAllOHTemplates();
     },
+
+    calendarOpeningHoursTemplates: async (parent, { calendar_id } , context, info): Promise<IOpeningHoursTemplate[]> => {
+      return await context.dataSources.calendar.getCalendarOHTemplates(calendar_id);
+    },
+
     me: async (parent, args, context, info): Promise<IUser> => {
       return await context.dataSources.user.getMe();
     },

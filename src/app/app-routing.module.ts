@@ -7,8 +7,8 @@ import { UsersPageComponent } from './users-page/users-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { CalendarsPageComponent } from './calendars-page/calendars-page.component';
 import { CalendarPageComponent } from './calendar-page/calendar-page.component';
-import { CelendarOhPageComponent } from './calendar-page/celendar-oh-page.component';
-import { CelendarOhtPageComponent } from './calendar-page/celendar-oht-page.component';
+import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
+import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
 
 
 const routes: Routes = [
@@ -19,8 +19,8 @@ const routes: Routes = [
 
   { path: 'calendars', canActivate: [AuthGuard], component: CalendarsPageComponent },
   { path: 'calendars/edit/:id', canActivate: [AuthGuard], component: CalendarPageComponent },
-  { path: 'calendars/oh/:id', canActivate: [AuthGuard], component: CelendarOhPageComponent },
-  { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CelendarOhtPageComponent },
+  { path: 'calendars/oh/:id', canActivate: [AuthGuard], component: CalendarOhPageComponent },
+  { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CalendarOhtPageComponent },
 
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];
