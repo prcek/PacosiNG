@@ -42,6 +42,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
 import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
+import { CalendarOhtEditorComponent } from './calendar-editor/calendar-oht-editor.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.compon
     TimepickerContent,
     TimepickerPanelComponent,
     CalendarOhtPageComponent,
-    CalendarOhPageComponent
+    CalendarOhPageComponent,
+    CalendarOhtEditorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

@@ -1,0 +1,32 @@
+<p>
+    Form Status: {{ ohtForm.status }} Form Value: {{ ohtForm.value  | json }}
+</p>
+<mat-card class="form-container">
+    <form [formGroup]="ohtForm"  (ngSubmit)="onSubmit()">
+        <mat-card-header>
+            <mat-card-title>Nova oht pro kalendář {{calendar._id}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+            <mat-form-field>
+                <mat-label>name</mat-label>
+                <input matInput type="text" id="name" formControlName="name"> 
+            </mat-form-field>
+
+
+            <mat-form-field>
+                <mat-label>time</mat-label>
+                <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time" formControlName="time">
+                <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
+                <app-timepicker #picker1></app-timepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>time_end</mat-label>
+                <input matInput [appTimepicker]="picker2" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time_end" formControlName="time_end">
+                <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
+                <app-timepicker #picker2></app-timepicker>
+            </mat-form-field>
+
+        </mat-card-content>
+    </form>
+</mat-card>
