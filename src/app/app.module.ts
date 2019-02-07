@@ -43,7 +43,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
 import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
 import { CalendarOhtEditorComponent } from './calendar-editor/calendar-oht-editor.component';
-
+import {MatChipsModule} from '@angular/material/chips';
 @NgModule({
   declarations: [
     AppComponent,
@@ -91,6 +91,7 @@ import { CalendarOhtEditorComponent } from './calendar-editor/calendar-oht-edito
     MatDatepickerModule,
     MatGridListModule,
     MatButtonToggleModule,
+    MatChipsModule,
 // last
     GraphQLModule,
   ],
