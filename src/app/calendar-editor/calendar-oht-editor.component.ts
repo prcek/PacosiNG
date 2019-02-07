@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ICalendar } from '../calendar.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { WeekDay, ALL_WEEK_DAYS } from './common';
 
 
 export const timeIntervalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
@@ -17,9 +18,11 @@ export const timeIntervalValidator: ValidatorFn = (control: FormGroup): Validati
 export class CalendarOhtEditorComponent implements OnInit {
   @Input() calendar: ICalendar;
 
+  week_days = ALL_WEEK_DAYS;
+
 
   ohtForm = new FormGroup({
-    name: new FormControl('', { validators: Validators.required}),
+    week_day: new FormControl(null, { validators: Validators.required}),
     time: new FormControl(null, { validators: Validators.required}),
     time_end: new FormControl(null, { validators: Validators.required}),
   }, { validators: timeIntervalValidator });
@@ -30,6 +33,7 @@ export class CalendarOhtEditorComponent implements OnInit {
     if (!this.calendar) {
       throw Error('A CalendarOhtEditorComponent without calendar');
     }
+    // this.ohtForm.setValidators(timeIntervalValidator);
   }
 
 }

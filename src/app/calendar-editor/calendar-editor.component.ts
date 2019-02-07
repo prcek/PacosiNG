@@ -1,11 +1,9 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ICalendar, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { WeekDay, ALL_WEEK_DAYS } from './common';
 
-export interface WeekDay {
-  value: number;
-  viewValue: string;
-}
+
 
 
 @Component({
@@ -19,15 +17,8 @@ export class CalendarEditorComponent implements OnInit {
   @Input() newMode: boolean;
 
 
-  week_days: WeekDay[] = [
-    {value: 0, viewValue: 'Ne'},
-    {value: 1, viewValue: 'Po'},
-    {value: 2, viewValue: 'Út'},
-    {value: 3, viewValue: 'St'},
-    {value: 4, viewValue: 'Čt'},
-    {value: 5, viewValue: 'Pá'},
-    {value: 6, viewValue: 'So'}
-  ];
+  week_days = ALL_WEEK_DAYS;
+
 
   calendarForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required}),
