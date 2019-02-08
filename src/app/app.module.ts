@@ -43,7 +43,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
 import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
 import { CalendarOhtEditorComponent } from './calendar-editor/calendar-oht-editor.component';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule} from '@angular/material/chips';
+import { DialogConfirmComponent } from './dialogs/dialog-confirm.component';
+import {MatDialogModule} from '@angular/material/dialog';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,7 +69,8 @@ import {MatChipsModule} from '@angular/material/chips';
     TimepickerPanelComponent,
     CalendarOhtPageComponent,
     CalendarOhPageComponent,
-    CalendarOhtEditorComponent
+    CalendarOhtEditorComponent,
+    DialogConfirmComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -92,6 +95,7 @@ import {MatChipsModule} from '@angular/material/chips';
     MatGridListModule,
     MatButtonToggleModule,
     MatChipsModule,
+    MatDialogModule,
 // last
     GraphQLModule,
   ],
@@ -100,7 +104,8 @@ import {MatChipsModule} from '@angular/material/chips';
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    TimepickerContent
+    TimepickerContent,
+    DialogConfirmComponent
   ]
 })
 export class AppModule { }

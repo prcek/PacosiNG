@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
 
 @Component({
   selector: 'app-main-page',
@@ -14,13 +16,22 @@ export class MainPageComponent implements OnInit {
   };
   submitted = false;
   disabled = false;
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }
   onSubmit() {}
   onTest() {
     this.disabled = !this.disabled;
+  }
+  onTest2() {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '250px',
+      data: {title: 'titule', content: 'content text'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
   get diagnostic() { return JSON.stringify({form: this.form, disabled: this.disabled }); }
 
