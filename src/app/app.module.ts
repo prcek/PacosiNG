@@ -45,7 +45,8 @@ import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.compon
 import { CalendarOhtEditorComponent } from './calendar-editor/calendar-oht-editor.component';
 import { MatChipsModule} from '@angular/material/chips';
 import { DialogConfirmComponent } from './dialogs/dialog-confirm.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +71,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     CalendarOhtPageComponent,
     CalendarOhPageComponent,
     CalendarOhtEditorComponent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    CalendarNewPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

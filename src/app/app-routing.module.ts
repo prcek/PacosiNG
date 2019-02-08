@@ -9,6 +9,7 @@ import { CalendarsPageComponent } from './calendars-page/calendars-page.componen
 import { CalendarPageComponent } from './calendar-page/calendar-page.component';
 import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
 import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
+import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.component';
 
 
 const routes: Routes = [
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path: 'calendars/edit/:id', canActivate: [AuthGuard], component: CalendarPageComponent },
   { path: 'calendars/oh/:id', canActivate: [AuthGuard], component: CalendarOhPageComponent },
   { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CalendarOhtPageComponent },
-
+  { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];
 
