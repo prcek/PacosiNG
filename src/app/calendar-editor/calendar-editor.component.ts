@@ -12,9 +12,9 @@ import { WeekDay, ALL_WEEK_DAYS } from './common';
   styleUrls: ['./calendar-editor.component.css']
 })
 export class CalendarEditorComponent implements OnInit {
-  @Output() updated = new EventEmitter<ICalendar>();
+  @Output() saved = new EventEmitter<ICalendar>();
   @Input() calendar: ICalendar;
-  @Input() newMode: boolean;
+  @Input() new_mode: boolean;
 
 
   week_days = ALL_WEEK_DAYS;
@@ -34,32 +34,53 @@ export class CalendarEditorComponent implements OnInit {
   constructor(private calendarService: CalendarService) { }
 
   ngOnInit() {
-    console.log('CalendarEditorComponent.ngOnInit', this.calendar);
-    this.calendarForm.setValue({
-      name: this.calendar.name,
-      span: this.calendar.span,
-      day_begin: this.calendar.day_begin,
-      day_len: this.calendar.day_len,
-      week_days: this.calendar.week_days,
-    });
+    console.log('CalendarEditorComponent.ngOnInit', this.calendar, this.new_mode);
+    if (this.new_mode) {
+
+    } else {
+      this.calendarForm.setValue({
+        name: this.calendar.name,
+        span: this.calendar.span,
+        day_begin: this.calendar.day_begin,
+        day_len: this.calendar.day_len,
+        week_days: this.calendar.week_days,
+      });
+    }
   }
 
   onSubmit() {
      // TODO: Use EventEmitter with form value
-     const uc: ICalendar = {_id: this.calendar._id, ...this.calendarForm.getRawValue()};
-     this.submitted = true;
-     this.calendarForm.disable();
-     this.error_msg = null;
-     console.log('CalendarEditorComponent.onSubmit', uc);
-     this.calendarService.updateCalendar(uc).subscribe((r) => {
-       this.updated.emit(r);
-       this.submitted = false;
-       this.calendarForm.enable();
-     }, (err) => {
-       this.submitted = false;
-       this.calendarForm.enable();
-       this.error_msg = err;
-     });
+     if (this.new_mode) {
+      const nc: ICalendar = {_id: null, ...this.calendarForm.getRawValue()};
+      this.submitted = true;
+      this.calendarForm.disable();
+      this.error_msg = null;
+      console.log('CalendarEditorComponent.onSubmit (newmode)', nc);
+      this.calendarService.createCalendar(nc).subscribe((r) => {
+        this.saved.emit(r);
+        this.submitted = false;
+        this.calendarForm.enable();
+      }, (err) => {
+        this.submitted = false;
+        this.calendarForm.enable();
+        this.error_msg = err;
+      });
+     } else {
+      const uc: ICalendar = {_id: this.calendar._id, ...this.calendarForm.getRawValue()};
+      this.submitted = true;
+      this.calendarForm.disable();
+      this.error_msg = null;
+      console.log('CalendarEditorComponent.onSubmit', uc);
+      this.calendarService.updateCalendar(uc).subscribe((r) => {
+        this.saved.emit(r);
+        this.submitted = false;
+        this.calendarForm.enable();
+      }, (err) => {
+        this.submitted = false;
+        this.calendarForm.enable();
+        this.error_msg = err;
+      });
+     }
   }
 
 }

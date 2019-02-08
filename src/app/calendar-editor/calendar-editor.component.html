@@ -5,7 +5,10 @@
   <mat-card class="form-container">
       <form [formGroup]="calendarForm"  (ngSubmit)="onSubmit()">
         <mat-card-header>
-            <mat-card-title>Kalendář {{calendar._id}}</mat-card-title>
+            <ng-template #newcal>
+                <mat-card-title> novy kalendar </mat-card-title>
+            </ng-template>
+            <mat-card-title *ngIf="calendar; else newcal">Kalendář {{calendar._id}}</mat-card-title>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
           <mat-form-field>
@@ -37,7 +40,7 @@
             </mat-select>
           </mat-form-field>
 
-          <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">submit</button>
+          <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">ulozit</button>
           <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
         </mat-card-content>
       </form>

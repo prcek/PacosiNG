@@ -62,6 +62,21 @@ export class CalendarService {
       }
     }).pipe(tap(r => console.log('CalendarService.updateCalendar res=', r)),  map(res => res.data.updateCalendar));
   }
+
+  createCalendar(calendar: ICalendar): Observable<ICalendar> {
+    return this.apollo.mutate<{createCalendar: ICalendar}, ICalendar>({
+      mutation: gql`
+        mutation($name: String! $span: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!) {
+          createCalendar(name: $name span: $span
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id name span day_begin day_len week_days }
+        }
+      `,
+      variables: {
+        ...calendar
+      }
+    }).pipe(tap(r => console.log('CalendarService.createCalendar res=', r)),  map(res => res.data.createCalendar));
+  }
+
   getOpeningHoursTemplates(): Observable<IOpeningHoursTemplate[]> {
     console.log('CalendarService.getOpeningHoursTemplates');
     return this.apollo.query<{openingHoursTemplates: IOpeningHoursTemplate[]}>({

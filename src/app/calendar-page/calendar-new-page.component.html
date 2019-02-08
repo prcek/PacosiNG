@@ -1,3 +1,2 @@
-<p>
-  calendar-new-page works!
-</p>
+<button mat-raised-button color="primary" (click)="goBack()">back</button>
+<app-calendar-editor [calendar]="calendar" [new_mode]="true" (saved)="goBack()"></app-calendar-editor>
