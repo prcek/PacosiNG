@@ -1,7 +1,7 @@
 
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { IStore } from './../store';
-import { IContextBase, ICalendar , IOpeningHoursTemplate} from './../types';
+import { IContextBase, ICalendar , IOpeningHoursTemplate, IDeleteResponse} from './../types';
 
 
 export class CalendarAPI implements DataSource {
@@ -51,6 +51,14 @@ export class CalendarAPI implements DataSource {
             begin,
             len
         });
+    }
+
+    async deleteOHTemplate(_id: string): Promise<IDeleteResponse> {
+        const del = await this.store.openingHoursTemplateModel.findByIdAndRemove(_id);
+        if (del) {
+            return { ok: true, _id: del._id};
+        }
+        return {ok: false, _id: _id};
     }
 
 }

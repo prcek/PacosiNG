@@ -38,6 +38,10 @@ export interface ILoginResponse {
     token: string;
     user: IUser;
 }
+export interface IDeleteResponse {
+    ok: boolean;
+    _id: string;
+}
 
 export interface IContextBase {
     user: IUser;

@@ -2,7 +2,7 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate} from './types';
+import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate, IDeleteResponse} from './types';
 
 
 // The GraphQL schema
@@ -23,6 +23,13 @@ const typeDefs = gql`
     updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
     updateCalendar(_id: ID! name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
+    createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
+    deleteOpeningHoursTemplate(_id: ID!): DeleteResponse!
+  }
+
+  type DeleteResponse {
+    ok: Boolean
+    _id: ID!
   }
   ### ILoginResponse interface
   type LoginResponse {
@@ -103,9 +110,21 @@ const resolvers: IResolvers<any, IContext> = {
     createCalendar: (_, { name, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
         dataSources.calendar.createCalendar(name, span, day_begin, day_len, week_days),
 
+    createOpeningHoursTemplate: (_, { calendar_id, week_day, begin, len }, { dataSources }): Promise<IOpeningHoursTemplate> =>
+        dataSources.calendar.createOHTemplate(calendar_id, week_day, begin, len),
+
+    deleteOpeningHoursTemplate: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
+        dataSources.calendar.deleteOHTemplate(_id),
   }
 
 };
 
 
-export const schema = makeExecutableSchema<IContext>({typeDefs, resolvers});
+export const schema = makeExecutableSchema<IContext>({
+  typeDefs,
+  resolvers,
+  allowUndefinedInResolve: false,
+  resolverValidationOptions: {
+    requireResolversForArgs: true,
+  }
+});
