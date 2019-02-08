@@ -27,7 +27,7 @@ export class MainPageComponent implements OnInit {
   onTest2() {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '250px',
-      data: {title: 'titule', content: 'content text'}
+      data: {title: 'titulek', content: 'content text'}
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
