@@ -26,6 +26,11 @@ export interface ICalendarWithOpeningHoursTemplates {
   templates: IOpeningHoursTemplate[];
 }
 
+export interface IDeleteResponse {
+  ok: boolean;
+  _id: string;
+}
+
 /*
 const CALENDARS: ICalendar[] = [
   { id: '1', name: 'jedna', span: 15},
@@ -77,12 +82,44 @@ export class CalendarService {
     }).pipe(tap(r => console.log('CalendarService.createCalendar res=', r)),  map(res => res.data.createCalendar));
   }
 
+  createOpeningHourTemplate(oht: IOpeningHoursTemplate): Observable<IOpeningHoursTemplate> {
+    return this.apollo.mutate<{createOpeningHoursTemplate: IOpeningHoursTemplate}, IOpeningHoursTemplate>({
+      mutation: gql`
+        mutation($calendar_id: ID! $week_day: Int! $begin: Int! $len: Int! ) {
+          createOpeningHoursTemplate(calendar_id:$calendar_id week_day:$week_day begin:$begin len:$len) {
+            _id calendar_id week_day begin len
+          }
+        }
+      `,
+      variables: {
+        ...oht
+      }
+    }).pipe(tap(r => console.log('CalendarService.createOpeningHoursTemplate res=', r)),  map(res => res.data.createOpeningHoursTemplate));
+  }
+
+  deleteOpeningHourTemplate(_id: string): Observable<IDeleteResponse> {
+    return this.apollo.mutate<{deleteOpeningHoursTemplate: IDeleteResponse}, {_id: string}>({
+      mutation: gql`
+        mutation($_id: ID!) {
+          deleteOpeningHoursTemplate(_id: $_id) {
+            ok
+            _id
+          }
+        }
+      `,
+      variables: {
+        _id
+      }
+    }).pipe(tap(r => console.log('CalendarService.deleteOpeningHourTemplate res=', r)),  map(res => res.data.deleteOpeningHoursTemplate));
+  }
+
   getOpeningHoursTemplates(): Observable<IOpeningHoursTemplate[]> {
     console.log('CalendarService.getOpeningHoursTemplates');
     return this.apollo.query<{openingHoursTemplates: IOpeningHoursTemplate[]}>({
       query: gql`{ openingHoursTemplates { _id calendar_id week_day begin len }}`,
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.openingHoursTemplates));
   }
+
   getCalendarWithOpeningHoursTemplate(_id: string): Observable<ICalendarWithOpeningHoursTemplates> {
     console.log('CalendarService.getCalendarWithOpeningHoursTemplate');
     return this.apollo.query<{calendar: ICalendar, templates: IOpeningHoursTemplate[]}, {calendar_id: string}>({

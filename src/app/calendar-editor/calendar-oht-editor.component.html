@@ -2,7 +2,7 @@
     Form Status: {{ ohtForm.status }} Form Value: {{ ohtForm.value  | json }} {{ ohtForm.errors  }}
 </p>
 <mat-card class="form-container">
-    <form [formGroup]="ohtForm"  (ngSubmit)="onSubmit()">
+    <form [formGroup]="ohtForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <mat-card-header>
             <mat-card-title>Nova oht pro kalendář {{calendar._id}}</mat-card-title>
         </mat-card-header>

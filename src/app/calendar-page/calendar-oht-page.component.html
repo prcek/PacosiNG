@@ -16,7 +16,7 @@
       <p>{{group.week_day | weekDay}}</p>
 
       <mat-chip-list> 
-        <mat-chip *ngFor="let t of group.templates"> 
+        <mat-chip *ngFor="let t of group.templates" (removed)="onDeleteOHT(t)"> 
           <ng-container *ngTemplateOutlet="chip;context:t"></ng-container>
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
@@ -27,4 +27,4 @@
 </div>
 
 
-<app-calendar-oht-editor *ngIf="calendar" [calendar]="calendar"></app-calendar-oht-editor>
+<app-calendar-oht-editor *ngIf="calendar" [calendar]="calendar" (saved)="getCalendarWithOHTs()"></app-calendar-oht-editor>

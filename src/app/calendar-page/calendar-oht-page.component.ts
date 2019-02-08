@@ -37,6 +37,22 @@ export class CalendarOhtPageComponent implements OnInit {
     this.calendarService.getCalendarWithOpeningHoursTemplate(id)
       .subscribe(d => { this.calendar = d.calendar; this.templates = d.templates; this.template_groups = t2g(d.templates); });
   }
+
+  onDeleteOHT(oht: IOpeningHoursTemplate) {
+   // this.calendarService.
+    console.log('onDeleteOHT', oht);
+    this.calendarService.deleteOpeningHourTemplate(oht._id)
+      .subscribe( r => {
+        console.log('deleteOpeningHourTemplate.result=', r);
+        if (r.ok) {
+          this.getCalendarWithOHTs();
+        } else {
+          alert('chyba');
+        }
+      });
+  }
+
+
   get diag() {
     return JSON.stringify({calendar: this.calendar, templates: this.templates});
   }
