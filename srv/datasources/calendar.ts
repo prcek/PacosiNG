@@ -1,7 +1,7 @@
 
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { IStore } from './../store';
-import { IContextBase, ICalendar , IOpeningHoursTemplate, IDeleteResponse} from './../types';
+import { IContextBase, ICalendar , IOpeningHoursTemplate, IDeleteResponse, IDayOpeningHours} from './../types';
 
 
 export class CalendarAPI implements DataSource {
@@ -23,6 +23,9 @@ export class CalendarAPI implements DataSource {
     }
     async getCalendarOHTemplates(calendar_id: string): Promise<IOpeningHoursTemplate[]> {
         return this.store.openingHoursTemplateModel.find({calendar_id: calendar_id});
+    }
+    async getCalendarOHs(calendar_id: string): Promise<IDayOpeningHours[]> {
+        return this.store.dayOpeningHoursModel.find({calendar_id: calendar_id});
     }
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
@@ -55,6 +58,24 @@ export class CalendarAPI implements DataSource {
 
     async deleteOHTemplate(_id: string): Promise<IDeleteResponse> {
         const del = await this.store.openingHoursTemplateModel.findByIdAndRemove(_id);
+        if (del) {
+            return { ok: true, _id: del._id};
+        }
+        return {ok: false, _id: _id};
+    }
+
+
+    async createOH(calendar_id: string, day: Date, begin: number, len: number): Promise<IDayOpeningHours> {
+        return this.store.dayOpeningHoursModel.create({
+            calendar_id,
+            day,
+            begin,
+            len
+        });
+    }
+
+    async deleteOH(_id: string): Promise<IDeleteResponse> {
+        const del = await this.store.dayOpeningHoursModel.findByIdAndRemove(_id);
         if (del) {
             return { ok: true, _id: del._id};
         }

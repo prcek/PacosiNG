@@ -21,6 +21,11 @@ export interface IOpeningHoursTemplate extends IOpeningHours {
     week_day: number;
 }
 
+export interface IDayOpeningHours extends IOpeningHours {
+    _id: any;
+    day: Date;
+}
+
 export interface IOpeningHours {
     calendar_id: any;
     begin: number;

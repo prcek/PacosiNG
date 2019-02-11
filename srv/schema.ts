@@ -2,11 +2,15 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate, IDeleteResponse} from './types';
-
+import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate, IDeleteResponse, IDayOpeningHours} from './types';
+import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 
 // The GraphQL schema
 const typeDefs = gql`
+  scalar Date
+  scalar Time
+  scalar DateTime
+
   type Query {
     "A simple type for getting started!"
     hello: String
@@ -15,6 +19,7 @@ const typeDefs = gql`
     calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
+    calendarOpeningHours(calendar_id: ID!): [DayOpeningHours]
     me: User
   }
   type Mutation {
@@ -25,6 +30,10 @@ const typeDefs = gql`
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
     createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
     deleteOpeningHoursTemplate(_id: ID!): DeleteResponse!
+
+    createOpeningHours(calendar_id: ID! day: Date! begin: Int! len: Int!): DayOpeningHours!
+    deleteOpeningHours(_id: ID!): DeleteResponse!
+
   }
 
   type DeleteResponse {
@@ -59,6 +68,13 @@ const typeDefs = gql`
     begin: Int
     len: Int
   }
+  type DayOpeningHours {
+    _id: ID
+    calendar_id: ID
+    day: Date
+    begin: Int
+    len: Int
+  }
 `;
 
 interface IContext extends IContextBase {
@@ -67,6 +83,9 @@ interface IContext extends IContextBase {
 
 // A map of functions which return data for the schema.
 const resolvers: IResolvers<any, IContext> = {
+  Date: GraphQLDate,
+  Time: GraphQLTime,
+  DateTime: GraphQLDateTime,
   Query: {
     hello: async (parent, args, context, info) => {
         return await context.dataSources.hero.getHello();
@@ -87,6 +106,10 @@ const resolvers: IResolvers<any, IContext> = {
 
     calendarOpeningHoursTemplates: async (parent, { calendar_id } , context, info): Promise<IOpeningHoursTemplate[]> => {
       return await context.dataSources.calendar.getCalendarOHTemplates(calendar_id);
+    },
+
+    calendarOpeningHours: async (parent, { calendar_id } , context, info): Promise<IDayOpeningHours[]> => {
+      return await context.dataSources.calendar.getCalendarOHs(calendar_id);
     },
 
     me: async (parent, args, context, info): Promise<IUser> => {
@@ -115,6 +138,13 @@ const resolvers: IResolvers<any, IContext> = {
 
     deleteOpeningHoursTemplate: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteOHTemplate(_id),
+
+    createOpeningHours: (_, { calendar_id, day, begin, len }, { dataSources }): Promise<IDayOpeningHours> =>
+        dataSources.calendar.createOH(calendar_id, day, begin, len),
+
+    deleteOpeningHours: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
+        dataSources.calendar.deleteOH(_id),
+
   }
 
 };

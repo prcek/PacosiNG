@@ -8,7 +8,7 @@ import { IContextBase, IToken, IUser } from './types';
 import { Context } from 'apollo-server-core';
 import { decodeAuthToken } from './datasources/user';
 import { config } from './config';
-
+import * as M from 'moment';
 let global_counter = 1;
 
 
@@ -71,6 +71,7 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const c2oht2  = await dataSources.calendar.createOHTemplate(cal2._id, 1, 50, 5);
 
     console.log('dummy cals created', cal1, cal2, cal3, c1oht1, c1oht2);
-
+    const today = M(M().format('YYYY-MM-DD')).toDate();
+    await dataSources.calendar.createOH(cal1._id, today, 40, 5);
     return true; // store_setup_res;
 }

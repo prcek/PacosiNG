@@ -3,7 +3,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
-import { IUser, ICalendar, IOpeningHoursTemplate } from './types';
+import { IUser, ICalendar, IOpeningHoursTemplate, IDayOpeningHours } from './types';
 import { config } from './config';
 
 async function startLocalMongoDB(): Promise<string> {
@@ -18,6 +18,7 @@ async function createMongooseConnection(mongoUri: string): Promise<mongoose.Conn
         reconnectInterval: 1000,
         useNewUrlParser: true,
         useCreateIndex: true,
+        useFindAndModify: false
     };
 
     const mongoose_connection = await mongoose.createConnection(mongoUri, mongooseOpts);
@@ -35,6 +36,9 @@ export interface ICalendarModel extends mongoose.Document, ICalendar {
 }
 
 export interface IOpeningHoursTemplateModel extends mongoose.Document, IOpeningHoursTemplate {
+}
+
+export interface IDayOpeningHoursModel extends mongoose.Document, IDayOpeningHours {
 }
 
 
@@ -71,14 +75,27 @@ function createModels(connection: mongoose.Connection) {
     const OpeningHoursTemplateModel = connection.model<IOpeningHoursTemplateModel>('OpeningHoursTemplate',
         openingHoursTemplateSchema, 'ohtemplates');
 
+    const dayOpeningHoursSchema = new mongoose.Schema({
+        calendar_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Calendar',
+            required: true
+        },
+        day: Date,
+        begin: Number,
+        len: Number,
+    });
+    const DayOpeningHoursModel = connection.model<IDayOpeningHoursModel>('DayOpeningHours',
+        dayOpeningHoursSchema, 'dayohs');
 
-    return { UserModel, CalendarModel, OpeningHoursTemplateModel} ;
+    return { UserModel, CalendarModel, OpeningHoursTemplateModel, DayOpeningHoursModel} ;
 }
 
 export interface IStore  {
     userModel: mongoose.Model<IUserModel>;
     calendarModel: mongoose.Model<ICalendarModel>;
     openingHoursTemplateModel: mongoose.Model<IOpeningHoursTemplateModel>;
+    dayOpeningHoursModel: mongoose.Model<IDayOpeningHoursModel>;
 }
 export async function createStore(productionMode: boolean): Promise<IStore> {
 
@@ -88,7 +105,8 @@ export async function createStore(productionMode: boolean): Promise<IStore> {
     return {
         userModel: models.UserModel,
         calendarModel: models.CalendarModel,
-        openingHoursTemplateModel: models.OpeningHoursTemplateModel
+        openingHoursTemplateModel: models.OpeningHoursTemplateModel,
+        dayOpeningHoursModel: models.DayOpeningHoursModel
     };
 }
 
