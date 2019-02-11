@@ -10,7 +10,7 @@ interface IOHGroup {
 }
 
 function l2g(ts: IOpeningHours[]): IOHGroup[] {
-  const tog = (val: IOpeningHours[], key: string) => ({day: key, ohs: val});
+  const tog = (val: IOpeningHours[], key: Date) => ({day: key, ohs: val});
   const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHours>(R.prop('day'),
       R.sortWith([R.ascend(R.prop('day')), R.ascend(R.prop('begin'))], ts)
   )));
@@ -25,15 +25,17 @@ function l2g(ts: IOpeningHours[]): IOHGroup[] {
   styleUrls: ['./calendar-oh-page.component.css']
 })
 export class CalendarOhPageComponent implements OnInit {
-  date = '';
+  first_day = '';
   days = 7;
+  day_list: string[] = [];
   calendar: ICalendar;
   ohs: IOpeningHours[];
   oh_groups: IOHGroup[];
   constructor(private route: ActivatedRoute, private location: Location, private calendarService: CalendarService) { }
 
   ngOnInit() {
-    this.date = M().format('YYYY-MM-DD');
+    this.first_day = M().format('YYYY-MM-DD');
+    this.day_list = R.map((d: string) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
     this.getCalendarWithOHs();
   }
 
@@ -51,6 +53,12 @@ export class CalendarOhPageComponent implements OnInit {
 
   }
   get diag() {
-    return JSON.stringify({date: this.date, days: this.days, ohs: this.ohs, oh_groups: this.oh_groups, calendar: this.calendar});
+    return JSON.stringify({
+      first_day: this.first_day,
+      day_list: this.day_list,
+      ohs: this.ohs,
+      oh_groups: this.oh_groups,
+      calendar: this.calendar
+    });
   }
 }
