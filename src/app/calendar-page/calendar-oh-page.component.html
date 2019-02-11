@@ -27,3 +27,4 @@
    
 </div>
  
+<app-calendar-oh-editor *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-editor>

@@ -60,7 +60,16 @@ export class CalendarOhPageComponent implements OnInit {
   }
 
   onDeleteOH(oh: IOpeningHours): void {
-
+    console.log('onDeleteOH', oh);
+    this.calendarService.deleteOpeningHours(oh._id)
+      .subscribe( r => {
+        console.log('deleteOpeningHours.result=', r);
+        if (r.ok) {
+          this.getCalendarWithOHs();
+        } else {
+          alert('chyba');
+        }
+      });
   }
   get diag() {
     return JSON.stringify({

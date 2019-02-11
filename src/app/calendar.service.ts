@@ -3,6 +3,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { switchMap, filter, map, tap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import * as M from 'moment';
 
 export interface ICalendar {
   _id: string;
@@ -29,7 +30,9 @@ export interface IOpeningHours {
   begin: number;
   len: number;
 }
-
+export interface IOpeningHoursV extends IOpeningHours {
+  day_as_string: string;
+}
 
 export interface ICalendarWithOpeningHoursTemplates {
   calendar: ICalendar;
@@ -170,4 +173,37 @@ export class CalendarService {
       }
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
   }
+
+  createOpeningHours(oh: IOpeningHours): Observable<IOpeningHours> {
+    return this.apollo.mutate<{createOpeningHours: IOpeningHours}, IOpeningHoursV>({
+      mutation: gql`
+        mutation($calendar_id: ID! $day_as_string: Date! $begin: Int! $len: Int! ) {
+          createOpeningHours(calendar_id:$calendar_id day:$day_as_string begin:$begin len:$len) {
+            _id calendar_id day begin len
+          }
+        }
+      `,
+      variables: {
+        ...oh,
+        day_as_string: M(oh.day).format('YYYY-MM-DD')
+      }
+    }).pipe(tap(r => console.log('CalendarService.createOpeningHour res=', r)),  map(res => res.data.createOpeningHours));
+  }
+
+  deleteOpeningHours(_id: string): Observable<IDeleteResponse> {
+    return this.apollo.mutate<{deleteOpeningHours: IDeleteResponse}, {_id: string}>({
+      mutation: gql`
+        mutation($_id: ID!) {
+          deleteOpeningHours(_id: $_id) {
+            ok
+            _id
+          }
+        }
+      `,
+      variables: {
+        _id
+      }
+    }).pipe(tap(r => console.log('CalendarService.deleteOpeningHours res=', r)),  map(res => res.data.deleteOpeningHours));
+  }
+
 }
