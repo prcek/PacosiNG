@@ -10,11 +10,21 @@ interface IOHGroup {
 }
 
 function l2g(ts: IOpeningHours[]): IOHGroup[] {
-  const tog = (val: IOpeningHours[], key: Date) => ({day: key, ohs: val});
-  const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHours>(R.prop('day'),
+
+
+
+
+  const tog = (val: IOpeningHours[], key: string) => ({day: M(key).toDate(), ohs: val});
+
+  const sorted: IOpeningHours[] = R.sortWith<IOpeningHours>([R.ascend(R.prop('day')), R.ascend(R.prop('begin'))], ts);
+  const grouped = R.groupBy<IOpeningHours>( (i) => M(i.day).format('YYYY-MM-DD'), sorted);
+  const x = R.values(R.mapObjIndexed(tog, grouped));
+/*
+  const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHours>(R.prop<Date>('day'),
       R.sortWith([R.ascend(R.prop('day')), R.ascend(R.prop('begin'))], ts)
   )));
   // console.log('L2G', ts, x);
+  */
   return x;
 }
 
@@ -35,7 +45,7 @@ export class CalendarOhPageComponent implements OnInit {
 
   ngOnInit() {
     this.first_day = M().format('YYYY-MM-DD');
-    this.day_list = R.map((d: string) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
+    this.day_list = R.map((d: number) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
     this.getCalendarWithOHs();
   }
 
