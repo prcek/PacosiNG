@@ -1,4 +1,29 @@
 <button mat-raised-button color="primary" (click)="goBack()">back</button>
 <p>
-  celendar-oh-page works!
+  celendar-oh-page works! {{diag}}
+
 </p>
+
+
+<ng-template #chip let-begin="begin" let-len="len">
+    {{begin | tstime:calendar.span}} - {{len | tstime:calendar.span:begin}}  
+</ng-template>
+ 
+   
+<div *ngIf="oh_groups">
+     <h2> provozni doba</h2>
+     <ng-container *ngFor="let ohg of oh_groups">  
+       
+       <p>{{ohg.day | date }}</p>
+ 
+       <mat-chip-list> 
+         <mat-chip *ngFor="let oh of ohg.ohs" (removed)="onDeleteOH(oh)"> 
+           <ng-container *ngTemplateOutlet="chip;context:oh"></ng-container>
+           <mat-icon matChipRemove>cancel</mat-icon>
+         </mat-chip>
+       </mat-chip-list> 
+      
+     </ng-container>
+   
+</div>
+ 

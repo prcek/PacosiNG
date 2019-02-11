@@ -21,9 +21,24 @@ export interface IOpeningHoursTemplate {
   len: number;
 }
 
+
+export interface IOpeningHours {
+  _id: string;
+  calendar_id: string;
+  day: Date;
+  begin: number;
+  len: number;
+}
+
+
 export interface ICalendarWithOpeningHoursTemplates {
   calendar: ICalendar;
   templates: IOpeningHoursTemplate[];
+}
+
+export interface ICalendarWithOpeningHours {
+  calendar: ICalendar;
+  ohs: IOpeningHours[];
 }
 
 export interface IDeleteResponse {
@@ -130,6 +145,24 @@ export class CalendarService {
         templates: calendarOpeningHoursTemplates(calendar_id:$calendar_id) {
           _id
           calendar_id week_day begin len
+        }
+      }`,
+      variables: {
+        calendar_id: _id
+      }
+    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+  }
+
+  getCalendarWithOpeningHours(_id: string): Observable<ICalendarWithOpeningHours> {
+    console.log('CalendarService.getCalendarWithOpeningHours');
+    return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[]}, {calendar_id: string}>({
+      query: gql`query($calendar_id:ID!) {
+        calendar(_id:$calendar_id) {
+          _id name span day_begin day_len week_days
+        }
+        ohs: calendarOpeningHours(calendar_id:$calendar_id) {
+          _id
+          calendar_id day begin len
         }
       }`,
       variables: {
