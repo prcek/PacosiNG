@@ -48,6 +48,7 @@ import { DialogConfirmComponent } from './dialogs/dialog-confirm.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.component';
 import { CalendarOhEditorComponent } from './calendar-editor/calendar-oh-editor.component';
+import { DaypickerPanelComponent } from './daypicker/daypicker-panel.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,8 @@ import { CalendarOhEditorComponent } from './calendar-editor/calendar-oh-editor.
     CalendarOhtEditorComponent,
     DialogConfirmComponent,
     CalendarNewPageComponent,
-    CalendarOhEditorComponent
+    CalendarOhEditorComponent,
+    DaypickerPanelComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
