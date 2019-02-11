@@ -10,8 +10,8 @@ interface IOHTGroup {
 
 function t2g(ts: IOpeningHoursTemplate[]): IOHTGroup[] {
   const tog = (val: IOpeningHoursTemplate[], key: string) => ({week_day: parseInt(key, 10), templates: val});
-  const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHoursTemplate>(R.prop('week_day'), ts)));
-  // console.log(x);
+  const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHoursTemplate>(R.prop('week_day'), R.sortBy(R.prop('begin'), ts))));
+  // console.log('T2G',ts,x);
   return x;
 }
 
