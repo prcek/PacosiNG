@@ -8,7 +8,6 @@
       <mat-grid-tile *ngFor="let name of dayNames">{{name}}</mat-grid-tile>
     </mat-grid-list>
     <mat-grid-list gutterSize="1" cols="5">
-        <ng-container *ngTemplateOutlet="chip;context:t"></ng-container>
         <mat-grid-tile *ngFor="let day of days" class="selected">
             <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
         </mat-grid-tile>
