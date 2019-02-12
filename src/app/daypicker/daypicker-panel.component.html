@@ -19,5 +19,10 @@
             <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
         </mat-grid-tile>
     </mat-grid-list>
+    <mat-grid-list gutterSize="2" cols="3" rowHeight="3em">
+        <mat-grid-tile><button mat-raised-button (click)="onBack()"><mat-icon>fast_rewind</mat-icon></button></mat-grid-tile>
+        <mat-grid-tile><button mat-raised-button (click)="onToday()"><mat-icon>today</mat-icon></button></mat-grid-tile>
+        <mat-grid-tile><button mat-raised-button (click)="onForward()"><mat-icon>fast_forward</mat-icon></button></mat-grid-tile>
+    </mat-grid-list>
 </div>
 

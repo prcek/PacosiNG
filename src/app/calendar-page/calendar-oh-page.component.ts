@@ -56,6 +56,12 @@ export class CalendarOhPageComponent implements OnInit {
    this.setFirstDay(d);
    this.getCalendarWithOHs();
   }
+
+  onMoveCal(d: Date) {
+    this.setFirstDay(d);
+    this.getCalendarWithOHs();
+  }
+
   getCalendarWithOHs() {
     const id = this.route.snapshot.paramMap.get('id');
     this.calendarService.getCalendarWithOpeningHours(id, this.first_day, M(this.first_day).add(this.days, 'day').toDate())

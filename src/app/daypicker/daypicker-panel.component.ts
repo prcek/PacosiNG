@@ -21,11 +21,12 @@ interface DayInfo {
 export class DaypickerPanelComponent implements OnInit, OnChanges {
   @Input() first_day: Date;
   @Output() select = new EventEmitter<Date>();
+  @Output() move = new EventEmitter<Date>();
   @Input() selected_day: Date;
   @Input() selected_week: Date;
   dayNames = ['Po', 'Út', 'St', 'Čt', 'Pá'];
   monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
-  dayCount = 25;
+  dayCount = 5 * 7;
   days: DayInfo[];
   constructor() { }
 
@@ -42,7 +43,7 @@ export class DaypickerPanelComponent implements OnInit, OnChanges {
       const first = false;
       const last = false;
       return {date: date.toDate(), day, working_day, month, first, last, selected};
-    }, R.range(0, this.dayCount * 2))));
+    }, R.range(0, this.dayCount))));
     this.days = days.map((v, i, a) => {
       const r = R.clone(v);
       if (i === 0) {
@@ -74,6 +75,20 @@ export class DaypickerPanelComponent implements OnInit, OnChanges {
     console.log('onDayClick', d);
     this.select.emit(d);
   }
+  onToday() {
+    console.log('onToday');
+    this.move.emit(M().startOf('isoWeek').toDate());
+  }
+  onBack() {
+    console.log('onBack');
+    this.move.emit(M(this.first_day).subtract(7, 'day').startOf('isoWeek').toDate());
+  }
+  onForward() {
+    console.log('onForward');
+    this.move.emit(M(this.first_day).add(7, 'day').startOf('isoWeek').toDate());
+  }
+
+
   get diag() {
     return JSON.stringify({days: this.days});
   }
