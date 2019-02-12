@@ -10,7 +10,7 @@ import { CalendarService, ICalendar, IOpeningHoursTemplate } from '../calendar.s
 export class CalendarsPageComponent implements OnInit {
   calendars: ICalendar[];
   ohtemplates: IOpeningHoursTemplate[];
-  displayedColumns: string[] = ['id', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
+  displayedColumns: string[] = ['name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
   constructor(private router: Router, private calendarService: CalendarService) { }
 
   ngOnInit() {

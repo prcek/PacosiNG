@@ -49,6 +49,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.component';
 import { CalendarOhEditorComponent } from './calendar-editor/calendar-oh-editor.component';
 import { DaypickerPanelComponent } from './daypicker/daypicker-panel.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,6 +104,7 @@ import { DaypickerPanelComponent } from './daypicker/daypicker-panel.component';
     MatButtonToggleModule,
     MatChipsModule,
     MatDialogModule,
+    MatTooltipModule,
 // last
     GraphQLModule,
   ],
