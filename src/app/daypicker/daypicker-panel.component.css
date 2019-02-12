@@ -1,14 +1,11 @@
 
 
-.container {
-    /* border: 1px solid red; */
-}
 .full {
    height: 100%;
    width: 100%;
 }
 .red {
-    /* border: 1px solid red;  */
+    border: 1px solid red; 
 }
 .selected {
     /* background-color: gray; */
