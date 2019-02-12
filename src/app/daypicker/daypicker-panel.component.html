@@ -1,14 +1,19 @@
 <ng-template #daycard let-day="day" let-month="month">
-    {{day}}/{{monthNames[month]}} 
+    <div class="full" fxLayout="column" fxLayoutAlign="center center">
+      <div fxFlex="70%" class="red" fxLayout="column" fxLayoutAlign="center center">
+       <div class="mat-title no-margin">{{day}}</div>
+     </div>
+     <div fxFlex="30%" class="mat-caption">{{monthNames[month]}} </div>
+    </div>
 </ng-template>
 
 
 <div class="container">
-    <mat-grid-list gutterSize="1" cols="5" rowHeight="2em">
+    <mat-grid-list gutterSize="2" cols="5" rowHeight="2em">
       <mat-grid-tile *ngFor="let name of dayNames">{{name}}</mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list gutterSize="1" cols="5">
-        <mat-grid-tile *ngFor="let day of days" class="selected">
+    <mat-grid-list gutterSize="2" cols="5">
+        <mat-grid-tile *ngFor="let day of days"  class="mat-elevation-z2">
             <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
         </mat-grid-tile>
     </mat-grid-list>
