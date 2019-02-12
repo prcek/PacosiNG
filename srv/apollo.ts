@@ -74,9 +74,11 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const today = M(M().format('YYYY-MM-DD')).toDate();
     const tom = M(today).add(1, 'days').toDate();
     const nextweek = M(today).add(7, 'days').toDate();
+    const nextweek2 = M(today).add(10, 'days').toDate();
     await dataSources.calendar.createOH(cal1._id, today, 40, 5);
     await dataSources.calendar.createOH(cal1._id, today, 50, 6);
     await dataSources.calendar.createOH(cal1._id, nextweek, 45, 10);
     await dataSources.calendar.createOH(cal1._id, tom, 35, 10);
+    await dataSources.calendar.createOH(cal1._id, nextweek2, 35, 10);
     return true; // store_setup_res;
 }

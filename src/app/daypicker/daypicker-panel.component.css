@@ -1,8 +1,11 @@
-
+.container {
+    max-width: 400px;
+}
 
 .full {
    height: 100%;
    width: 100%;
+   cursor: pointer;
 }
 .red {
     border: 1px solid red; 

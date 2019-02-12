@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ICalendar, IOpeningHours, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators, ValidationErrors, ValidatorFn, FormGroupDirective } from '@angular/forms';
 import * as R from 'ramda';
@@ -21,7 +21,7 @@ export interface Day {
   templateUrl: './calendar-oh-editor.component.html',
   styleUrls: ['./calendar-oh-editor.component.css']
 })
-export class CalendarOhEditorComponent implements OnInit {
+export class CalendarOhEditorComponent implements OnInit, OnChanges {
   @Input() calendar: ICalendar;
   @Input() day_list: string[];
   @Output() saved = new EventEmitter<IOpeningHours>();
@@ -38,6 +38,15 @@ export class CalendarOhEditorComponent implements OnInit {
 
   ngOnInit() {
     this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges', changes);
+    const day_list = changes.day_list;
+    if (day_list && !day_list.firstChange)  {
+      this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+      this.ohForm.reset();
+    }
   }
   onSubmit(formDirective: FormGroupDirective) {
 

@@ -24,8 +24,11 @@ export class CalendarAPI implements DataSource {
     async getCalendarOHTemplates(calendar_id: string): Promise<IOpeningHoursTemplate[]> {
         return this.store.openingHoursTemplateModel.find({calendar_id: calendar_id});
     }
-    async getCalendarOHs(calendar_id: string): Promise<IDayOpeningHours[]> {
-        return this.store.dayOpeningHoursModel.find({calendar_id: calendar_id});
+    async getCalendarOHs(calendar_id: string, start_date: Date, end_date: Date): Promise<IDayOpeningHours[]> {
+        return this.store.dayOpeningHoursModel.find({
+            calendar_id: calendar_id,
+            day: { '$gte': start_date, '$lt': end_date }
+        });
     }
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {

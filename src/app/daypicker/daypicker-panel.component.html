@@ -15,9 +15,9 @@
       <mat-grid-tile *ngFor="let name of dayNames" class="mat-caption">{{name}}</mat-grid-tile>
     </mat-grid-list>
     <mat-grid-list gutterSize="2" cols="5">
-        <mat-grid-tile *ngFor="let day of days"  class="mat-elevation-z2">
+        <mat-grid-tile *ngFor="let day of days"  class="mat-elevation-z2" (click)="onDayClick(day.date)">
             <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
         </mat-grid-tile>
     </mat-grid-list>
 </div>
-<p>{{diag}}</p>
+

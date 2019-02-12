@@ -35,23 +35,30 @@ function l2g(ts: IOpeningHours[]): IOHGroup[] {
   styleUrls: ['./calendar-oh-page.component.css']
 })
 export class CalendarOhPageComponent implements OnInit {
-  first_day = '';
+  first_day: Date;
   days = 7;
   day_list: string[] = [];
   calendar: ICalendar;
   ohs: IOpeningHours[];
   oh_groups: IOHGroup[];
   constructor(private route: ActivatedRoute, private location: Location, private calendarService: CalendarService) { }
+  setFirstDay(base?: Date) {
+    this.first_day = M(base).startOf('isoWeek').toDate();
+    this.day_list = R.map((d: number) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
+  }
 
   ngOnInit() {
-    this.first_day = M().format('YYYY-MM-DD');
-    this.day_list = R.map((d: number) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
+    this.setFirstDay();
     this.getCalendarWithOHs();
   }
 
+  onChangeDay(d: Date) {
+   this.setFirstDay(d);
+   this.getCalendarWithOHs();
+  }
   getCalendarWithOHs() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.calendarService.getCalendarWithOpeningHours(id)
+    this.calendarService.getCalendarWithOpeningHours(id, this.first_day, M(this.first_day).add(this.days, 'day').toDate())
       .subscribe(d => { this.calendar = d.calendar; this.ohs = d.ohs; this.oh_groups = l2g(d.ohs); });
   }
 

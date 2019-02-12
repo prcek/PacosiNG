@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as R from 'ramda';
 import * as M from 'moment';
 
@@ -18,6 +18,8 @@ interface DayInfo {
   styleUrls: ['./daypicker-panel.component.css']
 })
 export class DaypickerPanelComponent implements OnInit {
+  @Input() first_day: Date;
+  @Output() select = new EventEmitter<Date>();
   dayNames = ['Po', 'Út', 'St', 'Čt', 'Pá'];
   monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
   dayCount = 25;
@@ -25,7 +27,7 @@ export class DaypickerPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const first_day = M();
+    const first_day = M(this.first_day).startOf('isoWeek');
     const days = R.take(this.dayCount, R.filter((d) => d.working_day, R.map(i => {
       const date = M(first_day).add(i, 'day');
       const day = date.date();
@@ -49,6 +51,10 @@ export class DaypickerPanelComponent implements OnInit {
       }
       return r;
     });
+  }
+  onDayClick(d: Date) {
+    console.log('onDayClick', d);
+    this.select.emit(d);
   }
   get diag() {
     return JSON.stringify({days: this.days});

@@ -1,9 +1,10 @@
 <button mat-raised-button color="primary" (click)="goBack()">back</button>
 <p>
-  celendar-oh-page works! {{diag}}
+  celendar-oh-page works! {{ first_day | date}}
 
 </p>
 
+<app-daypicker-panel [first_day]="first_day" (select)="onChangeDay($event)"></app-daypicker-panel>
 
 <ng-template #chip let-begin="begin" let-len="len">
     {{begin | tstime:calendar.span}} - {{len | tstime:calendar.span:begin}}  
@@ -11,7 +12,7 @@
  
    
 <div *ngIf="oh_groups">
-     <h2> provozni doba</h2>
+     <h2>provozni doba</h2>
      <ng-container *ngFor="let ohg of oh_groups">  
        
        <p>{{ohg.day | date }}</p>

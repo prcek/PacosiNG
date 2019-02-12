@@ -19,7 +19,7 @@ const typeDefs = gql`
     calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
-    calendarOpeningHours(calendar_id: ID!): [DayOpeningHours]
+    calendarOpeningHours(calendar_id: ID!, start_date: Date!, end_date: Date!): [DayOpeningHours]
     me: User
   }
   type Mutation {
@@ -108,8 +108,8 @@ const resolvers: IResolvers<any, IContext> = {
       return await context.dataSources.calendar.getCalendarOHTemplates(calendar_id);
     },
 
-    calendarOpeningHours: async (parent, { calendar_id } , context, info): Promise<IDayOpeningHours[]> => {
-      return await context.dataSources.calendar.getCalendarOHs(calendar_id);
+    calendarOpeningHours: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<IDayOpeningHours[]> => {
+      return await context.dataSources.calendar.getCalendarOHs(calendar_id, start_date, end_date);
     },
 
     me: async (parent, args, context, info): Promise<IUser> => {

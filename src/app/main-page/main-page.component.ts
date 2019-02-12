@@ -16,9 +16,11 @@ export class MainPageComponent implements OnInit {
   };
   submitted = false;
   disabled = false;
+  now = new Date();
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+
   }
   onSubmit() {}
   onTest() {
