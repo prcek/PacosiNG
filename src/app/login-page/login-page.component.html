@@ -3,22 +3,23 @@
   <mat-card class="form-container">
     <form  (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <mat-card-header>
-            <mat-card-title>Shiba Inu (diag: {{diagnostic}})</mat-card-title>
+            <mat-card-title>Přihlášení</mat-card-title>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
            
                 <mat-form-field appearance="standard">
-                  <mat-label>login</mat-label>
+                  <mat-label>přihlašovací jméno</mat-label>
                   <input matInput type="text" id="login" required [(ngModel)]="form.login" name="login" autocomplete="username"> 
                 </mat-form-field>
           
                 <mat-form-field appearance="standard">
-                  <mat-label>password</mat-label>
+                  <mat-label>heslo</mat-label>
                   <input matInput [type]="hide ? 'password' : 'text'" id="password" required [(ngModel)]="form.password" name="password" autocomplete="current-password">
                   <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </mat-form-field>
-                <button *ngIf="!submitted" type="submit" mat-raised-button color="warn"  [disabled]="!loginForm.form.valid">login</button>
+                <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!loginForm.form.valid">přihlásit</button>
                 <div *ngIf="submitted"> .... </div>
+                <div *ngIf="error"> chyba přihlášení </div>
         </mat-card-content>
     </form>
   </mat-card>  

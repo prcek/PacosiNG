@@ -16,6 +16,7 @@ export class LoginPageComponent implements OnInit {
 
   submitted = false;
   hide = true;
+  error = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -26,11 +27,14 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.error = false;
     this.auth.doLogin(this.form.login, this.form.password).subscribe(res => {
        this.submitted = false;
        console.log('login result (login form) is ', res);
        if (res) {
         this.router.navigate(['/']);
+       } else {
+         this.error = true;
        }
     });
   }
