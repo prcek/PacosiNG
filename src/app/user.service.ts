@@ -37,8 +37,8 @@ export class UserService {
   updateUser(user: IUser): Observable<IUser> {
     return this.apollo.mutate<{updateUser: IUser}, IUser>({
       mutation: gql`
-        mutation($login: String! $name: String $sudo: Boolean $roles: [String]) {
-          updateUser(login: $login name: $name sudo: $sudo roles: $roles) { login name sudo roles }
+        mutation($login: String! $password: String $name: String $sudo: Boolean $roles: [String]) {
+          updateUser(login: $login password: $password name: $name sudo: $sudo roles: $roles) { login name sudo roles }
         }
       `,
       variables: {

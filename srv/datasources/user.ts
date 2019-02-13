@@ -57,12 +57,18 @@ export class UserAPI implements DataSource {
             roles
         });
     }
-    async updateUser(login: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
+    async updateUser(login: string, password: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
         const user = await this.store.userModel.findOne({login});
         if (!user) {
             throw new Error('Something bad happened');
         }
-        user.set({name, sudo, roles});
+        if (password) {
+            console.log('updateUser with new password');
+            user.set({name, password: encryptPassword(password), sudo, roles});
+        }  else {
+            console.log('updateUser without password');
+            user.set({name, sudo, roles});
+        }
         return user.save();
     }
     async login(login: string, password: string): Promise<ILoginResponse> {

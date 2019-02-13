@@ -20,7 +20,7 @@
             </mat-form-field>
        
             <mat-form-field>
-                    <mat-label>heslo (opakovane)</mat-label>
+                    <mat-label>heslo (znova pro kontrolu)</mat-label>
                     <input matInput [type]="hide2 ? 'password' : 'text'" id="password_copy"  formControlName="password_copy" autocomplete="new-password" [required]="new_mode">
                     <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
@@ -45,7 +45,7 @@
           
             
             <div *ngIf="userForm.errors?.invalidPassword && (userForm.touched || userForm.dirty)">
-                uvedena hesla jsou rozdilna       
+                uvedená hesla jsou rozdílná!      
             </div>
             <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!userForm.valid">uložit</button>
             <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>

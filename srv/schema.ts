@@ -25,7 +25,7 @@ const typeDefs = gql`
   type Mutation {
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
-    updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
+    updateUser(login: String! password: String name: String sudo: Boolean roles: [String]): User!
     createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]!): User!
     updateCalendar(_id: ID! name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
@@ -124,8 +124,8 @@ const resolvers: IResolvers<any, IContext> = {
     relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
         dataSources.user.relogin(),
 
-    updateUser: (_, { login, name, sudo, roles }, { dataSources }): Promise<IUser> =>
-        dataSources.user.updateUser(login, name, sudo, roles),
+    updateUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
+        dataSources.user.updateUser(login, password, name, sudo, roles),
 
     createUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
         dataSources.user.createUser(login, password, name, sudo, roles),
