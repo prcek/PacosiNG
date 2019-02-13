@@ -9,20 +9,26 @@
     </div>
 </ng-template>
 
-
-<div class="container">
+<ng-template #cal>
     <mat-grid-list gutterSize="2" cols="5" rowHeight="1em">
-      <mat-grid-tile *ngFor="let name of dayNames" class="mat-caption">{{name}}</mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list gutterSize="2" cols="5">
-        <mat-grid-tile *ngFor="let day of days"  class="mat-elevation-z2" [class.selected]="day.selected" (click)="onDayClick(day.date)">
-            <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
-        </mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list gutterSize="2" cols="3" rowHeight="3em">
-        <mat-grid-tile><button mat-raised-button (click)="onBack()"><mat-icon>fast_rewind</mat-icon></button></mat-grid-tile>
-        <mat-grid-tile><button mat-raised-button (click)="onToday()"><mat-icon>today</mat-icon></button></mat-grid-tile>
-        <mat-grid-tile><button mat-raised-button (click)="onForward()"><mat-icon>fast_forward</mat-icon></button></mat-grid-tile>
-    </mat-grid-list>
-</div>
+        <mat-grid-tile *ngFor="let name of dayNames" class="mat-caption">{{name}}</mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list gutterSize="2" cols="5">
+          <mat-grid-tile *ngFor="let day of days"  class="mat-elevation-z2" [class.selected]="day.selected" (click)="onDayClick(day.date)">
+              <ng-container *ngTemplateOutlet="daycard;context:day"></ng-container>
+          </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list gutterSize="2" cols="3" rowHeight="3em">
+          <mat-grid-tile><button mat-raised-button (click)="onBack()"><mat-icon>fast_rewind</mat-icon></button></mat-grid-tile>
+          <mat-grid-tile><button mat-raised-button (click)="onToday()"><mat-icon>today</mat-icon></button></mat-grid-tile>
+          <mat-grid-tile><button mat-raised-button (click)="onForward()"><mat-icon>fast_forward</mat-icon></button></mat-grid-tile>
+      </mat-grid-list>
+</ng-template>
+
+<mat-card class="container">
+    <mat-card-header><mat-card-title>Kalendar</mat-card-title></mat-card-header>
+    <mat-card-content>
+        <ng-container *ngTemplateOutlet="cal"></ng-container>
+    </mat-card-content>
+</mat-card>
 

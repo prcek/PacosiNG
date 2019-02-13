@@ -6,29 +6,34 @@
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
-    <h1>provozni doba kalendare </h1>
-    <div *ngIf="oh_groups" fxLayout="row wrap" fxLayoutGap="10px" class="red">
-        <div>
-            <app-daypicker-panel [first_day]="first_day" [selected_day]="first_day" [selected_week]="first_day" (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
-         </div>
-   
-        <div fxFlex="1 0 auto">
-            <ng-container *ngFor="let ohg of oh_groups">  
-              
-              <p>{{ohg.day | date }}</p>
+    <h1>provozní doba kalendáře: {{calendar?.name}} </h1>
+    <div *ngIf="oh_groups" fxLayout="row wrap" fxLayoutGap="10px">
         
-              <mat-chip-list> 
-                <mat-chip *ngFor="let oh of ohg.ohs" (removed)="onDeleteOH(oh)"> 
-                  <ng-container *ngTemplateOutlet="chip;context:oh"></ng-container>
-                  <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-list> 
-             
-            </ng-container>
-       </div>
-      <div>
-          <app-calendar-oh-editor *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-editor>
-      </div>
+        <app-daypicker-panel [first_day]="first_day" [selected_day]="first_day" [selected_week]="first_day" (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
+        <mat-card fxFlex="1 0 auto">
+            <mat-card-header>
+                <mat-card-title>Aktuální provozní doba pro zvolený týden</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngFor="let ohg of oh_groups">  
+          
+                    <p>{{ohg.day | date }}</p>
+              
+                    <mat-chip-list> 
+                      <mat-chip *ngFor="let oh of ohg.ohs" (removed)="onDeleteOH(oh)"> 
+                        <ng-container *ngTemplateOutlet="chip;context:oh"></ng-container>
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list> 
+                    
+                  </ng-container>
+            </mat-card-content>
+        </mat-card>
+
+      
+     
+        <app-calendar-oh-editor *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-editor>
+      
     </div>
     <button mat-raised-button color="primary" (click)="goBack()">back</button>
 </div>
