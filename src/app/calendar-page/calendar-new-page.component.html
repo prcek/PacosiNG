@@ -1,2 +1,7 @@
-<button mat-raised-button color="primary" (click)="goBack()">back</button>
-<app-calendar-editor [calendar]="null" [new_mode]="true" (saved)="goBack()"></app-calendar-editor>
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Založení nového kalendáře</h1>
+    <app-calendar-editor [calendar]="null"  [new_mode]="true" (saved)="goBack()"></app-calendar-editor>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>
