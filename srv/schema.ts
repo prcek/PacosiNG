@@ -2,7 +2,16 @@
 
 import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
 import { IDataSources } from './datasources';
-import { IContextBase, ILoginResponse, IUser, ICalendar, IOpeningHoursTemplate, IDeleteResponse, IDayOpeningHours} from './types';
+import {
+  IContextBase,
+  ILoginResponse,
+  IUser,
+  ICalendar,
+  IOpeningHoursTemplate,
+  IDeleteResponse,
+  IDayOpeningHours,
+  ICalendarEventType
+} from './types';
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 
 // The GraphQL schema
@@ -19,6 +28,7 @@ const typeDefs = gql`
     calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
+    calendarEventTypes(calendar_id: ID!): [CalendarEventType]
     calendarOpeningHours(calendar_id: ID!, start_date: Date!, end_date: Date!): [DayOpeningHours]
     me: User
   }
@@ -76,6 +86,15 @@ const typeDefs = gql`
     begin: Int
     len: Int
   }
+  type CalendarEventType {
+    _id: ID
+    calendar_id: ID
+    name: String
+    color: String
+    len: Int
+    order: Int
+  }
+
 `;
 
 interface IContext extends IContextBase {
@@ -111,6 +130,10 @@ const resolvers: IResolvers<any, IContext> = {
 
     calendarOpeningHours: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<IDayOpeningHours[]> => {
       return await context.dataSources.calendar.getCalendarOHs(calendar_id, start_date, end_date);
+    },
+
+    calendarEventTypes: async (parent, { calendar_id } , context, info): Promise<ICalendarEventType[]> => {
+      return await context.dataSources.calendar.getCalendarEventTypes(calendar_id);
     },
 
     me: async (parent, args, context, info): Promise<IUser> => {

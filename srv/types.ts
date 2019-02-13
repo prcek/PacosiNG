@@ -32,6 +32,14 @@ export interface IOpeningHours {
     len: number;
 }
 
+export interface ICalendarEventType {
+    _id: any;
+    calendar_id: any;
+    name: string;
+    color: string;
+    len: number;
+    order: number;
+}
 
 export interface IToken  {
     version: number;

@@ -1,7 +1,7 @@
 
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { IStore } from './../store';
-import { IContextBase, ICalendar , IOpeningHoursTemplate, IDeleteResponse, IDayOpeningHours} from './../types';
+import { IContextBase, ICalendar , IOpeningHoursTemplate, IDeleteResponse, IDayOpeningHours, ICalendarEventType} from './../types';
 
 
 export class CalendarAPI implements DataSource {
@@ -79,6 +79,37 @@ export class CalendarAPI implements DataSource {
 
     async deleteOH(_id: string): Promise<IDeleteResponse> {
         const del = await this.store.dayOpeningHoursModel.findByIdAndRemove(_id);
+        if (del) {
+            return { ok: true, _id: del._id};
+        }
+        return {ok: false, _id: _id};
+    }
+
+    async getCalendarEventTypes(calendar_id: string): Promise<ICalendarEventType[]> {
+        return this.store.calendarEventTypeModel.find({calendar_id: calendar_id});
+    }
+
+    async createET(calendar_id: string, name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+        return this.store.calendarEventTypeModel.create({
+            calendar_id,
+            name,
+            color,
+            len,
+            order
+        });
+    }
+
+    async updateET(_id: string,  name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+        const cal = await this.store.calendarEventTypeModel.findById(_id);
+        if (!cal) {
+            throw new Error('Something bad happened');
+        }
+        cal.set({name, color, len, order});
+        return cal.save();
+    }
+
+    async deleteET(_id: string): Promise<IDeleteResponse> {
+        const del = await this.store.calendarEventTypeModel.findByIdAndRemove(_id);
         if (del) {
             return { ok: true, _id: del._id};
         }

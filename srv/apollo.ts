@@ -80,5 +80,10 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     await dataSources.calendar.createOH(cal1._id, nextweek, 45, 10);
     await dataSources.calendar.createOH(cal1._id, tom, 35, 10);
     await dataSources.calendar.createOH(cal1._id, nextweek2, 35, 10);
+
+
+    await dataSources.calendar.createET(cal1._id, 'ud1', '#red', 1, 1);
+    await dataSources.calendar.createET(cal1._id, 'ud2', '#blue', 2, 1);
+    await dataSources.calendar.createET(cal1._id, 'ud3', '#green', 3, 1);
     return true; // store_setup_res;
 }
