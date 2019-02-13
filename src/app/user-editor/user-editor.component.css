@@ -1,6 +1,6 @@
 .form-container {
-    max-width: 400px;
-    width: 100%;
+    max-width: 500px;
+    min-width: 200px;
 }
 
 .container {
@@ -17,3 +17,4 @@
 .red {
     color: red;
 }
+

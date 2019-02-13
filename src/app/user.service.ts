@@ -9,6 +9,7 @@ export interface IUser {
   login: string;
   name: string;
   sudo: boolean;
+  password?: string;
   roles: string[];
 }
 
@@ -44,9 +45,20 @@ export class UserService {
         ...user
       }
     }).pipe(tap(r => console.log('UserService.updateUser res=', r)),  map(res => res.data.updateUser));
-
-
-    return of(true).pipe(delay(1000), switchMap((x) => throwError('testovaci chyba ukladani')));
-    // return of(true).pipe(delay(2000));
   }
+
+  createUser(user: IUser): Observable<IUser> {
+    return this.apollo.mutate<{createUser: IUser}, IUser>({
+      mutation: gql`
+        mutation($login: String! $password: String! $name: String! $sudo: Boolean! $roles: [String]!) {
+          createUser(login: $login password: $password name: $name sudo: $sudo roles: $roles) { login name sudo roles }
+        }
+      `,
+      variables: {
+        ...user
+      }
+    }).pipe(tap(r => console.log('UserService.createUser res=', r)),  map(res => res.data.createUser));
+  }
+
+
 }

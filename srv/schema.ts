@@ -26,6 +26,7 @@ const typeDefs = gql`
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
     updateUser(login: String! name: String sudo: Boolean roles: [String]): User!
+    createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]!): User!
     updateCalendar(_id: ID! name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
     createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
@@ -126,6 +127,8 @@ const resolvers: IResolvers<any, IContext> = {
     updateUser: (_, { login, name, sudo, roles }, { dataSources }): Promise<IUser> =>
         dataSources.user.updateUser(login, name, sudo, roles),
 
+    createUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
+        dataSources.user.createUser(login, password, name, sudo, roles),
 
     updateCalendar: (_, { _id, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
         dataSources.calendar.updateCalendar(_id, name, span, day_begin, day_len, week_days),

@@ -1,42 +1,55 @@
-<div class="container" fxLayout="column" fxLayoutAlign="center center">
-    <div>
-    user-editor works! Form Status: {{ userForm.status }} Form Value: {{ userForm.value  | json }}
-    </div>
+
     <mat-card class="form-container">
         <form [formGroup]="userForm"  (ngSubmit)="onSubmit()">
           <mat-card-header>
-              <mat-card-title>Shiba Inu</mat-card-title>
+                <ng-template #newuser>
+                        <mat-card-title> Nový uživatel </mat-card-title>
+                </ng-template>
+                <mat-card-title *ngIf="user; else newuser">Uživatel {{user?.login}}</mat-card-title>
           </mat-card-header>
           <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
             <mat-form-field>
-                <mat-label>login</mat-label>
-                <input matInput type="text" id="login" formControlName="login"> 
+                <mat-label>přihlašovací jméno</mat-label>
+                <input matInput type="text" id="login" formControlName="login" [required]="new_mode"> 
             </mat-form-field>
     
- 
             <mat-form-field>
-                <mat-label>name</mat-label>
+                    <mat-label>heslo</mat-label>
+                    <input matInput [type]="hide1 ? 'password' : 'text'" id="password"  formControlName="password" autocomplete="new-password" [required]="new_mode">
+                    <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+       
+            <mat-form-field>
+                    <mat-label>heslo (opakovane)</mat-label>
+                    <input matInput [type]="hide2 ? 'password' : 'text'" id="password_copy"  formControlName="password_copy" autocomplete="new-password" [required]="new_mode">
+                    <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+   
+
+            <mat-form-field>
+                <mat-label>jméno</mat-label>
                 <input matInput type="text" id="name" formControlName="name" required> 
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label>roles</mat-label>
-              <mat-select placeholder="roles"  formControlName="roles" multiple>
+              <mat-label>práva</mat-label>
+              <mat-select placeholder="roles"  formControlName="roles" multiple required>
                   <mat-option *ngFor="let role of roles" [value]="role.value">
                       {{role.viewValue}}
                     </mat-option>
               </mat-select>
             </mat-form-field>
             <section class="section">
-                <mat-checkbox class="check" id="sudo" formControlName="sudo">sudo</mat-checkbox>
+                <mat-checkbox class="check" id="sudo" formControlName="sudo">admin</mat-checkbox>
             </section>
           
             
-
-            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!userForm.valid">submit</button>
+            <div *ngIf="userForm.errors?.invalidPassword && (userForm.touched || userForm.dirty)">
+                uvedena hesla jsou rozdilna       
+            </div>
+            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!userForm.valid">uložit</button>
             <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
           </mat-card-content>
         </form>
     </mat-card>
-  </div>
-  
+ 
