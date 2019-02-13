@@ -1,0 +1,32 @@
+<div>
+    test-page works!
+    <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
+    <button mat-raised-button color="primary" (click)="onTest2()">dialog test!</button>
+    <div>{{diagnostic}}</div>
+    <form  (ngSubmit)="onSubmit()" #testForm="ngForm"> 
+      <mat-form-field>
+        <input matInput required [disabled]="disabled" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="form.date" name="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput required [disabled]="disabled" [appTimepicker]="picker2" [timeSpan]="15" [timeLen]="5" [timeBegin]="28" placeholder="Choose a time" [(ngModel)]="form.time" name="time">
+        <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
+        <app-timepicker #picker2></app-timepicker>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput required [disabled]="disabled" [appTimepicker]="picker3" [timeSpan]="10" placeholder="Choose a time" [(ngModel)]="form.time2" name="time2">
+        <app-timepicker-toggle matSuffix [for]="picker3"></app-timepicker-toggle>
+        <app-timepicker #picker3 touchUi></app-timepicker>
+      </mat-form-field>
+  
+      <button *ngIf="!submitted" type="submit" mat-raised-button color="warn"  [disabled]="!testForm.form.valid">login</button>
+    </form>
+   
+  </div>
+  <div class="daypickertest">
+    <app-daypicker-panel [first_day]="now"></app-daypicker-panel>
+  </div>
+  

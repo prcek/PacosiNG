@@ -1,11 +1,17 @@
 <mat-toolbar color="primary">
-  <span>TOOLBAR</span>
+
+
+  <ng-template #nodev>
+      <span>DEN DOKTORA</span>
+  </ng-template>
+  <span *ngIf="dev_mode; else nodev">DEV MODE</span>
+ 
   <a *ngIf="isAuth" mat-button routerLink="/">Home</a>
+  <a *ngIf="dev_mode" mat-button routerLink="/test">TEST</a>
   <a *ngIf="isAuth" mat-button routerLink="/main">Main</a>
   <a *ngIf="isAuth" mat-button routerLink="/calendars">kalendáře</a>
   <a *ngIf="isAuth" mat-button routerLink="/users">uživatelé</a>
   <span class="spacer"></span>
-  <span *ngIf="dev_mode">DEV MODE</span>
   <a mat-button *ngIf="!isAuth" routerLink="/login">Přihlásit</a>
   <span *ngIf="isAuth">{{login}}</span>
   <button mat-icon-button *ngIf="isAuth" (click)="onLogout()">

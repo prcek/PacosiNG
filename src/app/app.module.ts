@@ -51,6 +51,7 @@ import { CalendarOhEditorComponent } from './calendar-editor/calendar-oh-editor.
 import { DaypickerPanelComponent } from './daypicker/daypicker-panel.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { UserNewPageComponent } from './user-page/user-new-page.component';
+import { TestPageComponent } from './test-page/test-page.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { UserNewPageComponent } from './user-page/user-new-page.component';
     CalendarNewPageComponent,
     CalendarOhEditorComponent,
     DaypickerPanelComponent,
-    UserNewPageComponent
+    UserNewPageComponent,
+    TestPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
