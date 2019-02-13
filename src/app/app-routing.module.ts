@@ -10,13 +10,15 @@ import { CalendarPageComponent } from './calendar-page/calendar-page.component';
 import { CalendarOhPageComponent } from './calendar-page/calendar-oh-page.component';
 import { CalendarOhtPageComponent } from './calendar-page/calendar-oht-page.component';
 import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.component';
+import { UserNewPageComponent } from './user-page/user-new-page.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'main', canActivate: [AuthGuard], component: MainPageComponent },
   { path: 'users', canActivate: [AuthGuard], component: UsersPageComponent },
-  { path: 'users/:id', canActivate: [AuthGuard], component: UserPageComponent },
+  { path: 'users/edit/:id', canActivate: [AuthGuard], component: UserPageComponent },
+  { path: 'users/new', canActivate: [AuthGuard], component: UserNewPageComponent },
 
   { path: 'calendars', canActivate: [AuthGuard], component: CalendarsPageComponent },
   { path: 'calendars/edit/:id', canActivate: [AuthGuard], component: CalendarPageComponent },

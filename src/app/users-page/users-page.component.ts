@@ -19,7 +19,7 @@ export class UsersPageComponent implements OnInit {
         .subscribe(users => this.users = users);
   }
   onEdit(user: IUser) {
-    this.router.navigate(['/users/' + user.login]);
+    this.router.navigate(['/users/edit/' + user.login]);
   }
 
 }
