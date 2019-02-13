@@ -5,3 +5,9 @@
 .spacer {
     flex: 1 1 auto;
 }
+
+.toolbar {
+    padding: 8px 16px;
+    align-items: center;
+    min-height: 64px;
+}
