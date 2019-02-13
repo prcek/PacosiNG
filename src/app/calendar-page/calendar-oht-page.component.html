@@ -1,7 +1,3 @@
-<button mat-raised-button color="primary" (click)="goBack()">back</button>
-<p>
-  celendar-oht-page works! {{diag}}
-</p>
 
 <ng-template #chip let-begin="begin" let-len="len">
    {{begin | tstime:calendar.span}} - {{len | tstime:calendar.span:begin}}
@@ -9,22 +5,41 @@
 </ng-template>
 
   
-<div *ngIf="template_groups">
-    <h2> sablona provozni doby</h2>
-    <ng-container *ngFor="let group of template_groups">  
+
+
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Šablona provozní doby kalendáře: {{calendar?.name}} </h1>
+    <div *ngIf="template_groups" fxLayout="row wrap" fxLayoutGap="10px" fxFlexFill>
+        
+       
+    
+        <mat-card fxFlex="1 0 auto">
+            <mat-card-header>
+                <mat-card-title>Aktuální šablona pro dny v týdnu</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngFor="let group of template_groups">  
       
-      <p>{{group.week_day | weekDay}}</p>
+                    <p>{{group.week_day | weekDay}}</p>
+              
+                    <mat-chip-list> 
+                      <mat-chip *ngFor="let t of group.templates" (removed)="onDeleteOHT(t)"> 
+                        <ng-container *ngTemplateOutlet="chip;context:t"></ng-container>
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list> 
+                   
+                  </ng-container>
+            </mat-card-content>
+        </mat-card>
 
-      <mat-chip-list> 
-        <mat-chip *ngFor="let t of group.templates" (removed)="onDeleteOHT(t)"> 
-          <ng-container *ngTemplateOutlet="chip;context:t"></ng-container>
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list> 
+      
      
-    </ng-container>
-  
+        <app-calendar-oht-editor *ngIf="calendar" [calendar]="calendar" (saved)="getCalendarWithOHTs()"></app-calendar-oht-editor>
+
+      
+    </div>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>
-
-
-<app-calendar-oht-editor *ngIf="calendar" [calendar]="calendar" (saved)="getCalendarWithOHTs()"></app-calendar-oht-editor>

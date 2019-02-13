@@ -5,9 +5,9 @@
 </ng-template>
 
 
-<div class="container" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <h1>provozní doba kalendáře: {{calendar?.name}} </h1>
-    <div *ngIf="oh_groups" fxLayout="row wrap" fxLayoutGap="10px">
+    <div *ngIf="oh_groups" fxLayout="row wrap" fxLayoutGap="10px" fxFlexFill>
         
         <app-daypicker-panel [first_day]="first_day" [selected_day]="first_day" [selected_week]="first_day" (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
         <mat-card fxFlex="1 0 auto">
@@ -35,7 +35,7 @@
         <app-calendar-oh-editor *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-editor>
       
     </div>
-    <button mat-raised-button color="primary" (click)="goBack()">back</button>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>
 
   

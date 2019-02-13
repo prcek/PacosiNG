@@ -1,15 +1,13 @@
-<p>
-    Form Status: {{ ohtForm.status }} Form Value: {{ ohtForm.value  | json }} {{ ohtForm.errors  }}
-</p>
+
 <mat-card class="form-container">
     <form [formGroup]="ohtForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
         <mat-card-header>
-            <mat-card-title>Nova oht pro kalendář {{calendar._id}}</mat-card-title>
+            <mat-card-title>Další interval</mat-card-title>
         </mat-card-header>
         <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
     
             <mat-form-field>
-                <mat-label>week_day</mat-label>
+                <mat-label>den</mat-label>
                 <mat-select  formControlName="week_day">
                     <mat-option *ngFor="let week_day of week_days" [value]="week_day.value">
                         {{week_day.viewValue}}
@@ -18,14 +16,14 @@
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>time</mat-label>
+                <mat-label>začátek</mat-label>
                 <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time" formControlName="time">
                 <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
                 <app-timepicker #picker1></app-timepicker>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>time_end</mat-label>
+                <mat-label>konec</mat-label>
                 <input matInput [appTimepicker]="picker2" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time_end" formControlName="time_end">
                 <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
                 <app-timepicker #picker2></app-timepicker>
@@ -33,7 +31,7 @@
             <div *ngIf="ohtForm.errors?.invalidInterval && (ohtForm.touched || ohtForm.dirty)">
               spatny interval! (konec je drive nez zacatek)
             </div>
-            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!ohtForm.valid">submit</button>
+            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!ohtForm.valid">přidat</button>
         </mat-card-content>
     </form>
 </mat-card>
