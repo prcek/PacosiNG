@@ -1,5 +1,7 @@
-<button mat-raised-button color="primary" (click)="goBack()">back</button>
-<p *ngIf="user">
-  user-page works!  - login: {{user.login}}/{{user.name}}/{{user.roles}}
-  <app-user-editor [user]="user" (updated)="goBack()"></app-user-editor>
-</p>
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Editace uživatele</h1>
+    <app-user-editor *ngIf="user" fxFlexFill [user]="user"  (saved)="goBack()"></app-user-editor>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>

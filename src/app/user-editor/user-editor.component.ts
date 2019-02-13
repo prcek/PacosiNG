@@ -13,8 +13,9 @@ export interface Role {
   styleUrls: ['./user-editor.component.css']
 })
 export class UserEditorComponent implements OnInit {
-  @Output() updated = new EventEmitter<IUser>(true);
+  @Output() saved = new EventEmitter<IUser>(true);
   @Input() user: IUser;
+  @Input() new_mode: boolean;
   roles: Role[] = [
     {value: 'super', viewValue: 'Super'},
     {value: 'view', viewValue: 'View'},
@@ -34,12 +35,16 @@ export class UserEditorComponent implements OnInit {
 
   ngOnInit() {
     console.log('UserEditorComponent.ngOnInit', this.user);
-    this.userForm.setValue({
-      login: this.user.login,
-      name: this.user.name,
-      sudo: this.user.sudo,
-      roles: this.user.roles,
-    });
+    if (this.new_mode) {
+      this.userForm.get('login').enable();
+    } else {
+      this.userForm.setValue({
+        login: this.user.login,
+        name: this.user.name,
+        sudo: this.user.sudo,
+        roles: this.user.roles,
+      });
+    }
   }
   onSubmit() {
     // TODO: Use EventEmitter with form value
@@ -49,7 +54,7 @@ export class UserEditorComponent implements OnInit {
     this.error_msg = null;
     console.log('UserEditorComponent.onSubmit', uu);
     this.userService.updateUser(uu).subscribe((r) => {
-      this.updated.emit(r);
+      this.saved.emit(r);
       this.submitted = false;
       this.userForm.enable();
       this.userForm.get('login').disable();

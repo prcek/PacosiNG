@@ -1,3 +1,7 @@
-<p>
-  user-new-page works!
-</p>
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Založení nového uživatele</h1>
+    <app-user-editor fxFlexFill [user]="null"  [new_mode]="true" (saved)="goBack()"></app-user-editor>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>
