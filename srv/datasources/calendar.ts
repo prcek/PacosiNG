@@ -105,7 +105,6 @@ export class CalendarAPI implements DataSource {
         return m[0];
     }
 
-
     async getCalendarStatusDaysMulti(calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarStatusDays[]> {
         const ohs = await this.store.dayOpeningHoursModel.find({
             calendar_id: { $in: calendar_ids},
