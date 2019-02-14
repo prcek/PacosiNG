@@ -1,9 +1,9 @@
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <p>
+    <div>
         calendar-et-page works! {{diag}}
-    </p>
-<div>
+    </div>
+    <div fxFlexFill>
     <table mat-table [dataSource]="event_types" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> id </th>
