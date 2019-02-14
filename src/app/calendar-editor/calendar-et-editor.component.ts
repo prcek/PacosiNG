@@ -57,7 +57,7 @@ export class CalendarEtEditorComponent implements OnInit {
        this.error_msg = err;
      });
     } else {
-     const u: ICalendarEventType = {_id: this.calendar._id, ...this.etForm.getRawValue()};
+     const u: ICalendarEventType = {_id: this.event_type._id, ...this.etForm.getRawValue()};
      this.submitted = true;
      this.etForm.disable();
      this.error_msg = null;

@@ -1,0 +1,6 @@
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Úprava typu události "{{event_type?.name}}" kalendáře "{{calendar?.name}}" </h1>
+    <app-calendar-et-editor *ngIf="calendar && event_type" [calendar]="calendar" [event_type]="event_type" (saved)="goBack()"></app-calendar-et-editor>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>

@@ -13,6 +13,7 @@ import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.comp
 import { UserNewPageComponent } from './user-page/user-new-page.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.component';
+import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-page.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'calendars', canActivate: [AuthGuard], component: CalendarsPageComponent },
   { path: 'calendars/edit/:id', canActivate: [AuthGuard], component: CalendarPageComponent },
   { path: 'calendars/et/:id', canActivate: [AuthGuard], component: CalendarEtPageComponent },
+  { path: 'calendars/et/:id/edit/:et_id', canActivate: [AuthGuard], component: CalendarEtEditPageComponent },
   { path: 'calendars/oh/:id', canActivate: [AuthGuard], component: CalendarOhPageComponent },
   { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CalendarOhtPageComponent },
   { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},

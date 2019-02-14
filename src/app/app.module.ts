@@ -54,6 +54,7 @@ import { UserNewPageComponent } from './user-page/user-new-page.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.component';
 import { CalendarEtEditorComponent } from './calendar-editor/calendar-et-editor.component';
+import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-page.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { CalendarEtEditorComponent } from './calendar-editor/calendar-et-editor.
     UserNewPageComponent,
     TestPageComponent,
     CalendarEtPageComponent,
-    CalendarEtEditorComponent
+    CalendarEtEditorComponent,
+    CalendarEtEditPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

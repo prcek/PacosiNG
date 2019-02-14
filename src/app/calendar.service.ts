@@ -4,6 +4,7 @@ import { switchMap, filter, map, tap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import * as M from 'moment';
+import * as R from 'ramda';
 
 export interface ICalendar {
   _id: string;
@@ -194,8 +195,7 @@ export class CalendarService {
   }
   getCalendarWithEventType(calendar_id: string, calendar_event_type_id: string): Observable<ICalendarWithEventType> {
     return this.getCalendarWithEventTypes(calendar_id).pipe(map(r => {
-      console.error('getCalendarWithEventType - fixme');
-      return { calendar: r.calendar, event_type: r.event_types[0]};
+      return { calendar: r.calendar, event_type: R.find<ICalendarEventType>(R.propEq('_id', calendar_event_type_id), r.event_types)};
     }));
   }
 

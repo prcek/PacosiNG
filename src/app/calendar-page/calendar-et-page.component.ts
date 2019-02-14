@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CalendarService, ICalendar, ICalendarEventType } from '../calendar.service';
 import { MatDialog } from '@angular/material';
@@ -16,6 +16,7 @@ export class CalendarEtPageComponent implements OnInit {
   displayedColumns: string[] = ['name', 'color', 'len', 'order', 'actions'];
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location,
     private calendarService: CalendarService,
     public dialog: MatDialog) { }
@@ -30,6 +31,9 @@ export class CalendarEtPageComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+  onEdit(event_type) {
+    this.router.navigate(['/calendars/et/' + event_type.calendar_id + '/edit/' + event_type._id]);
   }
   onDelete(event_type) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
