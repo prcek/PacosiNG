@@ -42,9 +42,12 @@ export interface ICalendarEventType {
 }
 
 export interface ICalendarStatusDay {
-    calendar_id: any;
     day: Date;
-    ohs: boolean;
+    any_ohs: boolean;
+}
+export interface ICalendarStatusDays {
+    calendar_id: any;
+    days: ICalendarStatusDay[];
 }
 
 

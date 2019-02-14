@@ -8,8 +8,7 @@ import {
     IDeleteResponse,
     IDayOpeningHours,
     ICalendarEventType,
-    ICalendarStatusDay,
-    IOpeningHours
+    ICalendarStatusDays,
 } from './../types';
 
 import * as R from 'ramda';
@@ -101,7 +100,7 @@ export class CalendarAPI implements DataSource {
     async getCalendarEventTypes(calendar_id: string): Promise<ICalendarEventType[]> {
         return this.store.calendarEventTypeModel.find({calendar_id: calendar_id});
     }
-    async getCalendarStatusDays(calendar_id: string, start_date: Date, end_date: Date): Promise<ICalendarStatusDay[]> {
+    async getCalendarStatusDays(calendar_id: string, start_date: Date, end_date: Date): Promise<ICalendarStatusDays> {
         const ohs = await this.store.dayOpeningHoursModel.find({
             calendar_id: calendar_id,
             day: { '$gte': start_date, '$lt': end_date }
@@ -111,14 +110,10 @@ export class CalendarAPI implements DataSource {
         const ohsGroups = R.groupBy<IDayOpeningHours>((i) => M(i.day).format('YYYY-MM-DD'), ohs);
         const days_count = M(end_date).diff(start_date, 'days');
         const days = R.range(0, days_count).map(i => M(start_date).add(i, 'day').format('YYYY-MM-DD'));
-
-     //   console.log('getCalendarStatusDays - ohsGroups=', ohsGroups);
-     //   console.log('getCalendarStatusDays - days_count=', days_count);
-     //   console.log('getCalendarStatusDays - days=', days);
-
-        return days.map(d => {
-            return {calendar_id: calendar_id, day: M(d).toDate(), ohs: R.has(d, ohsGroups)};
+        const sdays = days.map(d => {
+            return {day: M(d).toDate(), any_ohs: R.has(d, ohsGroups)};
         });
+        return { calendar_id: calendar_id, days: sdays};
     }
 
     async createET(calendar_id: string, name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {

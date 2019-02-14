@@ -11,7 +11,7 @@ import {
   IDeleteResponse,
   IDayOpeningHours,
   ICalendarEventType,
-  ICalendarStatusDay
+  ICalendarStatusDays
 } from './types';
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 
@@ -31,7 +31,7 @@ const typeDefs = gql`
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
     calendarEventTypes(calendar_id: ID!): [CalendarEventType]
     calendarOpeningHours(calendar_id: ID! start_date: Date! end_date: Date!): [DayOpeningHours]
-    calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!):[CalendarStatusDay]
+    calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays
     me: User
   }
   type Mutation {
@@ -101,10 +101,14 @@ const typeDefs = gql`
     order: Int
   }
 
-  type CalendarStatusDay {
+  type CalendarStatusDays {
     calendar_id: ID
+    days: [CalendarStatusDay]
+  }
+
+  type CalendarStatusDay {
     day: Date
-    ohs: Boolean
+    any_ohs: Boolean
   }
 
 `;
@@ -148,7 +152,7 @@ const resolvers: IResolvers<any, IContext> = {
       return await context.dataSources.calendar.getCalendarEventTypes(calendar_id);
     },
 
-    calendarStatusDays: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<ICalendarStatusDay[]> => {
+    calendarStatusDays: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<ICalendarStatusDays> => {
       return await context.dataSources.calendar.getCalendarStatusDays(calendar_id, start_date, end_date);
     },
 
