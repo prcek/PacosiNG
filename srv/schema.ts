@@ -32,6 +32,7 @@ const typeDefs = gql`
     calendarEventTypes(calendar_id: ID!): [CalendarEventType]
     calendarOpeningHours(calendar_id: ID! start_date: Date! end_date: Date!): [DayOpeningHours]
     calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays
+    calendarStatusDaysMulti(calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarStatusDays]
     me: User
   }
   type Mutation {
@@ -154,6 +155,9 @@ const resolvers: IResolvers<any, IContext> = {
 
     calendarStatusDays: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<ICalendarStatusDays> => {
       return await context.dataSources.calendar.getCalendarStatusDays(calendar_id, start_date, end_date);
+    },
+    calendarStatusDaysMulti: async (parent, { calendar_ids, start_date, end_date } , context, info): Promise<ICalendarStatusDays[]> => {
+      return await context.dataSources.calendar.getCalendarStatusDaysMulti(calendar_ids, start_date, end_date);
     },
 
     me: async (parent, args, context, info): Promise<IUser> => {

@@ -101,19 +101,30 @@ export class CalendarAPI implements DataSource {
         return this.store.calendarEventTypeModel.find({calendar_id: calendar_id});
     }
     async getCalendarStatusDays(calendar_id: string, start_date: Date, end_date: Date): Promise<ICalendarStatusDays> {
+        const m =  await this.getCalendarStatusDaysMulti([calendar_id], start_date, end_date);
+        return m[0];
+    }
+
+
+    async getCalendarStatusDaysMulti(calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarStatusDays[]> {
         const ohs = await this.store.dayOpeningHoursModel.find({
-            calendar_id: calendar_id,
+            calendar_id: { $in: calendar_ids},
             day: { '$gte': start_date, '$lt': end_date }
         });
-      //  console.log('getCalendarStatusDays - ohs=', ohs);
 
-        const ohsGroups = R.groupBy<IDayOpeningHours>((i) => M(i.day).format('YYYY-MM-DD'), ohs);
+        const calGroups = R.groupBy<IDayOpeningHours>(R.prop('calendar_id'), ohs);
         const days_count = M(end_date).diff(start_date, 'days');
         const days = R.range(0, days_count).map(i => M(start_date).add(i, 'day').format('YYYY-MM-DD'));
-        const sdays = days.map(d => {
-            return {day: M(d).toDate(), any_ohs: R.has(d, ohsGroups)};
+
+        const oo = calendar_ids.map(cid => {
+            const gr = R.has(cid, calGroups) ? (R.groupBy<IDayOpeningHours>((i) => M(i.day).format('YYYY-MM-DD'), calGroups[cid])) : {};
+            const sdays = days.map(d => {
+                return {day: M(d).toDate(), any_ohs: R.has(d, gr)};
+            });
+            return { calendar_id: cid, days: sdays};
         });
-        return { calendar_id: calendar_id, days: sdays};
+
+        return oo;
     }
 
     async createET(calendar_id: string, name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
