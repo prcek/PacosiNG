@@ -1,0 +1,46 @@
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <p>
+        calendar-et-page works! {{diag}}
+    </p>
+<div>
+    <table mat-table [dataSource]="event_types" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> id </th>
+          <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Název </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="color">
+          <th mat-header-cell *matHeaderCellDef> Barva </th>
+          <td mat-cell *matCellDef="let element"> {{element.color}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="len">
+          <th mat-header-cell *matHeaderCellDef> Delka </th>
+          <td mat-cell *matCellDef="let element"> {{element.len}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef> Poradi </th>
+          <td mat-cell *matCellDef="let element"> {{element.order}} </td>
+        </ng-container>
+    
+      
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <button mat-icon-button (click)="onEdit(element)" matTooltip="editovat"><mat-icon>edit</mat-icon></button> 
+            <button mat-icon-button (click)="onDel(element)" matTooltip="smazat"><mat-icon>delete</mat-icon></button> 
+          </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+</div>
+<button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+
+</div>
