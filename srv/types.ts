@@ -41,6 +41,13 @@ export interface ICalendarEventType {
     order: number;
 }
 
+export interface ICalendarStatusDay {
+    calendar_id: any;
+    day: Date;
+    ohs: boolean;
+}
+
+
 export interface IToken  {
     version: number;
     user: IUser;
