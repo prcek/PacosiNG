@@ -58,6 +58,11 @@ export interface ICalendarWithEventTypes {
   event_types: ICalendarEventType[];
 }
 
+export interface ICalendarWithEventType {
+  calendar: ICalendar;
+  event_type: ICalendarEventType;
+}
+
 export interface IDeleteResponse {
   ok: boolean;
   _id: string;
@@ -187,7 +192,12 @@ export class CalendarService {
       }
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
   }
-
+  getCalendarWithEventType(calendar_id: string, calendar_event_type_id: string): Observable<ICalendarWithEventType> {
+    return this.getCalendarWithEventTypes(calendar_id).pipe(map(r => {
+      console.error('getCalendarWithEventType - fixme');
+      return { calendar: r.calendar, event_type: r.event_types[0]};
+    }));
+  }
 
   getCalendarWithOpeningHours(_id: string, start_date: Date, end_date: Date): Observable<ICalendarWithOpeningHours> {
     console.log('CalendarService.getCalendarWithOpeningHours');
@@ -239,6 +249,38 @@ export class CalendarService {
         _id
       }
     }).pipe(tap(r => console.log('CalendarService.deleteOpeningHours res=', r)),  map(res => res.data.deleteOpeningHours));
+  }
+
+  updateEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
+    return this.apollo.mutate<{ updateCalendarEventType: ICalendarEventType}, ICalendarEventType>({
+      mutation: gql`
+        mutation($_id: ID! $name: String $color: String $len: Int $order: Int) {
+          updateCalendarEventType(_id: $_id name: $name color: $color
+            len: $len order: $order) {
+              _id calendar_id name color len order
+            }
+        }
+      `,
+      variables: {
+        ...event_type
+      }
+    }).pipe(tap(r => console.log('CalendarService.updateEventType res=', r)),  map(res => res.data.updateCalendarEventType));
+  }
+
+  createEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
+    return this.apollo.mutate<{createCalendarEventType: ICalendarEventType}, ICalendarEventType>({
+      mutation: gql`
+        mutation($calendar_id: ID! $name: String! $color: String! $len: Int! $order: Int!) {
+          createCalendarEventType(calendar_id: $calendar_id name: $name color: $color
+            len: $len order: $order  ) {
+              _id calendar_id name color len order
+            }
+        }
+      `,
+      variables: {
+        ...event_type
+      }
+    }).pipe(tap(r => console.log('CalendarService.createEventType res=', r)),  map(res => res.data.createCalendarEventType));
   }
 
 }

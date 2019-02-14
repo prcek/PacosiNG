@@ -1,0 +1,37 @@
+
+<mat-card class="form-container">
+    <form [formGroup]="etForm"  #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+      <mat-card-header>
+          <ng-template #newet>
+              <mat-card-title> Nový typ události </mat-card-title>
+          </ng-template>
+          <mat-card-title *ngIf="event_type; else newet">Typ události {{event_type?.name}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+        <mat-form-field>
+            <mat-label>Název</mat-label>
+            <input matInput type="text" id="name" formControlName="name"> 
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Barva</mat-label>
+            <input matInput type="text" id="color" formControlName="color"> 
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Délka (v časovkách kalendáře)</mat-label>
+          <input matInput type="number" id="len" formControlName="len"> 
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>Pořadí ve výběru</mat-label>
+          <input matInput type="number" id="order" formControlName="order"> 
+        </mat-form-field>      
+
+        <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!etForm.valid">uložit</button>
+        <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
+      </mat-card-content>
+    </form>
+</mat-card>
+

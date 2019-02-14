@@ -41,6 +41,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 </div>
+<app-calendar-et-editor *ngIf="calendar" [calendar]="calendar" [event_type]="null" [new_mode]="true" (saved)="getCalendarWithETs()"></app-calendar-et-editor>
 <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 
 </div>
