@@ -1,8 +1,6 @@
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <div>
-        calendar-et-page works! {{diag}}
-    </div>
+    <h1>Typy událostí kalendáře {{calendar?.name}}</h1>
     <div fxFlexFill>
     <table mat-table [dataSource]="event_types" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
@@ -19,12 +17,12 @@
         </ng-container>
     
         <ng-container matColumnDef="len">
-          <th mat-header-cell *matHeaderCellDef> Delka </th>
-          <td mat-cell *matCellDef="let element"> {{element.len}} </td>
+          <th mat-header-cell *matHeaderCellDef> Délka v časovkách/minuty</th>
+          <td mat-cell *matCellDef="let element"> {{element.len}} / {{element.len * calendar.span}} </td>
         </ng-container>
     
         <ng-container matColumnDef="order">
-          <th mat-header-cell *matHeaderCellDef> Poradi </th>
+          <th mat-header-cell *matHeaderCellDef> Pořadí ve výběru </th>
           <td mat-cell *matCellDef="let element"> {{element.order}} </td>
         </ng-container>
     
