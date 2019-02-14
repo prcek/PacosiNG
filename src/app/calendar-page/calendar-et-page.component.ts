@@ -32,14 +32,22 @@ export class CalendarEtPageComponent implements OnInit {
     this.location.back();
   }
   onDelete(event_type) {
-      const dialogRef = this.dialog.open(DialogConfirmComponent, {
-        width: '450px',
-        data: {title: 'Smazání typu události', content: 'opravdu smazat typ události "' + event_type.name + '" ?!'}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed', result);
-        this.getCalendarWithETs();
-      });
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '450px',
+      data: { title: 'Smazání typu události', content: 'opravdu smazat typ události "' + event_type.name + '" ?!' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.calendarService.deleteEventType(event_type._id)
+          .subscribe(r => {
+            if (r.ok) {
+              this.getCalendarWithETs();
+            } else {
+              alert('chyba');
+            }
+          });
+      }
+    });
   }
   get diag() {
     return JSON.stringify({calendar: this.calendar, event_types: this.event_types});

@@ -283,4 +283,20 @@ export class CalendarService {
     }).pipe(tap(r => console.log('CalendarService.createEventType res=', r)),  map(res => res.data.createCalendarEventType));
   }
 
+  deleteEventType(_id: string): Observable<IDeleteResponse> {
+    return this.apollo.mutate<{ deleteCalendarEventType: IDeleteResponse}, {_id: string}>({
+      mutation: gql`
+        mutation($_id: ID!) {
+          deleteCalendarEventType(_id: $_id) {
+            ok
+            _id
+          }
+        }
+      `,
+      variables: {
+        _id
+      }
+    }).pipe(tap(r => console.log('CalendarService.deleteEventType res=', r)),  map(res => res.data.deleteCalendarEventType));
+  }
+
 }
