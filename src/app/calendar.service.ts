@@ -68,6 +68,19 @@ export interface IDeleteResponse {
   ok: boolean;
   _id: string;
 }
+export interface ICalendarDayStatus {
+  day: Date;
+  any_ohs: boolean;
+}
+export interface ICalendarStatus {
+  calendar: ICalendar;
+  days: ICalendarDayStatus[];
+}
+export interface ICalendarStatusR {
+  calendar_id: string;
+  days: ICalendarDayStatus[];
+}
+
 
 /*
 const CALENDARS: ICalendar[] = [
@@ -299,4 +312,28 @@ export class CalendarService {
     }).pipe(tap(r => console.log('CalendarService.deleteEventType res=', r)),  map(res => res.data.deleteCalendarEventType));
   }
 
+  getCalendarsStatus_(calendar_ids: string[], start_date: Date, end_date: Date): Observable<ICalendarStatusR[]> {
+    return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]},
+     {calendar_ids: string[], start_date: string, end_date: string}>({
+      query: gql`query($calendar_ids: [ID]! $start_date: Date! $end_date: Date!) {
+            calendarStatusDaysMulti(calendar_ids:$calendar_ids start_date:$start_date end_date: $end_date) {
+              calendar_id days { day any_ohs }
+            }
+        }`,
+      variables: {
+        calendar_ids,
+        start_date: M(start_date).format('YYYY-MM-DD'),
+        end_date: M(end_date).format('YYYY-MM-DD'),
+      }
+    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendarStatusDaysMulti));
+  }
+  getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
+    this.getCalendars().pipe(
+      switchMap(
+        (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
+        (i, o) => o.map(cs => ({ calendar: R.find(R.propEq('_id', cs.calendar_id), i), days: cs.days }))
+      ),
+      tap(x => console.log('tap:', x))).subscribe();
+    return of([]);
+  }
 }
