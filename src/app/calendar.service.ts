@@ -328,12 +328,22 @@ export class CalendarService {
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendarStatusDaysMulti));
   }
   getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
-    this.getCalendars().pipe(
-      switchMap(
+
+
+    return this.getCalendars().pipe(
+      switchMap<ICalendar[], ICalendarStatusR[], ICalendarStatus[]>(
         (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
-        (i, o) => o.map(cs => ({ calendar: R.find(R.propEq('_id', cs.calendar_id), i), days: cs.days }))
+        (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
+      ), tap(x => console.log('tap:', x)));
+
+
+/*
+      switchMap<ICalendar[], ICalendarStatusR[]>(
+        (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
+    //  (i, o) => o.map(cs => ({ calendar: R.find(R.propEq('_id', cs.calendar_id), i), days: cs.days }))
       ),
-      tap(x => console.log('tap:', x))).subscribe();
+      tap(x => console.log('tap:', x)));
     return of([]);
+    */
   }
 }
