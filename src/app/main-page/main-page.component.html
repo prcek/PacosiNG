@@ -6,14 +6,14 @@
     <div class="leftpanel" fxFlex="5 1 auto">
       <div fxLayout="row">
         <div class="daypanel" fxFlex="1 0 auto"></div>
-        <mat-grid-list class="green" fxFlex="5 1 auto" cols="3" rowHeight="75px">
-            <mat-grid-tile class="red"> c1 </mat-grid-tile> <mat-grid-tile class="red"> c2 </mat-grid-tile> <mat-grid-tile class="red"> c3 </mat-grid-tile>
+        <mat-grid-list fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="50px">
+            <mat-grid-tile *ngFor="let cal of grid.calendars"> {{cal.name}} </mat-grid-tile>
         </mat-grid-list> 
       </div>
-      <div fxLayout="row">
-        <div class="daypanel" fxFlex="1 0 auto"> den </div>
-        <mat-grid-list class="green" fxFlex="5 1 auto" cols="3" rowHeight="75px">
-            <mat-grid-tile class="red"> c1 </mat-grid-tile> <mat-grid-tile class="red"> c2 </mat-grid-tile> <mat-grid-tile class="red"> c3 </mat-grid-tile>
+      <div fxLayout="row" *ngFor="let day of grid.days">
+        <div class="daypanel" fxFlex="1 0 auto"> {{day.day | date}} </div>
+        <mat-grid-list  fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
+            <mat-grid-tile *ngFor="let status of day.statuses"> {{status|json}} </mat-grid-tile> 
         </mat-grid-list>  
       </div> 
     </div>
