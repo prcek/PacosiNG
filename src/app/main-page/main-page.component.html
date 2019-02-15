@@ -2,9 +2,20 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 <div class="container">
   <h1>main</h1>
-  <div fxLayout="row" fxLayoutAlign="start start">
-    <div class="leftpanel red" fxFlex="5 1 auto">
-      {{diag}}
+  <div *ngIf="grid" fxLayout="row wrap" fxLayoutAlign="start start">
+    <div class="leftpanel" fxFlex="5 1 auto">
+      <div fxLayout="row">
+        <div class="daypanel" fxFlex="1 0 auto"></div>
+        <mat-grid-list class="green" fxFlex="5 1 auto" cols="3" rowHeight="75px">
+            <mat-grid-tile class="red"> c1 </mat-grid-tile> <mat-grid-tile class="red"> c2 </mat-grid-tile> <mat-grid-tile class="red"> c3 </mat-grid-tile>
+        </mat-grid-list> 
+      </div>
+      <div fxLayout="row">
+        <div class="daypanel" fxFlex="1 0 auto"> den </div>
+        <mat-grid-list class="green" fxFlex="5 1 auto" cols="3" rowHeight="75px">
+            <mat-grid-tile class="red"> c1 </mat-grid-tile> <mat-grid-tile class="red"> c2 </mat-grid-tile> <mat-grid-tile class="red"> c3 </mat-grid-tile>
+        </mat-grid-list>  
+      </div> 
     </div>
     <div class="rightpanel red" fxFlex="1 0 auto">cal</div>
   </div>

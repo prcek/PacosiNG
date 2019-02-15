@@ -9,6 +9,12 @@
 .red {
     border: 1px solid red;
 }
+
+.green {
+    border: 1px solid green;
+}
+
+
 .rightpanel {
     max-width: 400px;
     min-width: 200px;
@@ -17,4 +23,9 @@
 .leftpanel {
     min-width: 400px;
     overflow-x: auto;
+}
+
+.daypanel {
+    min-width: 100px;
+    max-width: 250px;
 }
