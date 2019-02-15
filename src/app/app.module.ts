@@ -55,7 +55,7 @@ import { TestPageComponent } from './test-page/test-page.component';
 import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.component';
 import { CalendarEtEditorComponent } from './calendar-editor/calendar-et-editor.component';
 import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-page.component';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -115,6 +115,7 @@ import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-pa
     MatChipsModule,
     MatDialogModule,
     MatTooltipModule,
+    MatProgressBarModule,
 // last
     GraphQLModule,
   ],

@@ -10,12 +10,14 @@ import * as M from 'moment';
 })
 export class MainPageComponent implements OnInit {
   test: any;
+  loading = true;
   constructor(private calendarService: CalendarService) { }
 
   ngOnInit() {
     const now = M().startOf('day');
 
-    this.calendarService.getCalendarsStatus(now.toDate(), M(now).add(10, 'days').toDate()).subscribe(r => this.test = r);
+    this.calendarService.getCalendarsStatus(now.toDate(), M(now).add(10, 'days').toDate())
+      .subscribe((r) => { this.test = r; this.loading = false; } );
   }
 
 

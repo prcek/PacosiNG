@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { switchMap, filter, map, tap } from 'rxjs/operators';
+import { switchMap, filter, map, tap, delay } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import * as M from 'moment';
@@ -330,7 +330,7 @@ export class CalendarService {
   getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
 
 
-    return this.getCalendars().pipe(
+    return this.getCalendars().pipe(delay(3000),
       switchMap<ICalendar[], ICalendarStatusR[], ICalendarStatus[]>(
         (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
         (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
