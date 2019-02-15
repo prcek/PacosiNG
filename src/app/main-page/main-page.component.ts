@@ -3,11 +3,6 @@ import { CalendarService, ICalendarStatus, ICalendarDayStatus, ICalendar, ICalen
 import * as M from 'moment';
 import * as R from 'ramda';
 
-interface IStatusDayRow {
-  day: Date;
-  cals: ICalendarDayStatus[];
-}
-
 
 @Component({
   selector: 'app-main-page',
