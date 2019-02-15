@@ -19,8 +19,9 @@
         </mat-grid-list>  
       </div> 
     </div>
-    <div class="rightpanel red" fxFlex="1 0 auto">cal</div>
+    <div class="rightpanel" fxFlex="1 0 auto">
+        <app-daypicker-panel [first_day]="first_day" [selected_day]="selected_day"  (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
+    </div>
   </div>
-  
 </div>
 

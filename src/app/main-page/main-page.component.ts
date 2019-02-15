@@ -14,18 +14,19 @@ export class MainPageComponent implements OnInit {
   days: string[];
   grid: ICalendarGridInfo;
   first_day: Date;
+  selected_day: Date;
   loading = true;
   constructor(private calendarService: CalendarService) { }
 
   ngOnInit() {
-    this.first_day = M().startOf('isoWeek').toDate();
+    this.first_day = M().utc().startOf('isoWeek').toDate();
+    this.selected_day = M().utc().startOf('day').toDate();
     this.getCalendars();
   }
 
   getCalendars() {
-    const now = M().startOf('day');
     this.loading = true;
-    this.calendarService.getCalendarsStatus(this.first_day, M(this.first_day).add(10, 'days').toDate())
+    this.calendarService.getCalendarsStatus(this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
           this.grid = this.calendarService.convertStatuses2Grid(r);
@@ -33,5 +34,15 @@ export class MainPageComponent implements OnInit {
       } );
   }
 
-  get diag() { return JSON.stringify({grid: this.grid}); }
+  onChangeDay(d: Date) {
+    this.selected_day = d;
+
+    this.getCalendars();
+   }
+
+   onMoveCal(d: Date) {
+     this.first_day = d;
+    // this.getCalendarWithOHs();
+   }
+  get diag() { return JSON.stringify({grid: this.grid, selected_day: M(this.selected_day).toISOString()}); }
 }
