@@ -80,7 +80,17 @@ export interface ICalendarStatusR {
   calendar_id: string;
   days: ICalendarDayStatus[];
 }
-
+export interface ICalendarDayStatusE extends ICalendarDayStatus {
+  calendar_id: string;
+}
+export interface ICalendarsStatusRow {
+  day: Date;
+  statuses: ICalendarDayStatusE[];
+}
+export interface ICalendarGridInfo {
+  calendars: ICalendar[];
+  days: ICalendarsStatusRow[];
+}
 
 /*
 const CALENDARS: ICalendar[] = [
@@ -330,7 +340,7 @@ export class CalendarService {
   getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
 
 
-    return this.getCalendars().pipe(delay(3000),
+    return this.getCalendars().pipe( /* delay(3000), */
       switchMap<ICalendar[], ICalendarStatusR[], ICalendarStatus[]>(
         (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
         (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
@@ -345,5 +355,23 @@ export class CalendarService {
       tap(x => console.log('tap:', x)));
     return of([]);
     */
+  }
+  convertStatuses2Grid(cals: ICalendarStatus[]): ICalendarGridInfo {
+    const calendars: ICalendar[] = R.map<ICalendarStatus, ICalendar>(R.prop('calendar'), cals);
+
+    const day_dates: string[] = R.uniq(R.flatten(R.map<ICalendarStatus, string[]>(cal => {
+      const all =  R.map((d) => ({ day: d.day, show: d.any_ohs || R.contains(M(d.day).day(), cal.calendar.week_days)}), cal.days);
+      return R.map(R.prop('day'), R.filter(R.propEq('show', true), all));
+    }, cals))).sort();
+
+    const x = R.map<string, ICalendarsStatusRow>((d) => ({
+      day: M(d).toDate(),
+      statuses: R.map<ICalendarStatus, ICalendarDayStatusE>((v) => {
+          const cc = R.find(cd => (M(cd.day).isSame(d, 'day')) , v.days);
+          return { ...cc, calendar_id: v.calendar._id};
+      } , cals)
+    }), day_dates);
+
+    return {calendars, days: x };
   }
 }
