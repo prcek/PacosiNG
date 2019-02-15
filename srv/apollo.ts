@@ -71,7 +71,7 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const c2oht2  = await dataSources.calendar.createOHTemplate(cal2._id, 1, 50, 5);
 
     console.log('dummy cals created', cal1, cal2, cal3, c1oht1, c1oht2);
-    const today = M(M().format('YYYY-MM-DD')).toDate();
+    const today = M().utc().startOf('day').toDate();
     const tom = M(today).add(1, 'days').toDate();
     const nextweek = M(today).add(7, 'days').toDate();
     const nextweek2 = M(today).add(10, 'days').toDate();

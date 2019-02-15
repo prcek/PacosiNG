@@ -358,7 +358,6 @@ export class CalendarService {
   }
   convertStatuses2Grid(cals: ICalendarStatus[]): ICalendarGridInfo {
     const calendars: ICalendar[] = R.map<ICalendarStatus, ICalendar>(R.prop('calendar'), cals);
-
     const day_dates: string[] = R.uniq(R.flatten(R.map<ICalendarStatus, string[]>(cal => {
       const all =  R.map((d) => ({ day: d.day, show: d.any_ohs || R.contains(M(d.day).day(), cal.calendar.week_days)}), cal.days);
       return R.map(R.prop('day'), R.filter(R.propEq('show', true), all));

@@ -37,10 +37,13 @@ export class CalendarAPI implements DataSource {
         return this.store.openingHoursTemplateModel.find({calendar_id: calendar_id});
     }
     async getCalendarOHs(calendar_id: string, start_date: Date, end_date: Date): Promise<IDayOpeningHours[]> {
-        return this.store.dayOpeningHoursModel.find({
+        console.log('getCalendarOHs', M(start_date).toISOString(), M(end_date).toISOString());
+        const ohs = await this.store.dayOpeningHoursModel.find({
             calendar_id: calendar_id,
             day: { '$gte': start_date, '$lt': end_date }
         });
+        console.log('X0', R.map(o => M(o.day).toISOString(), ohs));
+        return ohs;
     }
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
@@ -81,6 +84,7 @@ export class CalendarAPI implements DataSource {
 
 
     async createOH(calendar_id: string, day: Date, begin: number, len: number): Promise<IDayOpeningHours> {
+        console.log('createOH', M(day).toISOString());
         return this.store.dayOpeningHoursModel.create({
             calendar_id,
             day,
@@ -106,19 +110,20 @@ export class CalendarAPI implements DataSource {
     }
 
     async getCalendarStatusDaysMulti(calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarStatusDays[]> {
+        console.log('getCalendarStatusDaysMulti', M(start_date).toISOString(), M(end_date).toISOString());
         const ohs = await this.store.dayOpeningHoursModel.find({
             calendar_id: { $in: calendar_ids},
             day: { '$gte': start_date, '$lt': end_date }
         });
-
         const calGroups = R.groupBy<IDayOpeningHours>(R.prop('calendar_id'), ohs);
         const days_count = M(end_date).diff(start_date, 'days');
-        const days = R.range(0, days_count).map(i => M(start_date).add(i, 'day').format('YYYY-MM-DD'));
+
+        const days = R.range(0, days_count).map(i => M(start_date).utc().add(i, 'day'));
 
         const oo = calendar_ids.map(cid => {
-            const gr = R.has(cid, calGroups) ? (R.groupBy<IDayOpeningHours>((i) => M(i.day).format('YYYY-MM-DD'), calGroups[cid])) : {};
+            const gr = R.has(cid, calGroups) ? (R.groupBy<IDayOpeningHours>((i) => M(i.day).utc().toISOString(), calGroups[cid])) : {};
             const sdays = days.map(d => {
-                return {day: M(d).toDate(), any_ohs: R.has(d, gr)};
+                return {day: d.toDate(), any_ohs: R.has(d.toISOString(), gr)};
             });
             return { calendar_id: cid, days: sdays};
         });
