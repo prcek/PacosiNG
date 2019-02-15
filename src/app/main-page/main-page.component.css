@@ -30,3 +30,12 @@
     min-width: 100px;
     max-width: 250px;
 }
+
+.calstatusbox {
+    width: 75%;
+    height: 75%;
+    background-color: lightgrey; 
+}
+.any_ohs {
+    background-color: blue;
+}

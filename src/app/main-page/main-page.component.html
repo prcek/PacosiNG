@@ -7,13 +7,15 @@
       <div fxLayout="row">
         <div class="daypanel" fxFlex="1 0 auto"></div>
         <mat-grid-list fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="50px">
-            <mat-grid-tile *ngFor="let cal of grid.calendars"> {{cal.name}} </mat-grid-tile>
+            <mat-grid-tile *ngFor="let cal of grid.calendars" class="mat-title">{{cal.name}}</mat-grid-tile>
         </mat-grid-list> 
       </div>
       <div fxLayout="row" *ngFor="let day of grid.days">
-        <div class="daypanel" fxFlex="1 0 auto"> {{day.day | date}} </div>
+        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="start center"> {{day.day | date}} </div>
         <mat-grid-list  fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
-            <mat-grid-tile *ngFor="let status of day.statuses"> {{status|json}} </mat-grid-tile> 
+            <mat-grid-tile *ngFor="let status of day.statuses"> 
+                <div class="calstatusbox mat-elevation-z2" [class.any_ohs]="status.any_ohs" fxLayoutAlign="center center"> x </div>
+             </mat-grid-tile> 
         </mat-grid-list>  
       </div> 
     </div>
