@@ -24,6 +24,16 @@ export interface ICalendarEventType {
   order: number;
 }
 
+export interface ICalendarEvent {
+  _id: string;
+  calendar_id: string;
+  name: string;
+  color: string;
+  day: Date;
+  begin: number;
+  len: number;
+}
+
 export interface IOpeningHoursTemplate {
   _id: string;
   calendar_id: string;
@@ -53,6 +63,13 @@ export interface ICalendarWithOpeningHours {
   calendar: ICalendar;
   ohs: IOpeningHours[];
 }
+
+export interface ICalendarWithEvents {
+  calendar: ICalendar;
+  events: ICalendarEvent[];
+  ohs: IOpeningHours[];
+}
+
 
 export interface ICalendarWithEventTypes {
   calendar: ICalendar;
@@ -228,6 +245,31 @@ export class CalendarService {
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
           _id name span day_begin day_len week_days
+        }
+        ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
+          _id
+          calendar_id day begin len
+        }
+      }`,
+      variables: {
+        calendar_id: _id,
+        start_date: M(start_date).format('YYYY-MM-DD'),
+        end_date: M(end_date).format('YYYY-MM-DD'),
+      }
+    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+  }
+
+  getCalendarWithEvents(_id: string, start_date: Date, end_date: Date): Observable<ICalendarWithEvents> {
+    console.log('CalendarService.getCalendarWithEvents');
+    // tslint:disable-next-line:max-line-length
+    return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[]}, {calendar_id: string, start_date: string, end_date: string}>({
+      query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
+        calendar(_id:$calendar_id) {
+          _id name span day_begin day_len week_days
+        }
+        events: calendarEvents(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
+          _id
+          calendar_id day begin len name color
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
