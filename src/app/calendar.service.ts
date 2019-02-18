@@ -362,14 +362,15 @@ export class CalendarService {
       const all =  R.map((d) => ({ day: d.day, show: d.any_ohs || R.contains(M(d.day).day(), cal.calendar.week_days)}), cal.days);
       return R.map(R.prop('day'), R.filter(R.propEq('show', true), all));
     }, cals))).sort();
-
+   // console.log('day_dates', day_dates);
     const x = R.map<string, ICalendarsStatusRow>((d) => ({
-      day: M(d).toDate(),
+      day: M.utc(d).toDate(),
       statuses: R.map<ICalendarStatus, ICalendarDayStatusE>((v) => {
           const cc = R.find(cd => (M(cd.day).isSame(d, 'day')) , v.days);
           return { ...cc, calendar_id: v.calendar._id};
       } , cals)
     }), day_dates);
+   // console.log('C:', x[0].day.toISOString());
 
     return {calendars, days: x };
   }

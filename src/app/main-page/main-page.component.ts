@@ -35,7 +35,9 @@ export class MainPageComponent implements OnInit {
     this.calendarService.getCalendarsStatus(this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
+          console.log('CALS', r );
           this.grid = this.calendarService.convertStatuses2Grid(r);
+          console.log('GRID', this.grid.days[0].day.toISOString() );
           this.loading = false;
       } );
   }
@@ -53,7 +55,7 @@ export class MainPageComponent implements OnInit {
 
    onSelect(status: ICalendarDayStatusE) {
      console.log('onSelect', status);
-     const d = M(status.day).utc().format('YYYY-MM-DD');
+     const d = M.utc(status.day).format('YYYY-MM-DD');
      alert(status.calendar_id + '/' + d);
      // this.router.navigate(['/calendars/events/' + status.calendar_id + '/' + d]);
    }
