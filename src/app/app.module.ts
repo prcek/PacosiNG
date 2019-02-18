@@ -60,6 +60,7 @@ import { DaycardComponent } from './daycard/daycard.component';
 import { CalendarEventsPageComponent } from './calendar-page/calendar-events-page.component';
 import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.component';
 import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
+import { CalendarEventEditorComponent } from './calendar-editor/calendar-event-editor.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,7 +97,8 @@ import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-ne
     DaycardComponent,
     CalendarEventsPageComponent,
     CalendarEventPageComponent,
-    CalendarEventNewPageComponent
+    CalendarEventNewPageComponent,
+    CalendarEventEditorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
