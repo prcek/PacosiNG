@@ -1,3 +1,9 @@
-<p>
-  calendar-event-new-page works!
-</p>
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Nová událost do kalendáře "{{calendar?.name}}" </h1>
+   <!-- 
+      <app-calendar-et-editor *ngIf="calendar && event" [calendar]="calendar" [event_type]="event_type" (saved)="goBack()"></app-calendar-et-editor>
+       -->
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>

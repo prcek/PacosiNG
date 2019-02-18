@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { CalendarService, ICalendar, ICalendarEvent } from '../calendar.service';
 
 @Component({
   selector: 'app-calendar-event-page',
@@ -6,10 +9,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendar-event-page.component.css']
 })
 export class CalendarEventPageComponent implements OnInit {
-
-  constructor() { }
+  calendar: ICalendar;
+  event: ICalendarEvent;
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private calendarService: CalendarService
+  ) { }
 
   ngOnInit() {
+  }
+  goBack(): void {
+    this.location.back();
+  }
+  get diag() {
+    return JSON.stringify({calendar: this.calendar, event: this.event});
   }
 
 }
