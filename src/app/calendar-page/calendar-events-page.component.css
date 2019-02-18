@@ -8,6 +8,15 @@
 .red {
     border: 1px solid red;
 }
+.time {
+    margin: 2px;
+    padding-right: 10px;
+}
+
+.name {
+    margin: 2px;
+    padding-left: 10px;
+}
 
 
 .leftpanel {
