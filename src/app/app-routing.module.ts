@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CalendarOhtPageComponent },
   { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},
 
-  { path: 'calendars/events/:id/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
+  { path: 'calendars/events/:id/day/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
 
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];

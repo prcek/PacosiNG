@@ -37,6 +37,11 @@ export class CalendarEventsPageComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  onSlot(slot: ICalendarDaySlot) {
+    alert('onSlot ' + slot.slot);
+  }
+
   get diag() {
     return JSON.stringify({
       day: this.day,
