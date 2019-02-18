@@ -67,8 +67,13 @@ export interface ICalendarWithOpeningHours {
 export interface ICalendarWithEvents {
   calendar: ICalendar;
   events: ICalendarEvent[];
+  event_types: ICalendarEventType[];
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
+}
+
+export interface ICalendarWithEvent extends ICalendarWithEvents {
+  event: ICalendarEvent;
 }
 
 
@@ -300,7 +305,7 @@ export class CalendarService {
     const end_date = M(day).utc().startOf('day').add(1, 'day').format('YYYY-MM-DD');
     console.log('CalendarService.getCalendarWithEvents', day, start_date, end_date);
     // tslint:disable-next-line:max-line-length
-    return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[]}, {calendar_id: string, start_date: string, end_date: string}>({
+    return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[], event_types: ICalendarEventType[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
           _id name span day_begin day_len week_days
@@ -312,6 +317,10 @@ export class CalendarService {
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
           calendar_id day begin len
+        }
+        event_types: calendarEventTypes(calendar_id:$calendar_id) {
+          _id
+          calendar_id name color len order
         }
       }`,
       variables: {
@@ -325,11 +334,19 @@ export class CalendarService {
           return {
             calendar: res.data.calendar,
             events: res.data.events,
+            event_types: res.data.event_types,
             ohs: res.data.ohs,
             slots: this._convertEvents2List(res.data.calendar, res.data.events, res.data.ohs)
           };
         }));
   }
+
+  getCalendarWithEvent(calendar_id: string, day: Date, calendar_event_id: string): Observable<ICalendarWithEvent> {
+    return this.getCalendarWithEvents(calendar_id, day).pipe(map(r => {
+      return { ...r, event: R.find<ICalendarEvent>(R.propEq('_id', calendar_event_id), r.events)};
+    }));
+  }
+
 
   createOpeningHours(oh: IOpeningHours): Observable<IOpeningHours> {
     return this.apollo.mutate<{createOpeningHours: IOpeningHours}, IOpeningHoursV>({
@@ -412,8 +429,8 @@ export class CalendarService {
   }
 
   getCalendarsStatus_(calendar_ids: string[], start_date: Date, end_date: Date): Observable<ICalendarStatusR[]> {
-    return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]},
-     {calendar_ids: string[], start_date: string, end_date: string}>({
+    // tslint:disable-next-line:max-line-length
+    return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]}, {calendar_ids: string[], start_date: string, end_date: string}>({
       query: gql`query($calendar_ids: [ID]! $start_date: Date! $end_date: Date!) {
             calendarStatusDaysMulti(calendar_ids:$calendar_ids start_date:$start_date end_date: $end_date) {
               calendar_id days { day any_ohs }

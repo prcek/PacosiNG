@@ -39,11 +39,11 @@ export class CalendarEventsPageComponent implements OnInit {
   }
 
   onSlot(slot: ICalendarDaySlot) {
+    const d = M.utc(this.day).format('YYYY-MM-DD');
     if (slot.event) {
-      this.router.navigate(['/calendars/events/' + this.calendar._id + '/edit/' + slot.event._id]);
+      this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/edit/' + slot.event._id]);
     } else {
-      const d = M.utc(this.day).format('YYYY-MM-DD');
-      this.router.navigate(['/calendars/events/' + this.calendar._id + '/new/' + d + '/' + slot.slot]);
+      this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/new/' + slot.slot]);
     }
 
   }

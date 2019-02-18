@@ -1,5 +1,8 @@
 
 
+<mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
+
+
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <h1>Úprava události "{{event?.name}}" kalendáře "{{calendar?.name}}" </h1>
    <!-- 

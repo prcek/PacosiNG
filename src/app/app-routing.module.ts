@@ -36,8 +36,8 @@ const routes: Routes = [
   { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},
 
   { path: 'calendars/events/:id/day/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
-  { path: 'calendars/events/:id/edit/:e_id', canActivate: [AuthGuard], component: CalendarEventPageComponent },
-  { path: 'calendars/events/:id/new/:day/:slot', canActivate: [AuthGuard], component: CalendarEventNewPageComponent },
+  { path: 'calendars/events/:id/day/:day/edit/:e_id', canActivate: [AuthGuard], component: CalendarEventPageComponent },
+  { path: 'calendars/events/:id/day/:day/new/:slot', canActivate: [AuthGuard], component: CalendarEventNewPageComponent },
 
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];
