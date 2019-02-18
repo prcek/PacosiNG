@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours } from '../calendar.service';
+import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot } from '../calendar.service';
 import * as M from 'moment';
 @Component({
   selector: 'app-calendar-events-page',
@@ -13,6 +13,7 @@ export class CalendarEventsPageComponent implements OnInit {
   day: Date;
   events: ICalendarEvent[];
   ohs: IOpeningHours[];
+  slots: ICalendarDaySlot[];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -25,8 +26,8 @@ export class CalendarEventsPageComponent implements OnInit {
   }
   getCalendarWithEvents() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.calendarService.getCalendarWithEvents(id, this.day, M(this.day).add(1, 'day').toDate())
-      .subscribe(d => { this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; });
+    this.calendarService.getCalendarWithEvents(id, this.day)
+      .subscribe(d => { this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots; });
   }
   goBack(): void {
     this.location.back();
@@ -34,6 +35,7 @@ export class CalendarEventsPageComponent implements OnInit {
   get diag() {
     return JSON.stringify({
       day: this.day,
+      slots: this.slots,
       ohs: this.ohs,
       events: this.events,
       calendar: this.calendar

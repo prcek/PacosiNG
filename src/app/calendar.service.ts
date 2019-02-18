@@ -68,8 +68,16 @@ export interface ICalendarWithEvents {
   calendar: ICalendar;
   events: ICalendarEvent[];
   ohs: IOpeningHours[];
+  slots: ICalendarDaySlot[];
 }
 
+
+export interface ICalendarDaySlot {
+  slot: number;
+  empty: boolean;
+  event: ICalendarEvent | null;
+  event_leg: number | null;
+}
 
 export interface ICalendarWithEventTypes {
   calendar: ICalendar;
@@ -259,8 +267,38 @@ export class CalendarService {
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
   }
 
-  getCalendarWithEvents(_id: string, start_date: Date, end_date: Date): Observable<ICalendarWithEvents> {
-    console.log('CalendarService.getCalendarWithEvents');
+  _convertEvents2List(calendar: ICalendar, events: ICalendarEvent[], ohs: IOpeningHours[]): ICalendarDaySlot[] {
+
+    const a = R.flatten(R.map<ICalendarEvent, number[]>(e => R.range(e.begin, e.begin + e.len), events)).sort();
+    const b = R.flatten(R.map<IOpeningHours, number[]>(e => R.range(e.begin, e.begin + e.len), ohs)).sort();
+    const c = R.uniq(R.flatten([a, b])).sort();
+
+    const lookup_event = (e: ICalendarEvent, s: number) => {
+      if (e.begin === s) {
+        return true;
+      } else if ((e.begin < s) && (e.begin + e.len > s)) {
+        return true;
+      }
+      return false;
+    };
+
+    const slots = R.map<number, ICalendarDaySlot>(n => {
+      const ce = R.find<ICalendarEvent>(e => lookup_event(e, n), events);
+      return {
+        slot: n,
+        event: ce,
+        event_leg: (ce ) ? n - ce.begin : undefined,
+        empty: !(ce)
+      };
+    }, c);
+    // console.log('_convertEvents2List', a, b, c, slots);
+    return slots;
+  }
+
+  getCalendarWithEvents(_id: string, day: Date): Observable<ICalendarWithEvents> {
+    const start_date = M(day).utc().startOf('day').format('YYYY-MM-DD');
+    const end_date = M(day).utc().startOf('day').add(1, 'day').format('YYYY-MM-DD');
+    console.log('CalendarService.getCalendarWithEvents', day, start_date, end_date);
     // tslint:disable-next-line:max-line-length
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
@@ -278,10 +316,19 @@ export class CalendarService {
       }`,
       variables: {
         calendar_id: _id,
-        start_date: M(start_date).format('YYYY-MM-DD'),
-        end_date: M(end_date).format('YYYY-MM-DD'),
+        start_date,
+        end_date
       }
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+    // tslint:disable-next-line:max-line-length
+    }).pipe(tap(res => console.log('apollo res', res)),
+        map(res => {
+          return {
+            calendar: res.data.calendar,
+            events: res.data.events,
+            ohs: res.data.ohs,
+            slots: this._convertEvents2List(res.data.calendar, res.data.events, res.data.ohs)
+          };
+        }));
   }
 
   createOpeningHours(oh: IOpeningHours): Observable<IOpeningHours> {
