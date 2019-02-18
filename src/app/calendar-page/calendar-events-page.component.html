@@ -1,8 +1,17 @@
 
+<mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Události kalendáře</h1>
-
-    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
-    {{diag}}
+    <h1>Události kalendáře {{calendar?.name}}</h1>
+    <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start">
+        <div class="leftpanel" fxFlex="1 1 auto">
+            <app-daycard [date]="day"></app-daycard>
+            <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+        </div>
+        <div class="rightpanel" fxFlex="5 1 auto">
+            <div fxLayout="row" class="red" *ngFor="let slot of slots">
+                <div class="time"> {{slot.slot}} </div> <div class="red" fxFlex="1 1 auto"> {{slot.event?.name}}</div>
+            </div> 
+        </div>
+      </div>
 </div>

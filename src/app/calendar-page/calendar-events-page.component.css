@@ -1,7 +1,22 @@
 .container {
     padding: 10px;
 }
+.loading {
+    position: absolute;
+}
 
 .red {
     border: 1px solid red;
+}
+
+
+.leftpanel {
+    margin-top: 0px;
+    max-width: 250px;
+    min-width: 100px;
+}
+
+.rightpanel {
+    min-width: 400px;
+    overflow-x: auto;
 }

@@ -14,6 +14,7 @@ export class CalendarEventsPageComponent implements OnInit {
   events: ICalendarEvent[];
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
+  loading = true;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,8 +27,12 @@ export class CalendarEventsPageComponent implements OnInit {
   }
   getCalendarWithEvents() {
     const id = this.route.snapshot.paramMap.get('id');
+    this.loading = true;
     this.calendarService.getCalendarWithEvents(id, this.day)
-      .subscribe(d => { this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots; });
+      .subscribe(d => {
+        this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
+        this.loading = false;
+      });
   }
   goBack(): void {
     this.location.back();
