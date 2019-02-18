@@ -20,7 +20,7 @@ export class CalendarEventsPageComponent implements OnInit {
     private calendarService: CalendarService) {}
 
   ngOnInit() {
-    this.day = new Date();
+    this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
     this.getCalendarWithEvents();
   }
   getCalendarWithEvents() {
