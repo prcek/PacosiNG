@@ -15,6 +15,8 @@ import { TestPageComponent } from './test-page/test-page.component';
 import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.component';
 import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-page.component';
 import { CalendarEventsPageComponent } from './calendar-page/calendar-events-page.component';
+import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.component';
+import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
 
 
 const routes: Routes = [
@@ -34,6 +36,8 @@ const routes: Routes = [
   { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},
 
   { path: 'calendars/events/:id/day/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
+  { path: 'calendars/events/:id/edit/:e_id', canActivate: [AuthGuard], component: CalendarEventPageComponent },
+  { path: 'calendars/events/:id/new/:day/:slot', canActivate: [AuthGuard], component: CalendarEventNewPageComponent },
 
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];
