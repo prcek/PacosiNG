@@ -56,6 +56,7 @@ import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.compon
 import { CalendarEtEditorComponent } from './calendar-editor/calendar-et-editor.component';
 import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-page.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DaycardComponent } from './daycard/daycard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +89,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     TestPageComponent,
     CalendarEtPageComponent,
     CalendarEtEditorComponent,
-    CalendarEtEditPageComponent
+    CalendarEtEditPageComponent,
+    DaycardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

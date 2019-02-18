@@ -1,0 +1,13 @@
+
+.red {
+    border: solid 1px red;
+}
+
+.box {
+    width: 60px;
+    height: 60px;
+ }
+
+ .no-margin  {
+    margin: 0;
+}

@@ -1,7 +1,7 @@
 
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 <div class="container">
-  <h1>main</h1>
+  <h1>Přehled</h1>
   <div *ngIf="grid" fxLayout="row wrap" fxLayoutAlign="start start">
     <div class="leftpanel" fxFlex="5 1 auto">
       <div fxLayout="row">
@@ -11,8 +11,8 @@
         </mat-grid-list> 
       </div>
       <div fxLayout="row" *ngFor="let day of grid.days">
-        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="start center"> {{day.day | date}} </div>
-        <mat-grid-list  fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
+        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> <app-daycard [date]="day.day"></app-daycard></div>
+        <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
             <mat-grid-tile *ngFor="let status of day.statuses"> 
                 <div class="calstatusbox mat-elevation-z2" [class.any_ohs]="status.any_ohs" fxLayoutAlign="center center"> x </div>
              </mat-grid-tile> 
