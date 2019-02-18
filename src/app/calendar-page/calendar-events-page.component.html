@@ -4,7 +4,7 @@
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <h1>Události kalendáře {{calendar?.name}}</h1>
     <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start">
-        <div class="leftpanel" fxFlex="1 1 auto">
+        <div class="leftpanel" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
             <app-daycard [date]="day"></app-daycard>
             <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
         </div>
