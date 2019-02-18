@@ -35,7 +35,8 @@
     width: 75%;
     height: 75%;
     background-color: lightgrey; 
+    cursor: pointer;
 }
 .any_ohs {
-    background-color: blue;
+    background-color: lightgreen;
 }

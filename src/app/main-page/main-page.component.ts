@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarService, ICalendarStatus, ICalendarDayStatus, ICalendar, ICalendarGridInfo } from '../calendar.service';
+import {
+  CalendarService,
+  ICalendarStatus,
+  ICalendarGridInfo,
+  ICalendarDayStatusE
+} from '../calendar.service';
 import * as M from 'moment';
 import * as R from 'ramda';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +22,7 @@ export class MainPageComponent implements OnInit {
   first_day: Date;
   selected_day: Date;
   loading = true;
-  constructor(private calendarService: CalendarService) { }
+  constructor(private calendarService: CalendarService, private router: Router) { }
 
   ngOnInit() {
     this.first_day = M().utc().startOf('isoWeek').toDate();
@@ -44,5 +50,13 @@ export class MainPageComponent implements OnInit {
      this.first_day = d;
     // this.getCalendarWithOHs();
    }
+
+   onSelect(status: ICalendarDayStatusE) {
+     console.log('onSelect', status);
+     const d = M(status.day).utc().format('YYYY-MM-DD');
+     alert(status.calendar_id + '/' + d);
+     // this.router.navigate(['/calendars/events/' + status.calendar_id + '/' + d]);
+   }
+
   get diag() { return JSON.stringify({grid: this.grid, selected_day: M(this.selected_day).toISOString()}); }
 }

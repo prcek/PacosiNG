@@ -14,7 +14,7 @@
         <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> <app-daycard [date]="day.day"></app-daycard></div>
         <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
             <mat-grid-tile *ngFor="let status of day.statuses"> 
-                <div class="calstatusbox mat-elevation-z2" [class.any_ohs]="status.any_ohs" fxLayoutAlign="center center"> x </div>
+                <div class="calstatusbox mat-raised-button" [class.any_ohs]="status.any_ohs" fxLayoutAlign="center center" (click)="onSelect(status)"> x </div>
              </mat-grid-tile> 
         </mat-grid-list>  
       </div> 
