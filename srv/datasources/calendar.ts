@@ -9,6 +9,7 @@ import {
     IDayOpeningHours,
     ICalendarEventType,
     ICalendarStatusDays,
+    ICalendarEvent,
 } from './../types';
 
 import * as R from 'ramda';
@@ -45,6 +46,16 @@ export class CalendarAPI implements DataSource {
         console.log('X0', R.map(o => M(o.day).toISOString(), ohs));
         return ohs;
     }
+
+    async getCalendarEvents(calendar_id: string, start_date: Date, end_date: Date): Promise<ICalendarEvent[]> {
+        console.log('getCalendarEvents', M(start_date).toISOString(), M(end_date).toISOString());
+        const events = await this.store.calendarEventModel.find({
+            calendar_id: calendar_id,
+            day: { '$gte': start_date, '$lt': end_date }
+        });
+        return events;
+    }
+
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({
@@ -100,6 +111,28 @@ export class CalendarAPI implements DataSource {
         }
         return {ok: false, _id: _id};
     }
+
+
+    async createEvent(calendar_id: string, name: string, color: string, day: Date, begin: number, len: number): Promise<ICalendarEvent> {
+        console.log('createEvent', M(day).toISOString());
+        return this.store.calendarEventModel.create({
+            calendar_id,
+            name,
+            color,
+            day,
+            begin,
+            len
+        });
+    }
+
+    async deleteEvent(_id: string): Promise<IDeleteResponse> {
+        const del = await this.store.calendarEventModel.findByIdAndRemove(_id);
+        if (del) {
+            return { ok: true, _id: del._id};
+        }
+        return {ok: false, _id: _id};
+    }
+
 
     async getCalendarEventTypes(calendar_id: string): Promise<ICalendarEventType[]> {
         return this.store.calendarEventTypeModel.find({calendar_id: calendar_id});

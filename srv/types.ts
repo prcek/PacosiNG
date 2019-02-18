@@ -41,6 +41,16 @@ export interface ICalendarEventType {
     order: number;
 }
 
+export interface ICalendarEvent {
+    _id: any;
+    calendar_id: any;
+    name: string;
+    color: string;
+    day: Date;
+    begin: number;
+    len: number;
+}
+
 export interface ICalendarStatusDay {
     day: Date;
     any_ohs: boolean;
