@@ -3,10 +3,10 @@
 <div class="container">
   <h1>Přehled</h1>
   <div *ngIf="grid" fxLayout="row wrap" fxLayoutAlign="start start">
-    <div class="leftpanel" fxFlex="5 1 auto">
+    <div class="leftpanel" fxFlex="10 1 auto">
       <div fxLayout="row">
-        <div class="daypanel" fxFlex="1 0 auto"></div>
-        <mat-grid-list fxFlex="5 1 auto" [cols]="grid.calendars.length" rowHeight="50px">
+        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center">&nbsp;</div>
+        <mat-grid-list fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="50px">
             <mat-grid-tile *ngFor="let cal of grid.calendars" class="mat-title">{{cal.name}}</mat-grid-tile>
         </mat-grid-list> 
       </div>
