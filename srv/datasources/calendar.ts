@@ -125,7 +125,7 @@ export class CalendarAPI implements DataSource {
         if (event_type.calendar_id.toString() !== calendar_id.toString()) {
             throw new Error('Something bad happened');
         }
-        const overlap_check = R.map( s => (day.toISOString() + '#' + s), R.range(begin, begin + event_type.len) );
+        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), R.range(begin, begin + event_type.len) );
 
         return this.store.calendarEventModel.create({
             calendar_id,
@@ -157,7 +157,9 @@ export class CalendarAPI implements DataSource {
         if (event_type.calendar_id.toString() !== event.calendar_id.toString()) {
             throw new Error('Something bad happened');
         }
-        const overlap_check = R.map( s => (day.toISOString() + '#' + s), R.range(begin, begin + event_type.len) );
+
+        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), R.range(begin, begin + event_type.len) );
+
         event.set({
             event_type_id,
             event_name: event_type.name,
