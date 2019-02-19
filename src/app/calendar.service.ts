@@ -430,6 +430,55 @@ export class CalendarService {
     }).pipe(tap(r => console.log('CalendarService.deleteEventType res=', r)),  map(res => res.data.deleteCalendarEventType));
   }
 
+
+
+  updateEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
+    return this.apollo.mutate<{ updateCalendarEvent: ICalendarEvent}, ICalendarEvent>({
+      mutation: gql`
+        mutation($_id: ID! $name: String! event_type_id: ID!  day: Date! begin: Int!) {
+          updateCalendarEvent(_id: $_id name: $name event_type_id: $event_type_id day: $day begin: $begin) {
+              _id  calendar_id event_type_id event_name day begin len name color
+            }
+        }
+      `,
+      variables: {
+        ...event
+      }
+    }).pipe(tap(r => console.log('CalendarService.updateEvent res=', r)),  map(res => res.data.updateCalendarEvent));
+  }
+
+  createEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
+    return this.apollo.mutate<{createCalendarEvent: ICalendarEvent}, ICalendarEvent>({
+      mutation: gql`
+        mutation($calendar_id: ID! $name: String! event_type_id: ID!  day: Date! begin: Int!) {
+          createCalendarEvent(calendar_id: $calendar_id name: $name event_type_id: $event_type_id day: $day begin: $begin) {
+              _id  calendar_id event_type_id event_name day begin len name color
+            }
+        }
+      `,
+      variables: {
+        ...event
+      }
+    }).pipe(tap(r => console.log('CalendarService.createEvent res=', r)),  map(res => res.data.createCalendarEvent));
+  }
+
+  deleteEvent(_id: string): Observable<IDeleteResponse> {
+    return this.apollo.mutate<{ deleteCalendarEvent: IDeleteResponse}, {_id: string}>({
+      mutation: gql`
+        mutation($_id: ID!) {
+          deleteCalendarEvent(_id: $_id) {
+            ok
+            _id
+          }
+        }
+      `,
+      variables: {
+        _id
+      }
+    }).pipe(tap(r => console.log('CalendarService.deleteEvent res=', r)),  map(res => res.data.deleteCalendarEvent));
+  }
+
+
   getCalendarsStatus_(calendar_ids: string[], start_date: Date, end_date: Date): Observable<ICalendarStatusR[]> {
     // tslint:disable-next-line:max-line-length
     return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]}, {calendar_ids: string[], start_date: string, end_date: string}>({
