@@ -120,6 +120,7 @@ const typeDefs = gql`
     event_type_id: ID
     name: String
     color: String
+    event_name: String
     day: Date
     begin: Int
     len: Int

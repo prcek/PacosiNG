@@ -114,11 +114,12 @@ export class CalendarAPI implements DataSource {
 
 
     // tslint:disable-next-line:max-line-length
-    async createEvent(calendar_id: string, event_type_id: string, name: string, color: string, day: Date, begin: number, len: number): Promise<ICalendarEvent> {
-        console.log('createEvent', M(day).toISOString());
+    async createEvent(calendar_id: string, event_type_id: string, event_name: string, name: string, color: string, day: Date, begin: number, len: number): Promise<ICalendarEvent> {
+        console.log('createEvent', M(day).toISOString(), event_name);
         return this.store.calendarEventModel.create({
             calendar_id,
             event_type_id,
+            event_name,
             name,
             color,
             day,

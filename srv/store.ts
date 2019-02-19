@@ -119,6 +119,7 @@ function createModels(connection: mongoose.Connection) {
             ref: 'CalendarEventType',
             required: true
         },
+        event_name: String,
         name: String,
         color: String,
         day: Date,

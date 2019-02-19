@@ -28,6 +28,7 @@ export interface ICalendarEvent {
   _id: string;
   calendar_id: string;
   event_type_id: string;
+  event_name: string;
   name: string;
   color: string;
   day: Date;
@@ -313,7 +314,7 @@ export class CalendarService {
         }
         events: calendarEvents(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
-          calendar_id event_type_id day begin len name color
+          calendar_id event_type_id event_name day begin len name color
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
