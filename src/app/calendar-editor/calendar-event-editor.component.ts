@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { ICalendarEvent, ICalendar, ICalendarEventType } from '../calendar.service';
+import { ICalendarEvent, ICalendar, ICalendarEventType, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
-
+import * as M from 'moment';
 @Component({
   selector: 'app-calendar-event-editor',
   templateUrl: './calendar-event-editor.component.html',
@@ -13,6 +13,8 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() event: ICalendarEvent;
   @Input() event_types: ICalendarEventType;
   @Input() new_mode: boolean;
+  @Input() new_day: Date;
+  @Input() new_time: number;
 
 
   eventForm = new FormGroup({
@@ -32,13 +34,23 @@ export class CalendarEventEditorComponent implements OnInit {
   submitted = false;
 
 
-  constructor() { }
+  constructor(private calendarService: CalendarService) { }
 
   ngOnInit() {
     console.log('CalendarEventEditorComponent.ngOnInit', this.event);
 
     if (this.new_mode) {
-
+      this.eventForm.setValue({
+        client: {
+          last_name: '',
+          first_name: '',
+          year: null,
+          phone: null,
+        },
+        event_type_id: null,
+        begin: this.new_time,
+        comment: ''
+      });
     } else {
 
       this.eventForm.setValue({
@@ -56,41 +68,41 @@ export class CalendarEventEditorComponent implements OnInit {
   }
   onSubmit(formDirective: FormGroupDirective) {
     if (this.new_mode) {
-      /*
-     const n: ICalendarEventType = {_id: null, calendar_id: this.calendar._id, ...this.etForm.getRawValue()};
-     this.submitted = true;
-     this.etForm.disable();
-     this.error_msg = null;
-     console.log('CalendarEtEditorComponent.onSubmit (newmode)', n);
-     this.calendarService.createEventType(n).subscribe((r) => {
-       this.saved.emit(r);
-       this.submitted = false;
-       formDirective.resetForm();
-       this.etForm.enable();
-       this.etForm.reset();
-     }, (err) => {
-       this.submitted = false;
-       this.etForm.enable();
-       this.error_msg = err;
-     });
-     */
+      const u: ICalendarEvent = {
+        _id: null,
+        calendar_id: this.calendar._id,
+        day: M(this.new_day).utc().format('YYYY-MM-DD'),
+        ...this.eventForm.getRawValue()
+      };
+      this.submitted = true;
+      this.eventForm.disable();
+      this.error_msg = null;
+      console.log('CalendarEventEditorComponent.onSubmit', u);
+      this.calendarService.createEvent(u).subscribe((r) => {
+        this.saved.emit(r);
+        this.submitted = false;
+        this.eventForm.enable();
+      }, (err) => {
+        this.submitted = false;
+        this.eventForm.enable();
+        this.error_msg = err;
+      });
     } else {
-      /*
-     const u: ICalendarEventType = {_id: this.event_type._id, ...this.etForm.getRawValue()};
+
+     const u: ICalendarEvent = {_id: this.event._id, day: this.event.day, ...this.eventForm.getRawValue()};
      this.submitted = true;
-     this.etForm.disable();
+     this.eventForm.disable();
      this.error_msg = null;
-     console.log('CalendarEtEditorComponent.onSubmit', u);
-     this.calendarService.updateEventType(u).subscribe((r) => {
+     console.log('CalendarEventEditorComponent.onSubmit', u);
+     this.calendarService.updateEvent(u).subscribe((r) => {
        this.saved.emit(r);
        this.submitted = false;
-       this.etForm.enable();
+       this.eventForm.enable();
      }, (err) => {
        this.submitted = false;
-       this.etForm.enable();
+       this.eventForm.enable();
        this.error_msg = err;
      });
-     */
     }
  }
 }

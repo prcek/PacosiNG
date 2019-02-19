@@ -14,6 +14,7 @@ export class CalendarEventNewPageComponent implements OnInit {
   calendar: ICalendar;
   event_types: ICalendarEventType[];
   day: Date;
+  time: number;
   loading = true;
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +24,7 @@ export class CalendarEventNewPageComponent implements OnInit {
 
   ngOnInit() {
     this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
+    this.time = parseInt(this.route.snapshot.paramMap.get('slot'), 10);
     this.getCalendarWithEvents();
   }
 

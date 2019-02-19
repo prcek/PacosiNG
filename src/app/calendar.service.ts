@@ -455,7 +455,7 @@ export class CalendarService {
   updateEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
     return this.apollo.mutate<{ updateCalendarEvent: ICalendarEvent}, ICalendarEvent>({
       mutation: gql`
-        mutation($_id: ID! $client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String!) {
+        mutation($_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
           updateCalendarEvent(_id: $_id client: $client event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
               _id
               calendar_id
@@ -484,7 +484,7 @@ export class CalendarService {
   createEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
     return this.apollo.mutate<{createCalendarEvent: ICalendarEvent}, ICalendarEvent>({
       mutation: gql`
-        mutation($calendar_id: ID! $client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String!) {
+        mutation($calendar_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
           createCalendarEvent(calendar_id: $calendar_id client: $client
             event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
               _id

@@ -1,9 +1,9 @@
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Nová událost do kalendáře "{{calendar?.name}}" </h1>
+    <h1>Nová událost do kalendáře "{{calendar?.name}}", {{day |date}} </h1>
     
-    <app-calendar-event-editor *ngIf="calendar && event_types" [calendar]="calendar" [event_types]="event_types" [event]="null" [new_mode]="true" (saved)="goBack()"></app-calendar-event-editor>
+    <app-calendar-event-editor *ngIf="calendar && event_types" [calendar]="calendar" [event_types]="event_types" [event]="null" [new_mode]="true" [new_time]="time" [new_day]="day" (saved)="goBack()"></app-calendar-event-editor>
  
     <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>
