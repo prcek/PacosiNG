@@ -117,6 +117,7 @@ const typeDefs = gql`
   type CalendarEvent {
     _id: ID
     calendar_id: ID
+    event_type_id: ID
     name: String
     color: String
     day: Date

@@ -81,11 +81,13 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     await dataSources.calendar.createOH(cal1._id, tom, 35, 10);
     await dataSources.calendar.createOH(cal1._id, nextweek2, 35, 10);
 
-    await dataSources.calendar.createEvent(cal1._id, 'vomacka karel', '#red', today, 40, 1);
-    await dataSources.calendar.createEvent(cal1._id, 'duchna jiri', '#blue', today, 43, 2);
+    const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', '#red', 1, 1);
+    const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', '#blue', 2, 1);
+    const ud3 = await dataSources.calendar.createET(cal1._id, 'ud3', '#green', 3, 1);
 
-    await dataSources.calendar.createET(cal1._id, 'ud1', '#red', 1, 1);
-    await dataSources.calendar.createET(cal1._id, 'ud2', '#blue', 2, 1);
-    await dataSources.calendar.createET(cal1._id, 'ud3', '#green', 3, 1);
+    await dataSources.calendar.createEvent(cal1._id, ud1._id, 'vomacka karel', ud1.color, today, 40, ud1.len);
+    await dataSources.calendar.createEvent(cal1._id, ud2._id, 'duchna jiri', ud2.color, today, 43, ud2.len);
+    await dataSources.calendar.createEvent(cal1._id, ud3._id, 'janeckova marie', ud3.color, tom, 37, ud3.len);
+
     return true; // store_setup_res;
 }

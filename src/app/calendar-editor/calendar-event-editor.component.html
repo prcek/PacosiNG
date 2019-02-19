@@ -9,29 +9,34 @@
       </mat-card-header>
       <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
         <mat-form-field>
-            <mat-label>Název</mat-label>
+            <mat-label>Jméno</mat-label>
             <input matInput type="text" id="name" formControlName="name"> 
         </mat-form-field>
-
+    
+        
         <mat-form-field>
-            <mat-label>Barva</mat-label>
-            <input matInput type="text" id="color" formControlName="color"> 
+            <mat-label>Čas</mat-label>
+            <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="begin" formControlName="begin">
+            <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
+            <app-timepicker #picker1></app-timepicker>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label>Pocatek</mat-label>
-            <input matInput type="number" id="begin" formControlName="begin"> 
-        </mat-form-field>      
-  
-        <mat-form-field>
-          <mat-label>Délka (v časovkách kalendáře)</mat-label>
-          <input matInput type="number" id="len" formControlName="len"> 
+            <mat-label>Typ události</mat-label>
+            <mat-select   formControlName="event_type_id">
+                <mat-option *ngFor="let et of event_types" [value]="et._id">
+                    {{et.name}}
+                  </mat-option>
+            </mat-select>
         </mat-form-field>
 
+     
 
         <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!eventForm.valid">uložit</button>
         <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
       </mat-card-content>
     </form>
 </mat-card>
+<div> diag: {{eventForm.value | json}}</div>
+<div> event_types: {{event_types | json}}</div>
 

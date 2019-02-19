@@ -114,6 +114,11 @@ function createModels(connection: mongoose.Connection) {
             ref: 'Calendar',
             required: true
         },
+        event_type_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CalendarEventType',
+            required: true
+        },
         name: String,
         color: String,
         day: Date,

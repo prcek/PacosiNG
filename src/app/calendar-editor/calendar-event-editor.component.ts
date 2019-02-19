@@ -15,12 +15,7 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() new_mode: boolean;
 
 
-  eventForm = new FormGroup({
-    name: new FormControl('', { validators: Validators.required}),
-    color: new FormControl('', { validators: Validators.required}),
-    begin: new FormControl(0, { validators: Validators.required}),
-    len: new FormControl(0, { validators: Validators.required}),
-  });
+  eventForm: FormGroup;
   error_msg: string;
   submitted = false;
 
@@ -29,15 +24,21 @@ export class CalendarEventEditorComponent implements OnInit {
 
   ngOnInit() {
     console.log('CalendarEventEditorComponent.ngOnInit', this.event);
-    if (this.new_mode) {
 
-    } else {
-      this.eventForm.setValue({
-        name: this.event.name,
-        color: this.event.color,
-        begin: this.event.begin,
-        len: this.event.len
+    if (this.new_mode) {
+      this.eventForm =  new FormGroup({
+        name: new FormControl('', { validators: Validators.required}),
+        begin: new FormControl(0, { validators: Validators.required}),
+        event_type_id: new FormControl(null, { validators: Validators.required}),
       });
+    } else {
+
+      this.eventForm =  new FormGroup({
+        name: new FormControl(this.event.name, { validators: Validators.required}),
+        begin: new FormControl(this.event.begin, { validators: Validators.required}),
+        event_type_id: new FormControl(this.event.event_type_id, { validators: Validators.required}),
+      });
+
     }
   }
 

@@ -44,6 +44,7 @@ export interface ICalendarEventType {
 export interface ICalendarEvent {
     _id: any;
     calendar_id: any;
+    event_type_id: any;
     name: string;
     color: string;
     day: Date;
