@@ -10,6 +10,7 @@ import {
     ICalendarEventType,
     ICalendarStatusDays,
     ICalendarEvent,
+    ICalendarEventClient,
 } from './../types';
 
 import * as R from 'ramda';
@@ -114,7 +115,7 @@ export class CalendarAPI implements DataSource {
 
 
     // tslint:disable-next-line:max-line-length
-    async createEvent(calendar_id: string, event_type_id: string,  name: string,  day: Date, begin: number): Promise<ICalendarEvent> {
+    async createEvent(calendar_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string): Promise<ICalendarEvent> {
         console.log('createEvent', M(day).toISOString(), event_type_id);
 
         const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
@@ -129,15 +130,17 @@ export class CalendarAPI implements DataSource {
             calendar_id,
             event_type_id,
             event_name: event_type.name,
-            name,
+            client,
             color: event_type.color,
             day,
             begin,
-            len: event_type.len
+            len: event_type.len,
+            comment
         });
     }
 
-    async updateEvent(_id: string, event_type_id: string,  name: string,  day: Date, begin: number): Promise<ICalendarEvent> {
+    // tslint:disable-next-line:max-line-length
+    async updateEvent(_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string): Promise<ICalendarEvent> {
         console.log('updateEvent', M(day).toISOString(), event_type_id);
 
         const event = await this.store.calendarEventModel.findById(_id);
@@ -156,11 +159,12 @@ export class CalendarAPI implements DataSource {
         event.set({
             event_type_id,
             event_name: event_type.name,
-            name,
+            client,
             color: event_type.color,
             day,
             begin,
-            len: event_type.len
+            len: event_type.len,
+            comment
         });
         return event.save();
 

@@ -24,12 +24,19 @@ export interface ICalendarEventType {
   order: number;
 }
 
+export interface ICalendarEventClient {
+    last_name: string;
+    first_name: string;
+    year: number;
+    phone: string;
+}
 export interface ICalendarEvent {
   _id: string;
   calendar_id: string;
   event_type_id: string;
   event_name: string;
-  name: string;
+  client: ICalendarEventClient;
+  comment: string;
   color: string;
   day: Date;
   begin: number;
@@ -314,7 +321,20 @@ export class CalendarService {
         }
         events: calendarEvents(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
-          calendar_id event_type_id event_name day begin len name color
+          calendar_id
+          event_type_id
+          event_name
+          day
+          begin
+          len
+          client {
+            last_name
+            first_name
+            year
+            phone
+          }
+          comment
+          color
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
@@ -435,9 +455,23 @@ export class CalendarService {
   updateEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
     return this.apollo.mutate<{ updateCalendarEvent: ICalendarEvent}, ICalendarEvent>({
       mutation: gql`
-        mutation($_id: ID! $name: String! event_type_id: ID!  day: Date! begin: Int!) {
-          updateCalendarEvent(_id: $_id name: $name event_type_id: $event_type_id day: $day begin: $begin) {
-              _id  calendar_id event_type_id event_name day begin len name color
+        mutation($_id: ID! $client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String!) {
+          updateCalendarEvent(_id: $_id client: $client event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
+              _id
+              calendar_id
+              event_type_id
+              event_name
+              day
+              begin
+              len
+              client {
+                last_name
+                first_name
+                year
+                phone
+              }
+              comment
+              color
             }
         }
       `,
@@ -450,9 +484,24 @@ export class CalendarService {
   createEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
     return this.apollo.mutate<{createCalendarEvent: ICalendarEvent}, ICalendarEvent>({
       mutation: gql`
-        mutation($calendar_id: ID! $name: String! event_type_id: ID!  day: Date! begin: Int!) {
-          createCalendarEvent(calendar_id: $calendar_id name: $name event_type_id: $event_type_id day: $day begin: $begin) {
-              _id  calendar_id event_type_id event_name day begin len name color
+        mutation($calendar_id: ID! $client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String!) {
+          createCalendarEvent(calendar_id: $calendar_id client: $client
+            event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
+              _id
+              calendar_id
+              event_type_id
+              event_name
+              day
+              begin
+              len
+              client {
+                last_name
+                first_name
+                year
+                phone
+              }
+              comment
+              color
             }
         }
       `,

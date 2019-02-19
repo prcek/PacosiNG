@@ -17,6 +17,7 @@ import {
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 
 // The GraphQL schema
+// tslint:disable:max-line-length
 const typeDefs = gql`
   scalar Date
   scalar Time
@@ -55,8 +56,9 @@ const typeDefs = gql`
     deleteCalendarEventType(_id: ID!): DeleteResponse!
 
 
-    createCalendarEvent(calendar_id: ID! name: String! event_type_id: ID!  day: Date! begin: Int!): CalendarEvent!
-    updateCalendarEvent(_id: ID! name: String! event_type_id: ID!  day: Date! begin: Int!): CalendarEvent!
+
+    createCalendarEvent(calendar_id: ID! client: CalendarEventClientInput! event_type_id: ID! day: Date! begin: Int! comment: String!): CalendarEvent!
+    updateCalendarEvent(_id: ID! client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String!): CalendarEvent!
     deleteCalendarEvent(_id: ID!): DeleteResponse!
 
   }
@@ -123,14 +125,28 @@ const typeDefs = gql`
     _id: ID
     calendar_id: ID
     event_type_id: ID
-    name: String
+    client: CalendarEventClient
+    comment: String
     color: String
     event_name: String
     day: Date
     begin: Int
     len: Int
   }
-
+  input CalendarEventClientInput {
+    first_name: String
+    last_name: String
+    title: String
+    phone: String
+    year: Int
+  }
+  type CalendarEventClient {
+    first_name: String
+    last_name: String
+    title: String
+    phone: String
+    year: Int
+  }
 `;
 
 interface IContext extends IContextBase {
@@ -227,11 +243,11 @@ const resolvers: IResolvers<any, IContext> = {
     deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteET(_id),
 
-    createCalendarEvent: (_, { calendar_id, event_type_id, name, day, begin  }, { dataSources }): Promise<ICalendarEvent> =>
-        dataSources.calendar.createEvent(calendar_id, event_type_id, name, day, begin),
+    createCalendarEvent: (_, { calendar_id, event_type_id, client, day, begin, comment }, { dataSources }): Promise<ICalendarEvent> =>
+        dataSources.calendar.createEvent(calendar_id, event_type_id, client, day, begin, comment),
 
-    updateCalendarEvent: (_, { _id, event_type_id, name, day, begin }, { dataSources }): Promise<ICalendarEvent> =>
-      dataSources.calendar.updateEvent(_id, event_type_id, name, day, begin),
+    updateCalendarEvent: (_, { _id, event_type_id, client, day, begin, comment }, { dataSources }): Promise<ICalendarEvent> =>
+      dataSources.calendar.updateEvent(_id, event_type_id, client, day, begin, comment),
 
     deleteCalendarEvent: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteEvent(_id),

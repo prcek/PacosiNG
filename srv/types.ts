@@ -46,11 +46,19 @@ export interface ICalendarEvent {
     calendar_id: any;
     event_type_id: any;
     event_name: string;
-    name: string;
+    client: ICalendarEventClient;
     color: string;
     day: Date;
     begin: number;
     len: number;
+}
+
+export interface ICalendarEventClient {
+    first_name: string;
+    last_name: string;
+    title: string;
+    phone: string;
+    year: number;
 }
 
 export interface ICalendarStatusDay {

@@ -120,11 +120,18 @@ function createModels(connection: mongoose.Connection) {
             required: true
         },
         event_name: String,
-        name: String,
+        client: {
+            first_name: String,
+            last_name: String,
+            title: String,
+            phone: String,
+            year: Number
+        },
         color: String,
         day: Date,
         begin: Number,
         len: Number,
+        comment: String
     });
     const CalendarEventModel = connection.model<ICalendarEventModel>('CalendarEvent',
         calendarEventSchema, 'calendar_events');

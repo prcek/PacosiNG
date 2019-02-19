@@ -4,7 +4,7 @@
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Úprava události "{{event?.name}}" / "{{event?.event_name}}" kalendáře "{{calendar?.name}}" </h1>
+    <h1>Úprava události "{{event?.client.last_name}}" / "{{event?.event_name}}" kalendáře "{{calendar?.name}}" </h1>
    
     <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" (saved)="goBack()"></app-calendar-event-editor>
       

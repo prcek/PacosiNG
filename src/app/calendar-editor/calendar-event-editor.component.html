@@ -5,32 +5,50 @@
           <ng-template #newevent>
               <mat-card-title> Nova událost</mat-card-title>
           </ng-template>
-          <mat-card-title *ngIf="event; else newevent">Události {{event?.name}}</mat-card-title>
+          <mat-card-title *ngIf="event; else newevent">Událost {{event?.client.last_name}}</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
-        <mat-form-field>
-            <mat-label>Jméno</mat-label>
-            <input matInput type="text" id="name" formControlName="name"> 
-        </mat-form-field>
-    
+
+
+        <ng-container formGroupName="client">
+            <mat-form-field>
+              <mat-label>Přijmení</mat-label>
+              <input matInput type="text" id="last_name" formControlName="last_name" required> 
+            </mat-form-field>
+          <mat-form-field>
+              <mat-label>Jméno</mat-label>
+              <input matInput type="text" id="first_name" formControlName="first_name"> 
+          </mat-form-field>
+          <mat-form-field>
+              <mat-label>Rok narození</mat-label>
+              <input matInput type="number" id="year" formControlName="year"> 
+          </mat-form-field>      
+          <mat-form-field>
+              <mat-label>Telefon</mat-label>
+              <input matInput type="text" id="phone" formControlName="phone"> 
+          </mat-form-field>
+        </ng-container>
         
         <mat-form-field>
             <mat-label>Čas</mat-label>
-            <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="begin" formControlName="begin">
+            <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="begin" formControlName="begin" required>
             <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
             <app-timepicker #picker1></app-timepicker>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Typ události</mat-label>
-            <mat-select   formControlName="event_type_id">
+            <mat-select   formControlName="event_type_id" required>
                 <mat-option *ngFor="let et of event_types" [value]="et._id">
                     {{et.name}}
                   </mat-option>
             </mat-select>
         </mat-form-field>
 
-     
+        <mat-form-field>
+            <mat-label>Poznámka</mat-label>
+            <input matInput type="text" id="comment" formControlName="comment"> 
+        </mat-form-field>
 
         <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!eventForm.valid">uložit</button>
         <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
