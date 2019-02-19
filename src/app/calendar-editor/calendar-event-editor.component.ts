@@ -45,7 +45,7 @@ export class CalendarEventEditorComponent implements OnInit {
           last_name: '',
           first_name: '',
           year: null,
-          phone: null,
+          phone: '',
         },
         event_type_id: null,
         begin: this.new_time,
