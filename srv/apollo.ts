@@ -85,9 +85,9 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', '#blue', 2, 1);
     const ud3 = await dataSources.calendar.createET(cal1._id, 'ud3', '#green', 3, 1);
 
-    await dataSources.calendar.createEvent(cal1._id, ud1._id, ud1.name, 'vomacka karel', ud1.color, today, 40, ud1.len);
-    await dataSources.calendar.createEvent(cal1._id, ud2._id, ud2.name, 'duchna jiri', ud2.color, today, 43, ud2.len);
-    await dataSources.calendar.createEvent(cal1._id, ud3._id, ud3.name, 'janeckova marie', ud3.color, tom, 37, ud3.len);
+    await dataSources.calendar.createEvent(cal1._id, ud1._id, 'vomacka karel',  today, 40);
+    await dataSources.calendar.createEvent(cal1._id, ud2._id,  'duchna jiri',  today, 43);
+    await dataSources.calendar.createEvent(cal1._id, ud3._id,  'janeckova marie',  tom, 37);
 
     return true; // store_setup_res;
 }

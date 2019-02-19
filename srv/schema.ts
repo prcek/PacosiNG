@@ -54,6 +54,11 @@ const typeDefs = gql`
     updateCalendarEventType(_id: ID! name: String color: String len: Int order: Int): CalendarEventType!
     deleteCalendarEventType(_id: ID!): DeleteResponse!
 
+
+    createCalendarEvent(calendar_id: ID! name: String! event_type_id: ID!  day: Date! begin: Int!): CalendarEvent!
+    updateCalendarEvent(_id: ID! name: String! event_type_id: ID!  day: Date! begin: Int!): CalendarEvent!
+    deleteCalendarEvent(_id: ID!): DeleteResponse!
+
   }
 
   type DeleteResponse {
@@ -221,6 +226,15 @@ const resolvers: IResolvers<any, IContext> = {
 
     deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteET(_id),
+
+    createCalendarEvent: (_, { calendar_id, event_type_id, name, day, begin  }, { dataSources }): Promise<ICalendarEvent> =>
+        dataSources.calendar.createEvent(calendar_id, event_type_id, name, day, begin),
+
+    updateCalendarEvent: (_, { _id, event_type_id, name, day, begin }, { dataSources }): Promise<ICalendarEvent> =>
+      dataSources.calendar.updateEvent(_id, event_type_id, name, day, begin),
+
+    deleteCalendarEvent: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
+        dataSources.calendar.deleteEvent(_id),
 
   }
 

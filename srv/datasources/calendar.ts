@@ -114,18 +114,56 @@ export class CalendarAPI implements DataSource {
 
 
     // tslint:disable-next-line:max-line-length
-    async createEvent(calendar_id: string, event_type_id: string, event_name: string, name: string, color: string, day: Date, begin: number, len: number): Promise<ICalendarEvent> {
-        console.log('createEvent', M(day).toISOString(), event_name);
+    async createEvent(calendar_id: string, event_type_id: string,  name: string,  day: Date, begin: number): Promise<ICalendarEvent> {
+        console.log('createEvent', M(day).toISOString(), event_type_id);
+
+        const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
+        if (!event_type) {
+            throw new Error('Something bad happened');
+        }
+        if (event_type.calendar_id.toString() !== calendar_id.toString()) {
+            throw new Error('Something bad happened');
+        }
+
         return this.store.calendarEventModel.create({
             calendar_id,
             event_type_id,
-            event_name,
+            event_name: event_type.name,
             name,
-            color,
+            color: event_type.color,
             day,
             begin,
-            len
+            len: event_type.len
         });
+    }
+
+    async updateEvent(_id: string, event_type_id: string,  name: string,  day: Date, begin: number): Promise<ICalendarEvent> {
+        console.log('updateEvent', M(day).toISOString(), event_type_id);
+
+        const event = await this.store.calendarEventModel.findById(_id);
+        if (!event) {
+            throw new Error('Something bad happened');
+        }
+
+        const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
+        if (!event_type) {
+            throw new Error('Something bad happened');
+        }
+        if (event_type.calendar_id.toString() !== event.calendar_id.toString()) {
+            throw new Error('Something bad happened');
+        }
+
+        event.set({
+            event_type_id,
+            event_name: event_type.name,
+            name,
+            color: event_type.color,
+            day,
+            begin,
+            len: event_type.len
+        });
+        return event.save();
+
     }
 
     async deleteEvent(_id: string): Promise<IDeleteResponse> {
