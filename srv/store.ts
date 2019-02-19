@@ -42,6 +42,7 @@ export interface IDayOpeningHoursModel extends mongoose.Document, IDayOpeningHou
 }
 
 export interface ICalendarEventTypeModel extends mongoose.Document, ICalendarEventType {
+    overlap_check: string[];
 }
 
 export interface ICalendarEventModel extends mongoose.Document, ICalendarEvent {
@@ -131,8 +132,12 @@ function createModels(connection: mongoose.Connection) {
         day: Date,
         begin: Number,
         len: Number,
-        comment: String
+        comment: String,
+        overlap_check: [String],
     });
+
+    calendarEventSchema.index({calendar_id: 1, overlap_check: 1}, { unique: true });
+
     const CalendarEventModel = connection.model<ICalendarEventModel>('CalendarEvent',
         calendarEventSchema, 'calendar_events');
 
