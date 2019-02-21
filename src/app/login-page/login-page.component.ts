@@ -34,6 +34,7 @@ export class LoginPageComponent implements OnInit {
        if (res) {
         this.router.navigate(['/']);
        } else {
+         this.form.password = '';
          this.error = true;
        }
     });
