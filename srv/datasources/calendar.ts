@@ -26,8 +26,9 @@ export class CalendarAPI implements DataSource {
     initialize(config: DataSourceConfig<IContextBase>) {
         this.context = config.context;
     }
-    async getAllCalendars(): Promise<ICalendar[]> {
-        return this.store.calendarModel.find({});
+    async getCalendars(all: boolean = false): Promise<ICalendar[]> {
+        const q = all ? {} : {archived: {$ne: true}};
+        return this.store.calendarModel.find(q);
     }
     async getOneCalendar(_id: string): Promise<ICalendar> {
         return this.store.calendarModel.findById(_id);
@@ -60,6 +61,7 @@ export class CalendarAPI implements DataSource {
     async createCalendar(name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({
+            archived: false,
             name,
             span,
             day_begin,
@@ -67,13 +69,13 @@ export class CalendarAPI implements DataSource {
             week_days
         });
     }
-    async updateCalendar(_id: string, name: string, span: number,
+    async updateCalendar(_id: string, archived: boolean, name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         const cal = await this.store.calendarModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({name, span, day_begin, day_len, week_days});
+        cal.set({archived, name, span, day_begin, day_len, week_days});
         return cal.save();
     }
 

@@ -8,6 +8,7 @@ export interface IUser {
 
 export interface ICalendar {
     _id: any;
+    archived: boolean;
     name: string;
     span: number;
     day_len: number;

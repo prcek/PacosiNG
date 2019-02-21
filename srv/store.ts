@@ -59,6 +59,7 @@ function createModels(connection: mongoose.Connection) {
     const UserModel = connection.model<IUserModel>('User', userSchema, 'users');
 
     const calendarSchema = new mongoose.Schema({
+        archived: Boolean,
         name: String,
         span: Number,
         day_begin: Number,

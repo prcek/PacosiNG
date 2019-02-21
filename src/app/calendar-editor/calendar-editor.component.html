@@ -37,6 +37,10 @@
           </mat-select>
         </mat-form-field>
 
+        <section *ngIf="calendar" class="section">
+            <mat-checkbox class="check" id="archived" formControlName="archived">Archivovaný</mat-checkbox>
+        </section>
+
         <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!calendarForm.valid">uložit</button>
         <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
       </mat-card-content>

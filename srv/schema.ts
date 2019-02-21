@@ -27,7 +27,7 @@ const typeDefs = gql`
     "A simple type for getting started!"
     hello: String
     users: [User]
-    calendars: [Calendar]
+    calendars(all: Boolean): [Calendar]
     calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
@@ -43,7 +43,7 @@ const typeDefs = gql`
     relogin: LoginResponse!
     updateUser(login: String! password: String name: String sudo: Boolean roles: [String]): User!
     createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]!): User!
-    updateCalendar(_id: ID! name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
+    updateCalendar(_id: ID! archived: Boolean name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
     createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
     deleteOpeningHoursTemplate(_id: ID!): DeleteResponse!
@@ -82,6 +82,7 @@ const typeDefs = gql`
   }
   type Calendar {
     _id: ID
+    archived: Boolean
     name: String
     span: Int
     day_begin: Int
@@ -166,8 +167,8 @@ const resolvers: IResolvers<any, IContext> = {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
-    calendars: async (parent, args, context, info): Promise<ICalendar[]> => {
-        return await context.dataSources.calendar.getAllCalendars();
+    calendars: async (parent, {all}, context, info): Promise<ICalendar[]> => {
+        return await context.dataSources.calendar.getCalendars(all);
     },
     calendar: async (parent, { _id} , context, info): Promise<ICalendar> => {
       return await context.dataSources.calendar.getOneCalendar(_id);
@@ -216,8 +217,8 @@ const resolvers: IResolvers<any, IContext> = {
     createUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
         dataSources.user.createUser(login, password, name, sudo, roles),
 
-    updateCalendar: (_, { _id, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.updateCalendar(_id, name, span, day_begin, day_len, week_days),
+    updateCalendar: (_, { _id, archived, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.updateCalendar(_id, archived, name, span, day_begin, day_len, week_days),
 
     createCalendar: (_, { name, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
         dataSources.calendar.createCalendar(name, span, day_begin, day_len, week_days),

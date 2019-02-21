@@ -14,8 +14,6 @@ export class CalendarsPageComponent implements OnInit, OnDestroy {
   opt$: Subscription;
   all: boolean;
   calendars: ICalendar[];
-  // ohtemplates: IOpeningHoursTemplate[];
-  displayedColumns: string[] = ['name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
   constructor(private router: Router, private route: ActivatedRoute, private calendarService: CalendarService) { }
 
   ngOnInit() {
@@ -25,7 +23,6 @@ export class CalendarsPageComponent implements OnInit, OnDestroy {
       tap(all => this.all = all),
       switchMap((all: boolean) => this.calendarService.getCalendars(all))
     ).subscribe(calendars => this.calendars = calendars);
-    // this.getOHTemplates();
   }
   ngOnDestroy(): void {
     this.opt$.unsubscribe();
@@ -33,18 +30,14 @@ export class CalendarsPageComponent implements OnInit, OnDestroy {
   onAll(event: MatSlideToggleChange) {
     this.router.navigate([{ all: event.checked ? 'yes' : 'no' }]);
   }
-  /*
-  getCalendars(): void {
-    this.calendarService.getCalendars()
-      .subscribe(calendars => this.calendars = calendars);
+  get displayedColumns(): string[] {
+    if (this.all) {
+      return ['archived', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
+    } else {
+      return ['name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
+    }
   }
-  */
-  /*
-  getOHTemplates(): void {
-    this.calendarService.getOpeningHoursTemplates()
-      .subscribe(oht => this.ohtemplates = oht);
-  }
-  */
+
   onEdit(cal: ICalendar) {
     this.router.navigate(['/calendars/edit', cal._id]);
   }

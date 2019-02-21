@@ -26,6 +26,7 @@ export class CalendarEditorComponent implements OnInit {
     day_begin: new FormControl(7 * 4, { validators: [Validators.required, Validators.min(0), Validators.max(60)]}),
     day_len: new FormControl(10 * 4, { validators: [Validators.required, Validators.min(1), Validators.max(100)]}),
     week_days: new FormControl([1, 2, 3, 4, 5], {validators: Validators.required}),
+    archived: new FormControl(false),
   });
   error_msg: string;
   submitted = false;
@@ -44,6 +45,7 @@ export class CalendarEditorComponent implements OnInit {
         day_begin: this.calendar.day_begin,
         day_len: this.calendar.day_len,
         week_days: this.calendar.week_days,
+        archived: this.calendar.archived,
       });
     }
   }

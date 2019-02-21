@@ -8,6 +8,7 @@ import * as R from 'ramda';
 
 export interface ICalendar {
   _id: string;
+  archived: boolean;
   name: string;
   span: number;
   day_begin: number;
@@ -148,7 +149,8 @@ export class CalendarService {
   getCalendars(all: boolean = false): Observable<ICalendar[]> {
     console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
-      query: gql`{ calendars { _id name span day_begin day_len week_days }}`,
+      query: gql`query($all:Boolean) { calendars(all:$all) { _id archived name span day_begin day_len week_days }}`,
+      variables: {all},
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendars));
   }
   getCalendar(_id: string): Observable<ICalendar> {
@@ -157,9 +159,9 @@ export class CalendarService {
   updateCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
       mutation: gql`
-        mutation($_id: ID! $name: String $span: Int $day_begin: Int $day_len: Int $week_days: [Int]) {
-          updateCalendar(_id: $_id name: $name span: $span
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id name span day_begin day_len week_days }
+        mutation($_id: ID! $archived: Boolean $name: String $span: Int $day_begin: Int $day_len: Int $week_days: [Int]) {
+          updateCalendar(_id: $_id name: $name archived: $archived span: $span
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id archived name span day_begin day_len week_days }
         }
       `,
       variables: {
@@ -173,7 +175,7 @@ export class CalendarService {
       mutation: gql`
         mutation($name: String! $span: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!) {
           createCalendar(name: $name span: $span
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id name span day_begin day_len week_days }
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { _id archived name span day_begin day_len week_days }
         }
       `,
       variables: {
@@ -225,7 +227,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, templates: IOpeningHoursTemplate[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
-          _id name span day_begin day_len week_days
+          _id archived name span day_begin day_len week_days
         }
         templates: calendarOpeningHoursTemplates(calendar_id:$calendar_id) {
           _id
@@ -243,7 +245,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, event_types: ICalendarEventType[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
-          _id name span day_begin day_len week_days
+          _id archived name span day_begin day_len week_days
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
           _id
@@ -266,7 +268,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
-          _id name span day_begin day_len week_days
+          _id archived name span day_begin day_len week_days
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
@@ -317,7 +319,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[], event_types: ICalendarEventType[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
-          _id name span day_begin day_len week_days
+          _id archived name span day_begin day_len week_days
         }
         events: calendarEvents(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
