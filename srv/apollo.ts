@@ -56,12 +56,13 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
 
 export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const dataSources = createDataSources(store);
-    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super']);
-    console.log('dummy user created', auser);
+
     const cal1 = await dataSources.calendar.createCalendar('cal1', 15, 4 * 7, 4 * 10, [1, 2, 3, 4, 5]);
     const cal2 = await dataSources.calendar.createCalendar('cal2', 10, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
     const cal3 = await dataSources.calendar.createCalendar('cal3', 30, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
 
+    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super'], []);
+    const duser = await dataSources.user.createUser('doctor', 'secret', 'Doctor', false, ['view'], [cal1._id]);
 
     const c1oht1  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 40, 5);
     const c1oht2  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 50, 5);

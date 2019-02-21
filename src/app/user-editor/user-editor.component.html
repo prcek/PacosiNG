@@ -31,6 +31,17 @@
                 <input matInput type="text" id="name" formControlName="name" required> 
             </mat-form-field>
 
+
+            <mat-form-field>
+                    <mat-label>kalendáře</mat-label>
+                    <mat-select placeholder="kalendáře"  formControlName="calendar_ids" multiple>
+                        <mat-option *ngFor="let cal of all_calendars" [value]="cal._id">
+                            {{cal.name}}
+                          </mat-option>
+                    </mat-select>
+            </mat-form-field>
+       
+
             <mat-form-field>
               <mat-label>práva</mat-label>
               <mat-select placeholder="roles"  formControlName="roles" multiple required>

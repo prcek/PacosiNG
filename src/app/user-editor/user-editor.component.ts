@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { IUser, UserService } from '../user.service';
+import { ICalendar } from '../calendar.service';
 
 export interface Role {
   value: string;
@@ -21,6 +22,7 @@ export const passwordValidator: ValidatorFn = (control: FormGroup): ValidationEr
 })
 export class UserEditorComponent implements OnInit {
   @Output() saved = new EventEmitter<IUser>(true);
+  @Input() all_calendars:  ICalendar[];
   @Input() user: IUser;
   @Input() new_mode: boolean;
   hide1 = true;
@@ -38,6 +40,7 @@ export class UserEditorComponent implements OnInit {
     password_copy: new FormControl(''),
     sudo: new FormControl(false),
     roles: new FormControl([], {validators: Validators.required}),
+    calendar_ids: new FormControl([], {validators: Validators.required}),
   }, { validators: passwordValidator });
   error_msg: string;
   submitted = false;
@@ -56,6 +59,7 @@ export class UserEditorComponent implements OnInit {
         name: this.user.name,
         sudo: this.user.sudo,
         roles: this.user.roles,
+        calendar_ids: this.user.calendar_ids,
         password: null,
         password_copy: null
       });

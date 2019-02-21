@@ -55,6 +55,7 @@ function createModels(connection: mongoose.Connection) {
         name: String,
         sudo: Boolean,
         roles: [String],
+        calendar_ids: [{type: mongoose.Schema.Types.ObjectId, ref: 'Calendar'}]
     });
     const UserModel = connection.model<IUserModel>('User', userSchema, 'users');
 

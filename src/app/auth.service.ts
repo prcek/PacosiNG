@@ -41,6 +41,7 @@ export interface IUserInfo {
   sudo: boolean;
   name: string;
   roles: string[];
+  calendar_ids: string[];
 }
 
 const AUTH_USER_INFO_KEY = makeStateKey<IUserInfo>('auth_user_info');
@@ -132,6 +133,7 @@ export class AuthService {
               sudo
               roles
               name
+              calendar_ids
             }
           }
         }
@@ -190,6 +192,7 @@ export class AuthService {
               sudo
               roles
               name
+              calendar_ids
             }
           }
         }

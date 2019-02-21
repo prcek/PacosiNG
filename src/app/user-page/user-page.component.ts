@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { UserService, IUser } from '../user.service';
+import { ICalendar, CalendarService } from '../calendar.service';
 
 @Component({
   selector: 'app-user-page',
@@ -10,15 +11,20 @@ import { UserService, IUser } from '../user.service';
 })
 export class UserPageComponent implements OnInit {
   user: IUser;
-  constructor(private route: ActivatedRoute, private location: Location, private userService: UserService) { }
+  calendars: ICalendar[];
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private userService: UserService,
+    private calendarService: CalendarService) { }
 
   ngOnInit() {
     this.getUser();
   }
   getUser(): void {
     const login = this.route.snapshot.paramMap.get('id');
-    this.userService.getUser(login)
-      .subscribe(user => this.user = user);
+    this.userService.getUser(login).subscribe(user => this.user = user);
+    this.calendarService.getCalendars().subscribe(cals => this.calendars = cals);
   }
   goBack(): void {
     this.location.back();

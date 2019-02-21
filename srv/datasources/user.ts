@@ -48,26 +48,29 @@ export class UserAPI implements DataSource {
     async getMe(): Promise<IUser> {
         return this.context.user;
     }
-    async createUser(login: string, password: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
+    // tslint:disable-next-line:max-line-length
+    async createUser(login: string, password: string, name: string, sudo: boolean, roles: string[], calendar_ids: string[]): Promise<IUser> {
         return this.store.userModel.create({
             login,
             password: encryptPassword(password),
             name,
             sudo,
-            roles
+            roles,
+            calendar_ids
         });
     }
-    async updateUser(login: string, password: string, name: string, sudo: boolean, roles: string[]): Promise<IUser> {
+    // tslint:disable-next-line:max-line-length
+    async updateUser(login: string, password: string, name: string, sudo: boolean, roles: string[], calendar_ids: string[]): Promise<IUser> {
         const user = await this.store.userModel.findOne({login});
         if (!user) {
             throw new Error('Something bad happened');
         }
         if (password) {
             console.log('updateUser with new password');
-            user.set({name, password: encryptPassword(password), sudo, roles});
+            user.set({name, password: encryptPassword(password), sudo, roles, calendar_ids});
         }  else {
             console.log('updateUser without password');
-            user.set({name, sudo, roles});
+            user.set({name, sudo, roles, calendar_ids});
         }
         return user.save();
     }
@@ -82,7 +85,7 @@ export class UserAPI implements DataSource {
         }
         const token: IToken = {
             version: TOKEN_VERSION,
-            user: { login, name: user.name, roles: user.roles, sudo: user.sudo},
+            user: { login, name: user.name, roles: user.roles, sudo: user.sudo, calendar_ids: user.calendar_ids},
         };
         const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
         return {ok: true, token: stoken, user: token.user};
@@ -97,7 +100,7 @@ export class UserAPI implements DataSource {
             }
             const token: IToken = {
                 version: TOKEN_VERSION,
-                user: { login, name: user.name, roles: user.roles, sudo: user.sudo},
+                user: { login, name: user.name, roles: user.roles, sudo: user.sudo, calendar_ids: user.calendar_ids},
             };
             const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
             return {ok: true, token: stoken, user: token.user};

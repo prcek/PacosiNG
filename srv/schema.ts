@@ -41,8 +41,8 @@ const typeDefs = gql`
   type Mutation {
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
-    updateUser(login: String! password: String name: String sudo: Boolean roles: [String]): User!
-    createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]!): User!
+    updateUser(login: String! password: String name: String sudo: Boolean roles: [String] calendar_ids: [String]): User!
+    createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]! calendar_ids: [String]!): User!
     updateCalendar(_id: ID! archived: Boolean name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
     createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
@@ -79,6 +79,7 @@ const typeDefs = gql`
     name: String
     sudo: Boolean
     roles: [String]
+    calendar_ids: [String]
   }
   type Calendar {
     _id: ID
@@ -211,11 +212,11 @@ const resolvers: IResolvers<any, IContext> = {
     relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
         dataSources.user.relogin(),
 
-    updateUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
-        dataSources.user.updateUser(login, password, name, sudo, roles),
+    updateUser: (_, { login, password, name, sudo, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
+        dataSources.user.updateUser(login, password, name, sudo, roles, calendar_ids),
 
-    createUser: (_, { login, password, name, sudo, roles }, { dataSources }): Promise<IUser> =>
-        dataSources.user.createUser(login, password, name, sudo, roles),
+    createUser: (_, { login, password, name, sudo, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
+        dataSources.user.createUser(login, password, name, sudo, roles, calendar_ids),
 
     updateCalendar: (_, { _id, archived, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
         dataSources.calendar.updateCalendar(_id, archived, name, span, day_begin, day_len, week_days),

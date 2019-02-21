@@ -4,6 +4,7 @@ export interface IUser {
     name: string;
     sudo: boolean;
     roles: string[];
+    calendar_ids: string[];
 }
 
 export interface ICalendar {

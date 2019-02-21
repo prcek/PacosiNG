@@ -11,6 +11,7 @@ export interface IUser {
   sudo: boolean;
   password?: string;
   roles: string[];
+  calendar_ids: string[];
 }
 
 // const USERS: IUser[] = [
@@ -28,7 +29,7 @@ export class UserService {
   getUsers(): Observable<IUser[]> {
     console.log('UserService.getUsers');
     return this.apollo.query<{users: IUser[]}>({
-      query: gql`{ users {login name sudo roles}}`,
+      query: gql`{ users {login name sudo roles calendar_ids}}`,
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.users));
   }
   getUser(login: string): Observable<IUser> {
@@ -37,8 +38,10 @@ export class UserService {
   updateUser(user: IUser): Observable<IUser> {
     return this.apollo.mutate<{updateUser: IUser}, IUser>({
       mutation: gql`
-        mutation($login: String! $password: String $name: String $sudo: Boolean $roles: [String]) {
-          updateUser(login: $login password: $password name: $name sudo: $sudo roles: $roles) { login name sudo roles }
+        mutation($login: String! $password: String $name: String $sudo: Boolean $roles: [String] $calendar_ids: [String]) {
+          updateUser(login: $login password: $password name: $name sudo: $sudo roles: $roles calendar_ids: $calendar_ids) {
+            login name sudo roles calendar_ids
+          }
         }
       `,
       variables: {
@@ -50,8 +53,10 @@ export class UserService {
   createUser(user: IUser): Observable<IUser> {
     return this.apollo.mutate<{createUser: IUser}, IUser>({
       mutation: gql`
-        mutation($login: String! $password: String! $name: String! $sudo: Boolean! $roles: [String]!) {
-          createUser(login: $login password: $password name: $name sudo: $sudo roles: $roles) { login name sudo roles }
+        mutation($login: String! $password: String! $name: String! $sudo: Boolean! $roles: [String]! $calendar_ids: [String]!) {
+          createUser(login: $login password: $password name: $name sudo: $sudo roles: $roles calendar_ids: $calendar_ids) {
+            login name sudo roles calendar_ids
+          }
         }
       `,
       variables: {
