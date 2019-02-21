@@ -35,7 +35,6 @@
             <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
             <app-timepicker #picker1></app-timepicker>
         </mat-form-field>
-
         <mat-form-field>
             <mat-label>Typ události</mat-label>
             <mat-select   formControlName="event_type_id" required>
@@ -49,9 +48,11 @@
             <mat-label>Poznámka</mat-label>
             <input matInput type="text" id="comment" formControlName="comment"> 
         </mat-form-field>
-
+        <mat-error *ngIf="eventForm.errors?.overlap && (eventForm.touched || eventForm.dirty)">
+                ve zvoleném čase není volno
+        </mat-error>
         <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!eventForm.valid">uložit</button>
-        <div *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</div>
+        <mat-error *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</mat-error>
       </mat-card-content>
     </form>
 </mat-card>

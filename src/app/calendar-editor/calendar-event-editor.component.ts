@@ -1,7 +1,41 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ICalendarEvent, ICalendar, ICalendarEventType, CalendarService } from '../calendar.service';
-import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective, ValidatorFn, ValidationErrors } from '@angular/forms';
 import * as M from 'moment';
+import * as R from 'ramda';
+
+/*
+export const timeIntervalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const time = control.get('time');
+  const time_end = control.get('time_end');
+  return time && time_end && time.valid && time_end.valid && time_end.value <= time.value ? {'invalidInterval': true} : null;
+};
+*/
+
+function overlapValidator(free_slots: number[], event_types: ICalendarEventType[]): ValidatorFn  {
+  const v: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+    const begin = control.get('begin');
+    const event_type_id = control.get('event_type_id');
+    if (begin && begin.valid && event_type_id && event_type_id.valid) {
+      const event_type = R.find<ICalendarEventType>(R.propEq('_id', event_type_id.value), event_types);
+      if (!event_type) {
+        return {'missing_event_type': true};
+      }
+      const bv = <number> begin.value;
+      const required_slots =  R.range(bv, bv + event_type.len);
+      const ct = R.contains(R.__, free_slots);
+      if ( R.all(ct, required_slots) ) {
+        return null;
+      }
+      return {'overlap': true};
+    }
+
+
+    return null;
+  };
+  return v;
+}
+
 @Component({
   selector: 'app-calendar-event-editor',
   templateUrl: './calendar-event-editor.component.html',
@@ -11,7 +45,7 @@ export class CalendarEventEditorComponent implements OnInit {
   @Output() saved = new EventEmitter<ICalendarEvent>();
   @Input() calendar: ICalendar;
   @Input() event: ICalendarEvent;
-  @Input() event_types: ICalendarEventType;
+  @Input() event_types: ICalendarEventType[];
   @Input() free_slots: number[];
   @Input() new_mode: boolean;
   @Input() new_day: Date;
@@ -66,6 +100,7 @@ export class CalendarEventEditorComponent implements OnInit {
         comment: this.event.comment
       });
     }
+    this.eventForm.setValidators(overlapValidator(this.free_slots, this.event_types));
   }
   onSubmit(formDirective: FormGroupDirective) {
     if (this.new_mode) {
