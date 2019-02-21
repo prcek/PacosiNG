@@ -11,10 +11,13 @@ const smonthNames = ['ledna', 'února', 'března', 'dubna', 'května', 'června'
 })
 export class CzdatePipe implements PipeTransform {
 
-  transform(date: Date, args?: any): string {
-    if (date) {
-        return dayNames[date.getDay()] + ' ' + date.getDate() + '. ' + smonthNames[date.getMonth()] + ' ' + date.getFullYear();
+  transform(value: Date | string, args?: any): string {
+
+    if (value) {
+      const date = (value instanceof Date) ? value : M.utc(value).toDate();
+      return dayNames[date.getDay()] + ' ' + date.getDate() + '. ' + smonthNames[date.getMonth()] + ' ' + date.getFullYear();
     }
+
     return '<missing date value>';
   }
 
