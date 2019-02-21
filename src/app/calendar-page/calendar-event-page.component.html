@@ -6,7 +6,7 @@
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <h1>Úprava události "{{event?.client.last_name}}" / "{{event?.event_name}}" kalendáře "{{calendar?.name}}" dne {{event?.day | czdate}}</h1>
    
-    <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" (saved)="goBack()"></app-calendar-event-editor>
+    <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
       
     <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>

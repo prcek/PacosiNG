@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CalendarService, ICalendar, ICalendarEvent, ICalendarEventType } from '../calendar.service';
+import { CalendarService, ICalendar, ICalendarEvent, ICalendarEventType, ICalendarDaySlot } from '../calendar.service';
 import * as M from 'moment';
+import * as R from 'ramda';
 
 @Component({
   selector: 'app-calendar-event-page',
@@ -13,6 +14,7 @@ export class CalendarEventPageComponent implements OnInit {
   calendar: ICalendar;
   event: ICalendarEvent;
   event_types: ICalendarEventType[];
+  slots: ICalendarDaySlot[];
   day: Date;
   loading = true;
   constructor(
@@ -26,6 +28,21 @@ export class CalendarEventPageComponent implements OnInit {
     this.getCalendarWithEvent();
   }
 
+  get free_slots(): number[] {
+    if (this.slots) {
+      return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(s => {
+        if (s.empty) {
+          return true;
+        }
+        if (s.event && this.event && s.event._id === this.event._id) {
+          return true;
+        }
+        return false;
+      }, this.slots));
+    }
+    return [];
+  }
+
   getCalendarWithEvent() {
     const id = this.route.snapshot.paramMap.get('id');
     const event_id = this.route.snapshot.paramMap.get('e_id');
@@ -35,6 +52,7 @@ export class CalendarEventPageComponent implements OnInit {
         this.calendar = d.calendar;
         this.event = d.event;
         this.event_types = d.event_types;
+        this.slots = d.slots;
         // this.events = d.event; this.ohs = d.ohs; this.slots = d.slots;
         this.loading = false;
       });

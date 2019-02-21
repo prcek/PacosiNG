@@ -12,6 +12,7 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() calendar: ICalendar;
   @Input() event: ICalendarEvent;
   @Input() event_types: ICalendarEventType;
+  @Input() free_slots: number[];
   @Input() new_mode: boolean;
   @Input() new_day: Date;
   @Input() new_time: number;
