@@ -61,6 +61,7 @@ import { CalendarEventsPageComponent } from './calendar-page/calendar-events-pag
 import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.component';
 import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
 import { CalendarEventEditorComponent } from './calendar-editor/calendar-event-editor.component';
+import { CzdatePipe } from './pipes/czdate.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,7 +99,8 @@ import { CalendarEventEditorComponent } from './calendar-editor/calendar-event-e
     CalendarEventsPageComponent,
     CalendarEventPageComponent,
     CalendarEventNewPageComponent,
-    CalendarEventEditorComponent
+    CalendarEventEditorComponent,
+    CzdatePipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
