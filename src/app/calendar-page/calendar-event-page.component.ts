@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 import { CalendarService, ICalendar, ICalendarEvent, ICalendarEventType, ICalendarDaySlot } from '../calendar.service';
 import * as M from 'moment';
 import * as R from 'ramda';
+import { MatDialog } from '@angular/material';
+import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
 
 @Component({
   selector: 'app-calendar-event-page',
@@ -20,7 +22,8 @@ export class CalendarEventPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -57,7 +60,25 @@ export class CalendarEventPageComponent implements OnInit {
         this.loading = false;
       });
   }
-
+  onDelete() {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '450px',
+      data: { title: 'Smazání události', content: 'opravdu smazat událost?!' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.calendarService.deleteEvent(this.event._id)
+          .subscribe(r => {
+            if (r.ok) {
+              this.location.back();
+              // this.getCalendarWithEvent();
+            } else {
+              alert('chyba');
+            }
+          });
+      }
+    });
+  }
   goBack(): void {
     this.location.back();
   }
