@@ -3,14 +3,14 @@
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <h1>Události kalendáře {{calendar?.name}}</h1>
-    <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start">
+    <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start" >
         <div class="leftpanel" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
             <app-daycard [date]="day"></app-daycard>
             <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
         </div>
-        <div class="rightpanel" fxFlex="5 1 auto">
-            <div fxLayout="row" *ngFor="let slot of slots">
-                <div class="time mat-title"> {{slot.slot | tstime:calendar.span }} </div> <div class="name mat-title" fxFlex="1 1 auto" (click)="onSlot(slot)"> {{slot.event?.client.first_name}}</div>
+        <div class="rightpanel mat-elevation-z8" fxFlex="5 1 auto">
+            <div fxLayout="row" *ngFor="let slot of slots" class="boxitem">
+                <div class="time mat-title"> {{slot.slot | tstime:calendar.span }} </div> <div class="name mat-title" fxFlex="1 1 auto" (click)="onSlot(slot)"> {{slot.event?.client.last_name}} {{slot.event?.client.first_name}}</div>
             </div> 
         </div>
       </div>
