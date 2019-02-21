@@ -145,8 +145,8 @@ const CALENDARS: ICalendar[] = [
 export class CalendarService {
 
   constructor(private apollo: Apollo) { }
-  getCalendars(): Observable<ICalendar[]> {
-    console.log('CalendarService.getCalendars');
+  getCalendars(all: boolean = false): Observable<ICalendar[]> {
+    console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
       query: gql`{ calendars { _id name span day_begin day_len week_days }}`,
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendars));

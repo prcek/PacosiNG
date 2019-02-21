@@ -62,6 +62,8 @@ import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.
 import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
 import { CalendarEventEditorComponent } from './calendar-editor/calendar-event-editor.component';
 import { CzdatePipe } from './pipes/czdate.pipe';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -128,6 +130,7 @@ import { CzdatePipe } from './pipes/czdate.pipe';
     MatDialogModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatSlideToggleModule,
 // last
     GraphQLModule,
   ],
