@@ -154,7 +154,10 @@ export class CalendarService {
     }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendars));
   }
   getCalendar(_id: string): Observable<ICalendar> {
-    return this.getCalendars().pipe(switchMap(u => u), filter(u => u._id === _id));
+    return this.apollo.query<{calendar: ICalendar}>({
+      query: gql`query($_id:ID!) { calendar(_id:$_id) { _id archived name span day_begin day_len week_days }}`,
+      variables: {_id},
+    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendar));
   }
   updateCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
