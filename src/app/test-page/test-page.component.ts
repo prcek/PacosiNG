@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
+import { PdfService } from '../pdf.service';
 
 @Component({
   selector: 'app-test-page',
@@ -18,10 +19,9 @@ export class TestPageComponent implements OnInit {
   submitted = false;
   disabled = false;
   now = new Date();
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private pdf: PdfService) { }
 
   ngOnInit() {
-
   }
   onSubmit() {}
   onTest() {

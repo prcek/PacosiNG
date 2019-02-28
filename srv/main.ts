@@ -15,6 +15,7 @@ import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 import {ngExpressEngine} from '@nguniversal/express-engine';
 import { config } from './config';
 import { decodeAuthToken } from './datasources/user';
+import { createAndRegisterPdfRender } from './pdf';
 
 if (config.is_production) {
   enableProdMode();
@@ -64,7 +65,7 @@ console.log('testtoken', TEST_TOKEN);
     app.get('*.*', express.static(DIST_FOLDER, {
       maxAge: '1y'
     }));
-
+    await createAndRegisterPdfRender(app, config.is_production);
     await createAndRegisterApolloServer(app, config.is_production);
 
     app.get('*', (req, res) => {
