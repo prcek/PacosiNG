@@ -200,6 +200,12 @@ export class CalendarAPI implements DataSource {
             calendar_id: { $in: calendar_ids},
             day: { '$gte': start_date, '$lt': end_date }
         });
+
+        const events = await this.store.calendarEventModel.find({
+            calendar_id: { $in: calendar_ids},
+            day: { '$gte': start_date, '$lt': end_date }
+        });
+        const calEventsGroups = R.groupBy<ICalendarEvent>(R.prop('calendar_id'), events);
         const calGroups = R.groupBy<IDayOpeningHours>(R.prop('calendar_id'), ohs);
         const days_count = M(end_date).diff(start_date, 'days');
 
@@ -207,8 +213,31 @@ export class CalendarAPI implements DataSource {
 
         const oo = calendar_ids.map(cid => {
             const gr = R.has(cid, calGroups) ? (R.groupBy<IDayOpeningHours>((i) => M(i.day).utc().toISOString(), calGroups[cid])) : {};
-            const sdays = days.map(d => {
-                return {day: d.toDate(), any_ohs: R.has(d.toISOString(), gr)};
+            // tslint:disable-next-line:max-line-length
+            const egr = R.has(cid, calEventsGroups) ? (R.groupBy<ICalendarEvent>((i) => M(i.day).utc().toISOString(), calEventsGroups[cid])) : {};
+            const sdays = days.map(_d => {
+                const d = _d.toISOString();
+                const any_ohs = R.has(d, gr);
+                const any_event = R.has(d, egr);
+                let any_free = true;
+                if (any_ohs && any_event) {
+                    // console.log(`CS: ${cid} ${d}`);
+                    const d_ohs = gr[d];
+                    const d_events = egr[d];
+
+                    // tslint:disable-next-line:max-line-length
+                    const ohs_slots = R.uniq(R.flatten<number>(R.map<IDayOpeningHours, number[]>(oh => R.range(oh.begin, oh.begin + oh.len), d_ohs)));
+                    // tslint:disable-next-line:max-line-length
+                    const event_slots = R.uniq(R.flatten<number>(R.map<ICalendarEvent, number[]>(e => R.range(e.begin, e.begin + e.len), d_events)));
+                    const ints = R.intersection(ohs_slots, event_slots);
+                    any_free = !(ints.length === ohs_slots.length);
+                } else {
+                    if (any_event) {
+                        any_free = false;
+                        // events without ohs!!!
+                    }
+                }
+                return {day: _d.toDate(), any_ohs, any_free, any_event};
             });
             return { calendar_id: cid, days: sdays};
         });

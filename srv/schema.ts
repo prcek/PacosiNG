@@ -121,6 +121,8 @@ const typeDefs = gql`
   type CalendarStatusDay {
     day: Date
     any_ohs: Boolean
+    any_free: Boolean
+    any_event: Boolean
   }
 
   type CalendarEvent {

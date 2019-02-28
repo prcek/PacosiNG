@@ -80,7 +80,7 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     await dataSources.calendar.createOH(cal1._id, today, 40, 5);
     await dataSources.calendar.createOH(cal1._id, today, 50, 6);
     await dataSources.calendar.createOH(cal1._id, nextweek, 45, 10);
-    await dataSources.calendar.createOH(cal1._id, tom, 35, 10);
+    await dataSources.calendar.createOH(cal1._id, tom, 35, 5);
     await dataSources.calendar.createOH(cal1._id, nextweek2, 35, 10);
 
     const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', '#red', 1, 1);
@@ -93,6 +93,8 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'jiri', last_name: 'duchna', year: 1990, title: null, phone: null },  today, 43, null);
     // tslint:disable-next-line:max-line-length
     await dataSources.calendar.createEvent(cal1._id, ud3._id, { first_name: 'marie', last_name: 'janeckova', year: 1990, title: null, phone: null },  tom, 37, null);
+    // tslint:disable-next-line:max-line-length
+    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'ferda', last_name: 'mravenec', year: 2010, title: null, phone: null },  tom, 35, null);
 
     return true; // store_setup_res;
 }

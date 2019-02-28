@@ -111,6 +111,8 @@ export interface IDeleteResponse {
 export interface ICalendarDayStatus {
   day: Date;
   any_ohs: boolean;
+  any_free: boolean;
+  any_event: boolean;
 }
 export interface ICalendarStatus {
   calendar: ICalendar;
@@ -538,7 +540,7 @@ export class CalendarService {
     return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]}, {calendar_ids: string[], start_date: string, end_date: string}>({
       query: gql`query($calendar_ids: [ID]! $start_date: Date! $end_date: Date!) {
             calendarStatusDaysMulti(calendar_ids:$calendar_ids start_date:$start_date end_date: $end_date) {
-              calendar_id days { day any_ohs }
+              calendar_id days { day any_ohs any_free any_event}
             }
         }`,
       variables: {
@@ -570,7 +572,8 @@ export class CalendarService {
   convertStatuses2Grid(cals: ICalendarStatus[]): ICalendarGridInfo {
     const calendars: ICalendar[] = R.map<ICalendarStatus, ICalendar>(R.prop('calendar'), cals);
     const day_dates: string[] = R.uniq(R.flatten(R.map<ICalendarStatus, string[]>(cal => {
-      const all =  R.map((d) => ({ day: d.day, show: d.any_ohs || R.contains(M(d.day).day(), cal.calendar.week_days)}), cal.days);
+      // tslint:disable-next-line:max-line-length
+      const all =  R.map((d) => ({ day: d.day, show: d.any_ohs || d.any_event || R.contains(M(d.day).day(), cal.calendar.week_days)}), cal.days);
       return R.map(R.prop('day'), R.filter(R.propEq('show', true), all));
     }, cals))).sort();
    // console.log('day_dates', day_dates);
