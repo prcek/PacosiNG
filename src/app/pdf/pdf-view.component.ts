@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 assign(pdfMake, 'vfs', pdfFonts.pdfMake.vfs);
 
 function assign(obj: any, prop: any, value: any) {
@@ -27,8 +28,13 @@ function assign(obj: any, prop: any, value: any) {
   styleUrls: ['./pdf-view.component.css']
 })
 export class PdfViewComponent implements OnInit {
+  urldata: '';
+  safeurl: SafeResourceUrl;
+  constructor(private sanitizer: DomSanitizer) {
 
-  constructor() {
+  }
+
+  ngOnInit() {
     const dd = {
       content: [
         {
@@ -47,10 +53,14 @@ export class PdfViewComponent implements OnInit {
         }
       ]
     };
-    pdfMake.createPdf(dd).download();
-  }
-
-  ngOnInit() {
+    // pdfMake.createPdf(dd).download();
+    const pdfDocGenerator = <any> pdfMake.createPdf(dd);
+    pdfDocGenerator.getDataUrl((url) => {
+      // console.log('url:', url);
+      this.urldata = url;
+      this.safeurl = this.sanitizer.bypassSecurityTrustResourceUrl(this.urldata);
+      // console.log('url:', this.safeurl);
+    });
   }
 
 }
