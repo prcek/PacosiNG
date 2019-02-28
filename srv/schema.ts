@@ -27,7 +27,7 @@ const typeDefs = gql`
     "A simple type for getting started!"
     hello: String
     users: [User]
-    calendars(all: Boolean): [Calendar]
+    calendars(all: Boolean, ids: [ID]): [Calendar]
     calendar(_id: ID!): Calendar
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
@@ -170,8 +170,8 @@ const resolvers: IResolvers<any, IContext> = {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
-    calendars: async (parent, {all}, context, info): Promise<ICalendar[]> => {
-        return await context.dataSources.calendar.getCalendars(all);
+    calendars: async (parent, {all, ids}, context, info): Promise<ICalendar[]> => {
+        return await context.dataSources.calendar.getCalendars(all, ids);
     },
     calendar: async (parent, { _id} , context, info): Promise<ICalendar> => {
       return await context.dataSources.calendar.getOneCalendar(_id);

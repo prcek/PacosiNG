@@ -26,8 +26,13 @@ export class CalendarAPI implements DataSource {
     initialize(config: DataSourceConfig<IContextBase>) {
         this.context = config.context;
     }
-    async getCalendars(all: boolean = false): Promise<ICalendar[]> {
+    async getCalendars(all: boolean = false, ids: string[] = null): Promise<ICalendar[]> {
         const q = all ? {} : {archived: {$ne: true}};
+        if (ids !== null) {
+            console.log('getCalendars', ids);
+            const q_ids = {_id: { $in: ids}, ...q};
+            return this.store.calendarModel.find(q_ids);
+        }
         return this.store.calendarModel.find(q);
     }
     async getOneCalendar(_id: string): Promise<ICalendar> {

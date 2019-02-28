@@ -155,6 +155,15 @@ export class CalendarService {
       variables: {all},
     }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendars));
   }
+
+  getCalendarsByIds(ids: string[]): Observable<ICalendar[]> {
+    // console.log('CalendarService.getCalendars', {all});
+    return this.apollo.query<{calendars: ICalendar[]}>({
+      query: gql`query($ids:[ID]!) { calendars(ids: $ids) { _id archived name span day_begin day_len week_days }}`,
+      variables: {ids},
+    }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendars));
+  }
+
   getCalendar(_id: string): Observable<ICalendar> {
     return this.apollo.query<{calendar: ICalendar}>({
       query: gql`query($_id:ID!) { calendar(_id:$_id) { _id archived name span day_begin day_len week_days }}`,
@@ -592,7 +601,7 @@ export class CalendarService {
       map(res => res.data.calendarStatusDaysMulti)
     );
   }
-  getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
+  getAllCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
 
 
     return this.getCalendars().pipe( /* delay(3000), */
@@ -601,16 +610,21 @@ export class CalendarService {
         (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
     ) /*, tap(x => console.log('tap:', x)) */);
 
-
-/*
-      switchMap<ICalendar[], ICalendarStatusR[]>(
-        (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
-    //  (i, o) => o.map(cs => ({ calendar: R.find(R.propEq('_id', cs.calendar_id), i), days: cs.days }))
-      ),
-      tap(x => console.log('tap:', x)));
-    return of([]);
-    */
   }
+
+  getCalendarsStatus(cal_ids: string[] | null, start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
+    if (cal_ids == null) {
+      return this.getAllCalendarsStatus(start_date, end_date);
+    }
+
+    return this.getCalendarsByIds(cal_ids).pipe( /* delay(3000), */
+      switchMap<ICalendar[], ICalendarStatusR[], ICalendarStatus[]>(
+        (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
+        (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
+    ) /*, tap(x => console.log('tap:', x)) */);
+
+  }
+
   convertStatuses2Grid(cals: ICalendarStatus[]): ICalendarGridInfo {
     const calendars: ICalendar[] = R.map<ICalendarStatus, ICalendar>(R.prop('calendar'), cals);
     const day_dates: string[] = R.uniq(R.flatten(R.map<ICalendarStatus, string[]>(cal => {

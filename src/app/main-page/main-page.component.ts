@@ -32,14 +32,22 @@ export class MainPageComponent implements OnInit {
 
   getCalendars() {
     this.loading = true;
+    let cal_ids = null;
+    if (this.route.snapshot.paramMap.has('cals')) {
+      // cal ids forced
+      const ids = R.filter(R.compose(R.not, R.isEmpty), R.split(',', this.route.snapshot.paramMap.get('cals')));
+      if (ids.length > 0) {
+        cal_ids = ids;
+      }
+    }
     // const cal_ids: string[] = R.filter(R.compose(R.not, R.isEmpty), this.route.snapshot.paramMap.get('cals'));
     // console.log('MainPageComponent, cal_ids', cal_ids);
-    this.calendarService.getCalendarsStatus(this.selected_day, M(this.selected_day).add(10, 'days').toDate())
+    this.calendarService.getCalendarsStatus(cal_ids, this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
-          console.log('CALS', r );
+          // console.log('CALS', r );
           this.grid = this.calendarService.convertStatuses2Grid(r);
-          console.log('GRID', this.grid.days[0].day.toISOString() );
+          // console.log('GRID', this.grid.days[0].day.toISOString() );
           this.loading = false;
       } );
   }
