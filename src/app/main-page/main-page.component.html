@@ -14,7 +14,11 @@
         <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> <app-daycard [date]="day.day"></app-daycard></div>
         <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
             <mat-grid-tile *ngFor="let status of day.statuses"> 
-                <div class="calstatusbox mat-raised-button" [class.any_ohs]="status.any_ohs" fxLayoutAlign="center center" (click)="onSelect(status)"> {{status.any_free}} </div>
+                <div class="calstatusbox mat-raised-button" [class.any_ohs]="status.any_ohs" [class.busy]="!status.any_free" fxLayoutAlign="center center" (click)="onSelect(status)"> 
+                    <ng-container *ngIf="status.any_ohs">
+                        {{!status.any_free | busyfree}} 
+                    </ng-container>
+                </div>
              </mat-grid-tile> 
         </mat-grid-list>  
       </div> 
