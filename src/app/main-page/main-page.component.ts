@@ -7,7 +7,7 @@ import {
 } from '../calendar.service';
 import * as M from 'moment';
 import * as R from 'ramda';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit {
   first_day: Date;
   selected_day: Date;
   loading = true;
-  constructor(private calendarService: CalendarService, private router: Router) { }
+  constructor(private calendarService: CalendarService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.first_day = M().utc().startOf('isoWeek').toDate();
@@ -32,6 +32,8 @@ export class MainPageComponent implements OnInit {
 
   getCalendars() {
     this.loading = true;
+    // const cal_ids: string[] = R.filter(R.compose(R.not, R.isEmpty), this.route.snapshot.paramMap.get('cals'));
+    // console.log('MainPageComponent, cal_ids', cal_ids);
     this.calendarService.getCalendarsStatus(this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
