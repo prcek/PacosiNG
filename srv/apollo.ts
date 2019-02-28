@@ -46,7 +46,8 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
             settings: {
                 'request.credentials': 'include'
             }
-        }
+        },
+        engine: productionMode
     });
 
     apollo_server.applyMiddleware({app, path: '/graphql'});
