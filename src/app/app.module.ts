@@ -64,6 +64,7 @@ import { CalendarEventEditorComponent } from './calendar-editor/calendar-event-e
 import { CzdatePipe } from './pipes/czdate.pipe';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { BusyfreePipe } from './pipes/busyfree.pipe';
+import { PdfViewComponent } from './pdf/pdf-view.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { BusyfreePipe } from './pipes/busyfree.pipe';
     CalendarEventNewPageComponent,
     CalendarEventEditorComponent,
     CzdatePipe,
-    BusyfreePipe
+    BusyfreePipe,
+    PdfViewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
