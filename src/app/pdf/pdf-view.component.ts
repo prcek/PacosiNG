@@ -1,27 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PdfService } from '../pdf.service';
-assign(pdfMake, 'vfs', pdfFonts.pdfMake.vfs);
-
-function assign(obj: any, prop: any, value: any) {
-  if (typeof prop === 'string') {
-    prop = prop.split('.');
-  }
-
-  if (prop.length > 1) {
-    const e = prop.shift();
-    this.assign(obj[e] =
-      Object.prototype.toString.call(obj[e]) === '[object Object]'
-        ? obj[e]
-        : {},
-      prop,
-      value);
-  } else {
-    obj[prop[0]] = value;
-  }
-}
 
 @Component({
   selector: 'app-pdf-view',
