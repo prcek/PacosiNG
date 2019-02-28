@@ -149,17 +149,17 @@ export class CalendarService {
 
   constructor(private apollo: Apollo) { }
   getCalendars(all: boolean = false): Observable<ICalendar[]> {
-    console.log('CalendarService.getCalendars', {all});
+    // console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
       query: gql`query($all:Boolean) { calendars(all:$all) { _id archived name span day_begin day_len week_days }}`,
       variables: {all},
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendars));
+    }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendars));
   }
   getCalendar(_id: string): Observable<ICalendar> {
     return this.apollo.query<{calendar: ICalendar}>({
       query: gql`query($_id:ID!) { calendar(_id:$_id) { _id archived name span day_begin day_len week_days }}`,
       variables: {_id},
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendar));
+    }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendar));
   }
   updateCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
@@ -172,7 +172,7 @@ export class CalendarService {
       variables: {
         ...calendar
       }
-    }).pipe(tap(r => console.log('CalendarService.updateCalendar res=', r)),  map(res => res.data.updateCalendar));
+    }).pipe( /*tap(r => console.log('CalendarService.updateCalendar res=', r)),*/  map(res => res.data.updateCalendar));
   }
 
   createCalendar(calendar: ICalendar): Observable<ICalendar> {
@@ -186,7 +186,7 @@ export class CalendarService {
       variables: {
         ...calendar
       }
-    }).pipe(tap(r => console.log('CalendarService.createCalendar res=', r)),  map(res => res.data.createCalendar));
+    }).pipe( /* tap(r => console.log('CalendarService.createCalendar res=', r)),*/ map(res => res.data.createCalendar));
   }
 
   createOpeningHourTemplate(oht: IOpeningHoursTemplate): Observable<IOpeningHoursTemplate> {
@@ -201,7 +201,10 @@ export class CalendarService {
       variables: {
         ...oht
       }
-    }).pipe(tap(r => console.log('CalendarService.createOpeningHoursTemplate res=', r)),  map(res => res.data.createOpeningHoursTemplate));
+    }).pipe(
+      /* tap(r => console.log('CalendarService.createOpeningHoursTemplate res=', r)),*/
+      map(res => res.data.createOpeningHoursTemplate)
+      );
   }
 
   deleteOpeningHourTemplate(_id: string): Observable<IDeleteResponse> {
@@ -217,18 +220,24 @@ export class CalendarService {
       variables: {
         _id
       }
-    }).pipe(tap(r => console.log('CalendarService.deleteOpeningHourTemplate res=', r)),  map(res => res.data.deleteOpeningHoursTemplate));
+    }).pipe(
+      // tap(r => console.log('CalendarService.deleteOpeningHourTemplate res=', r)),
+      map(res => res.data.deleteOpeningHoursTemplate)
+    );
   }
 
   getOpeningHoursTemplates(): Observable<IOpeningHoursTemplate[]> {
     console.log('CalendarService.getOpeningHoursTemplates');
     return this.apollo.query<{openingHoursTemplates: IOpeningHoursTemplate[]}>({
       query: gql`{ openingHoursTemplates { _id calendar_id week_day begin len }}`,
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.openingHoursTemplates));
+    }).pipe(
+      // tap(res => console.log('apollo res', res)),
+      map(res => res.data.openingHoursTemplates)
+    );
   }
 
   getCalendarWithOpeningHoursTemplate(_id: string): Observable<ICalendarWithOpeningHoursTemplates> {
-    console.log('CalendarService.getCalendarWithOpeningHoursTemplate');
+    // console.log('CalendarService.getCalendarWithOpeningHoursTemplate');
     return this.apollo.query<{calendar: ICalendar, templates: IOpeningHoursTemplate[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
@@ -242,11 +251,14 @@ export class CalendarService {
       variables: {
         calendar_id: _id
       }
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+    }).pipe(
+      // tap(res => console.log('apollo res', res)),
+      map(res => res.data)
+    );
   }
 
   getCalendarWithEventTypes(_id: string): Observable<ICalendarWithEventTypes> {
-    console.log('CalendarService.getCalendarWithEventTypes');
+    // console.log('CalendarService.getCalendarWithEventTypes');
     return this.apollo.query<{calendar: ICalendar, event_types: ICalendarEventType[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
@@ -260,7 +272,10 @@ export class CalendarService {
       variables: {
         calendar_id: _id
       }
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+    }).pipe(
+     // tap(res => console.log('apollo res', res)),
+      map(res => res.data)
+    );
   }
   getCalendarWithEventType(calendar_id: string, calendar_event_type_id: string): Observable<ICalendarWithEventType> {
     return this.getCalendarWithEventTypes(calendar_id).pipe(map(r => {
@@ -269,7 +284,7 @@ export class CalendarService {
   }
 
   getCalendarWithOpeningHours(_id: string, start_date: Date, end_date: Date): Observable<ICalendarWithOpeningHours> {
-    console.log('CalendarService.getCalendarWithOpeningHours');
+    // console.log('CalendarService.getCalendarWithOpeningHours');
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
@@ -285,7 +300,7 @@ export class CalendarService {
         start_date: M(start_date).format('YYYY-MM-DD'),
         end_date: M(end_date).format('YYYY-MM-DD'),
       }
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data));
+    }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data));
   }
 
   _convertEvents2List(calendar: ICalendar, events: ICalendarEvent[], ohs: IOpeningHours[]): ICalendarDaySlot[] {
@@ -319,7 +334,7 @@ export class CalendarService {
   getCalendarWithEvents(_id: string, day: Date): Observable<ICalendarWithEvents> {
     const start_date = M(day).utc().startOf('day').format('YYYY-MM-DD');
     const end_date = M(day).utc().startOf('day').add(1, 'day').format('YYYY-MM-DD');
-    console.log('CalendarService.getCalendarWithEvents', day, start_date, end_date);
+    // console.log('CalendarService.getCalendarWithEvents', day, start_date, end_date);
     // tslint:disable-next-line:max-line-length
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[], event_types: ICalendarEventType[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
@@ -358,7 +373,7 @@ export class CalendarService {
         end_date
       }
     // tslint:disable-next-line:max-line-length
-    }).pipe(tap(res => console.log('apollo res', res)),
+    }).pipe(  // tap(res => console.log('apollo res', res)),
         map(res => {
           return {
             calendar: res.data.calendar,
@@ -390,7 +405,10 @@ export class CalendarService {
         ...oh,
         day_as_string: M(oh.day).format('YYYY-MM-DD')
       }
-    }).pipe(tap(r => console.log('CalendarService.createOpeningHour res=', r)),  map(res => res.data.createOpeningHours));
+    }).pipe(
+      // tap(r => console.log('CalendarService.createOpeningHour res=', r)),
+      map(res => res.data.createOpeningHours)
+    );
   }
 
   deleteOpeningHours(_id: string): Observable<IDeleteResponse> {
@@ -406,7 +424,10 @@ export class CalendarService {
       variables: {
         _id
       }
-    }).pipe(tap(r => console.log('CalendarService.deleteOpeningHours res=', r)),  map(res => res.data.deleteOpeningHours));
+    }).pipe(
+      // tap(r => console.log('CalendarService.deleteOpeningHours res=', r)),
+      map(res => res.data.deleteOpeningHours)
+    );
   }
 
   updateEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
@@ -422,7 +443,10 @@ export class CalendarService {
       variables: {
         ...event_type
       }
-    }).pipe(tap(r => console.log('CalendarService.updateEventType res=', r)),  map(res => res.data.updateCalendarEventType));
+    }).pipe(
+      // tap(r => console.log('CalendarService.updateEventType res=', r)),
+      map(res => res.data.updateCalendarEventType)
+    );
   }
 
   createEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
@@ -438,7 +462,10 @@ export class CalendarService {
       variables: {
         ...event_type
       }
-    }).pipe(tap(r => console.log('CalendarService.createEventType res=', r)),  map(res => res.data.createCalendarEventType));
+    }).pipe(
+      // tap(r => console.log('CalendarService.createEventType res=', r)),
+      map(res => res.data.createCalendarEventType)
+    );
   }
 
   deleteEventType(_id: string): Observable<IDeleteResponse> {
@@ -454,7 +481,10 @@ export class CalendarService {
       variables: {
         _id
       }
-    }).pipe(tap(r => console.log('CalendarService.deleteEventType res=', r)),  map(res => res.data.deleteCalendarEventType));
+    }).pipe(
+      // tap(r => console.log('CalendarService.deleteEventType res=', r)),
+      map(res => res.data.deleteCalendarEventType)
+    );
   }
 
 
@@ -485,7 +515,10 @@ export class CalendarService {
       variables: {
         ...event
       }
-    }).pipe(tap(r => console.log('CalendarService.updateEvent res=', r)),  map(res => res.data.updateCalendarEvent));
+    }).pipe(
+      // tap(r => console.log('CalendarService.updateEvent res=', r)),
+      map(res => res.data.updateCalendarEvent)
+    );
   }
 
   createEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
@@ -515,7 +548,10 @@ export class CalendarService {
       variables: {
         ...event
       }
-    }).pipe(tap(r => console.log('CalendarService.createEvent res=', r)),  map(res => res.data.createCalendarEvent));
+    }).pipe(
+      // tap(r => console.log('CalendarService.createEvent res=', r)),
+      map(res => res.data.createCalendarEvent)
+    );
   }
 
   deleteEvent(_id: string): Observable<IDeleteResponse> {
@@ -531,7 +567,10 @@ export class CalendarService {
       variables: {
         _id
       }
-    }).pipe(tap(r => console.log('CalendarService.deleteEvent res=', r)),  map(res => res.data.deleteCalendarEvent));
+    }).pipe(
+      // tap(r => console.log('CalendarService.deleteEvent res=', r)),
+      map(res => res.data.deleteCalendarEvent)
+    );
   }
 
 
@@ -548,7 +587,10 @@ export class CalendarService {
         start_date: M(start_date).format('YYYY-MM-DD'),
         end_date: M(end_date).format('YYYY-MM-DD'),
       }
-    }).pipe(tap(res => console.log('apollo res', res)), map(res => res.data.calendarStatusDaysMulti));
+    }).pipe(
+      // tap(res => console.log('apollo res', res)),
+      map(res => res.data.calendarStatusDaysMulti)
+    );
   }
   getCalendarsStatus(start_date: Date, end_date: Date): Observable<ICalendarStatus[]> {
 
@@ -557,7 +599,7 @@ export class CalendarService {
       switchMap<ICalendar[], ICalendarStatusR[], ICalendarStatus[]>(
         (cals) => this.getCalendarsStatus_(cals.map(c => c._id), start_date, end_date),
         (cals , o) => o.map(cs => ({ calendar: R.find((c) => c._id === cs.calendar_id, cals) , days: cs.days}))
-      ), tap(x => console.log('tap:', x)));
+    ) /*, tap(x => console.log('tap:', x)) */);
 
 
 /*
