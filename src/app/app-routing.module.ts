@@ -17,11 +17,12 @@ import { CalendarEtEditPageComponent } from './calendar-page/calendar-et-edit-pa
 import { CalendarEventsPageComponent } from './calendar-page/calendar-events-page.component';
 import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.component';
 import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
+import { RedirGuard } from './redir.guard';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'main', canActivate: [AuthGuard], component: MainPageComponent },
+  { path: 'main', canActivate: [AuthGuard, RedirGuard], component: MainPageComponent },
   { path: 'test', canActivate: [AuthGuard], component: TestPageComponent },
   { path: 'users', canActivate: [AuthGuard], component: UsersPageComponent },
   { path: 'users/edit/:id', canActivate: [AuthGuard], component: UserPageComponent },
