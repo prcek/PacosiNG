@@ -65,6 +65,7 @@ import { CzdatePipe } from './pipes/czdate.pipe';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { BusyfreePipe } from './pipes/busyfree.pipe';
 import { PdfViewComponent } from './pdf/pdf-view.component';
+import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { PdfViewComponent } from './pdf/pdf-view.component';
     CalendarEventEditorComponent,
     CzdatePipe,
     BusyfreePipe,
-    PdfViewComponent
+    PdfViewComponent,
+    DialogPdfComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -144,7 +146,8 @@ import { PdfViewComponent } from './pdf/pdf-view.component';
   bootstrap: [AppComponent],
   entryComponents: [
     TimepickerContent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    DialogPdfComponent,
   ]
 })
 export class AppModule { }
