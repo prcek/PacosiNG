@@ -54,7 +54,6 @@ export class TestPageComponent implements OnInit {
       height: '100vh',
       maxHeight: 'none',
       maxWidth: 'none',
-      //panelClass: 'my-full-screen-dialog',
       data: {title: 'titulek', content: 'bla bla'}
     });
     dialogRef.afterClosed().subscribe(result => {
