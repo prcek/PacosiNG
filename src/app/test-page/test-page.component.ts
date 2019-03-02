@@ -54,7 +54,7 @@ export class TestPageComponent implements OnInit {
       height: '100vh',
       maxHeight: 'none',
       maxWidth: 'none',
-      data: {title: 'titulek', content: 'bla bla'}
+      data: {title: 'titulek', doc: DD}
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
