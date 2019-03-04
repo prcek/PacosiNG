@@ -46,20 +46,43 @@ export class CalendarEventsPageComponent implements OnInit {
     const DD = {
       content: [
         {
+          text: 'Přehled dne ' + ds + ' kalendář ' + this.calendar.name,
+          style: 'header'
+        },
+        {
           layout: 'lightHorizontalLines', // optional
           table: {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ '*', 'auto', 100, '*' ],
+            widths: [ 30, 'auto', 'auto', '*' ],
             body: [
-              [ 'First', 'Second', 'Third', 'The last one' ],
-              [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
-              [ { text: 'Prehled dne ěščřžžýýáň', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
+              [ 'Čas', 'Typ', 'Klient', 'Poznámka' ],
+              ...this.events.map(e => {
+                const etime = this.calendarService.event2timestring(this.calendar, e);
+                const name = e.client.last_name + ' ' + e.client.first_name;
+                return [etime, e.event_name, name, e.comment];
+              }),
             ]
           }
         }
-      ]
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true
+        },
+        subheader: {
+          fontSize: 15,
+          bold: true
+        },
+        quote: {
+          italics: true
+        },
+        small: {
+          fontSize: 8
+        }
+      }
     };
 
     const dialogRef = this.dialog.open(DialogPdfComponent, {

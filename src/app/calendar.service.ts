@@ -644,4 +644,13 @@ export class CalendarService {
 
     return {calendars, days: x };
   }
+
+  event2timestring(cal: ICalendar,  e: ICalendarEvent) {
+    const t = cal.span * (e.begin);
+    const m = t % 60;
+    const h =  (t - m) / 60;
+    const Ho = h.toString().padStart(2, '0');
+    const Mi = m.toString().padStart(2, '0');
+    return Ho + ':' + Mi;
+  }
 }
