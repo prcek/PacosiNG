@@ -66,6 +66,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { BusyfreePipe } from './pipes/busyfree.pipe';
 import { PdfViewComponent } from './pdf/pdf-view.component';
 import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
+import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
     CzdatePipe,
     BusyfreePipe,
     PdfViewComponent,
-    DialogPdfComponent
+    DialogPdfComponent,
+    CalendarEventClipComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

@@ -151,6 +151,7 @@ const CALENDARS: ICalendar[] = [
   providedIn: 'root'
 })
 export class CalendarService {
+  private eventClipboardValue: IClipBoardRecord;
   private eventClipboardSubject = new Subject<IClipBoardRecord>();
   eventClipboard$ = this.eventClipboardSubject.asObservable();
   constructor(private apollo: Apollo) {
@@ -663,13 +664,18 @@ export class CalendarService {
 
 
   clipboardCopy(cal: ICalendar,  e: ICalendarEvent): void {
-    this.eventClipboardSubject.next({
+    this.eventClipboardValue = {
       calendar: cal,
       event: e
-    });
+    };
+    this.eventClipboardSubject.next(this.eventClipboardValue);
   }
   clipboardClear(): void {
+    this.eventClipboardValue = null;
     this.eventClipboardSubject.next(null);
+  }
+  clipboardValue(): IClipBoardRecord {
+    return this.eventClipboardValue;
   }
 
 }

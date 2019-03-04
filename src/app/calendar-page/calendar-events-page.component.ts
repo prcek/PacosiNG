@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot } from '../calendar.service';
@@ -6,18 +6,20 @@ import * as M from 'moment';
 import { MatDialog } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
   styleUrls: ['./calendar-events-page.component.css']
 })
-export class CalendarEventsPageComponent implements OnInit {
+export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   calendar: ICalendar;
   day: Date;
   events: ICalendarEvent[];
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
   loading = true;
+  sub: Subscription;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,7 +28,7 @@ export class CalendarEventsPageComponent implements OnInit {
     public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.route.paramMap.pipe(
+    this.sub = this.route.paramMap.pipe(
       switchMap( params => {
         this.loading = true;
         const day = M.utc(params.get('day')).toDate();
@@ -35,11 +37,15 @@ export class CalendarEventsPageComponent implements OnInit {
         return this.calendarService.getCalendarWithEvents(id, day);
       })
     ).subscribe(d => {
+      console.log('CalendarEventsPageComponent params change!');
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
       this.loading = false;
     });
    // this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
    // this.getCalendarWithEvents();
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
   /*
   getCalendarWithEvents() {
