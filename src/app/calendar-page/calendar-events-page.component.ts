@@ -26,7 +26,6 @@ export class CalendarEventsPageComponent implements OnInit {
     public dialog: MatDialog) {}
 
   ngOnInit() {
-
     this.route.paramMap.pipe(
       switchMap( params => {
         this.loading = true;
