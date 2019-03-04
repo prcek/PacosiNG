@@ -135,6 +135,7 @@ export interface ICalendarGridInfo {
 }
 
 export interface IClipBoardRecord {
+  cutMode: boolean;
   event: ICalendarEvent;
   calendar: ICalendar;
 }
@@ -665,11 +666,22 @@ export class CalendarService {
 
   clipboardCopy(cal: ICalendar,  e: ICalendarEvent): void {
     this.eventClipboardValue = {
+      cutMode: false,
       calendar: cal,
       event: e
     };
     this.eventClipboardSubject.next(this.eventClipboardValue);
   }
+
+  clipboardCut(cal: ICalendar,  e: ICalendarEvent): void {
+    this.eventClipboardValue = {
+      cutMode: true,
+      calendar: cal,
+      event: e
+    };
+    this.eventClipboardSubject.next(this.eventClipboardValue);
+  }
+
   clipboardClear(): void {
     this.eventClipboardValue = null;
     this.eventClipboardSubject.next(null);

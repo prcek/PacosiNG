@@ -2,7 +2,7 @@
 
 
 <div *ngIf="clip" class="toolbar mat-toolbar mat-elevation-z6" fxLayout="row wrap">
-  <span> clipboard event </span>
+  <span> clipboard event {{clip.event.event_name}} - {{clip.event.client.last_name}} </span>
   <span class="spacer"></span>
   <button mat-icon-button (click)="onClear()">
       <mat-icon>close</mat-icon>
