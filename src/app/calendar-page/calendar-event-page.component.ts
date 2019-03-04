@@ -89,15 +89,39 @@ export class CalendarEventPageComponent implements OnInit {
 
   onPrint(): void {
     const ds = M.utc(this.day).format('YYYY-MM-DD');
+    const client = this.event.client.last_name + ' ' + this.event.client.first_name;
+    const etime = this.calendarService.event2timestring(this.calendar, this.event);
     const DD = {
       content: [
         {
-          text: 'aaa',
+          image: CLR_LOGO,
+          width: 200,
+        },
+        {
+          text: client,
           style: 'header'
         },
         {
-          image: CLR_LOGO,
-          width: 200,
+          text: 'Datum: ' + ds
+        },
+        {
+          text: 'Čas: ' + etime
+        },
+        {
+          text: 'PROSÍME O PŘÍCHOD 15 MIN. DŘÍVE NEŽ JE UVEDENÝ ČAS OBJEDNÁVKY K LÉKAŘI.'
+        },
+        {
+          text: 'PŘED VSTUPEM DO ORDINACE JE POTŘEBA SE NAHLÁSIT V EVIDENCI K ZAPSÁNÍ DO AMBULANTNÍ KARTY.'
+        },
+        {
+          text: this.calendar.name,
+          style: 'header'
+        },
+        {
+          text: 'S sebou poukaz na vyšetření/ošetření, pojišťovací kartičku, zdravotní dokumentaci k diagnoze.'
+        },
+        {
+          text: 'www.clr.cz, Viniční 235, 615 00 Brno, tel.: 533 306 376'
         }
       ],
       styles: {
