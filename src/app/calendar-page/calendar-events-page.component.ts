@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot } from '../calendar.service';
+import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot, IClipBoardRecord } from '../calendar.service';
 import * as M from 'moment';
 import { MatDialog } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
@@ -20,6 +20,8 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   slots: ICalendarDaySlot[];
   loading = true;
   sub: Subscription;
+  clip: IClipBoardRecord;
+  ce_sub: Subscription;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,11 +43,16 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
       this.loading = false;
     });
+    this.clip = this.calendarService.clipboardValue();
+    this.ce_sub = this.calendarService.eventClipboard$.subscribe(clip => {
+      this.clip = clip;
+    });
    // this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
    // this.getCalendarWithEvents();
   }
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    this.ce_sub.unsubscribe();
   }
   /*
   getCalendarWithEvents() {
@@ -131,7 +138,12 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     if (slot.event) {
       this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/edit/' + slot.event._id]);
     } else {
-      this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/new/' + slot.slot]);
+      if (this.clip) {
+        alert('paste todo!');
+        this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/paste/' + slot.slot]);
+      } else {
+        this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/new/' + slot.slot]);
+      }
     }
 
   }
