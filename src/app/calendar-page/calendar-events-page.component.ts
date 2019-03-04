@@ -82,7 +82,8 @@ export class CalendarEventsPageComponent implements OnInit {
         small: {
           fontSize: 8
         }
-      }
+      },
+      paperSize: 'A4'
     };
 
     const dialogRef = this.dialog.open(DialogPdfComponent, {
