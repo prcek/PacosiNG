@@ -5,6 +5,7 @@ import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDay
 import * as M from 'moment';
 import { MatDialog } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
+import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -25,9 +26,23 @@ export class CalendarEventsPageComponent implements OnInit {
     public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
-    this.getCalendarWithEvents();
+
+    this.route.paramMap.pipe(
+      switchMap( params => {
+        this.loading = true;
+        const day = M.utc(params.get('day')).toDate();
+        this.day = day;
+        const id = params.get('id');
+        return this.calendarService.getCalendarWithEvents(id, day);
+      })
+    ).subscribe(d => {
+      this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
+      this.loading = false;
+    });
+   // this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
+   // this.getCalendarWithEvents();
   }
+  /*
   getCalendarWithEvents() {
     const id = this.route.snapshot.paramMap.get('id');
     this.loading = true;
@@ -36,11 +51,19 @@ export class CalendarEventsPageComponent implements OnInit {
         this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
         this.loading = false;
       });
-  }
+  }*/
   goBack(): void {
     this.location.back();
   }
-
+  onNextDay(): void {
+    // 'calendars/events/5c780c3983788bfdbf9e5b57/day/2019-03-07'
+    const nd =  M(this.day).utc().add(1, 'day').format('YYYY-MM-DD'); // TODO: skip calendar off days!
+    this.router.navigate(['/calendars', 'events', this.calendar._id, 'day', nd]);
+  }
+  onPrevDay(): void {
+    const pd =  M(this.day).utc().subtract(1, 'day').format('YYYY-MM-DD');  // TODO: skip calendar off days!
+    this.router.navigate(['/calendars', 'events', this.calendar._id, 'day', pd]);
+  }
   onPrint(): void {
     const ds = M.utc(this.day).format('YYYY-MM-DD');
     const DD = {
