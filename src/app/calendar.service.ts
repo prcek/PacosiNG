@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, Subject } from 'rxjs';
 import { switchMap, filter, map, tap, delay } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -134,6 +134,11 @@ export interface ICalendarGridInfo {
   days: ICalendarsStatusRow[];
 }
 
+export interface IClipBoardRecord {
+  event: ICalendarEvent;
+  calendar: ICalendar;
+}
+
 /*
 const CALENDARS: ICalendar[] = [
   { id: '1', name: 'jedna', span: 15},
@@ -146,8 +151,10 @@ const CALENDARS: ICalendar[] = [
   providedIn: 'root'
 })
 export class CalendarService {
-
-  constructor(private apollo: Apollo) { }
+  private eventClipboardSubject = new Subject<IClipBoardRecord>();
+  eventClipboard$ = this.eventClipboardSubject.asObservable();
+  constructor(private apollo: Apollo) {
+  }
   getCalendars(all: boolean = false): Observable<ICalendar[]> {
     // console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
@@ -653,4 +660,16 @@ export class CalendarService {
     const Mi = m.toString().padStart(2, '0');
     return Ho + ':' + Mi;
   }
+
+
+  clipboardCopy(cal: ICalendar,  e: ICalendarEvent): void {
+    this.eventClipboardSubject.next({
+      calendar: cal,
+      event: e
+    });
+  }
+  clipboardClear(): void {
+    this.eventClipboardSubject.next(null);
+  }
+
 }
