@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot } from '../calendar.service';
 import * as M from 'moment';
+import { MatDialog } from '@angular/material';
+import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -19,7 +21,8 @@ export class CalendarEventsPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private calendarService: CalendarService) {}
+    private calendarService: CalendarService,
+    public dialog: MatDialog) {}
 
   ngOnInit() {
     this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
@@ -36,6 +39,39 @@ export class CalendarEventsPageComponent implements OnInit {
   }
   goBack(): void {
     this.location.back();
+  }
+
+  onPrint(): void {
+    const ds = M.utc(this.day).format('YYYY-MM-DD');
+    const DD = {
+      content: [
+        {
+          layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', 'auto', 100, '*' ],
+            body: [
+              [ 'First', 'Second', 'Third', 'The last one' ],
+              [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
+              [ { text: 'Prehled dne ěščřžžýýáň', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
+            ]
+          }
+        }
+      ]
+    };
+
+    const dialogRef = this.dialog.open(DialogPdfComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxHeight: 'none',
+      maxWidth: 'none',
+      data: {title: 'Tisk - Přehled dne ' + ds, doc: DD}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   onSlot(slot: ICalendarDaySlot) {

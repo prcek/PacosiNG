@@ -6,6 +6,7 @@ import * as M from 'moment';
 import * as R from 'ramda';
 import { MatDialog } from '@angular/material';
 import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
+import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 
 @Component({
   selector: 'app-calendar-event-page',
@@ -82,6 +83,39 @@ export class CalendarEventPageComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  onPrint(): void {
+    const ds = M.utc(this.day).format('YYYY-MM-DD');
+    const DD = {
+      content: [
+        {
+          layout: 'lightHorizontalLines', // optional
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: [ '*', 'auto', 100, '*' ],
+            body: [
+              [ 'First', 'Second', 'Third', 'The last one' ],
+              [ 'Value 1', 'Value 2', 'Value 3', 'Value 4' ],
+              [ { text: 'Objednavka ěščřžžýýáň', bold: true }, 'Val 2', 'Val 3', 'Val 4' ]
+            ]
+          }
+        }
+      ]
+    };
+    const dialogRef = this.dialog.open(DialogPdfComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxHeight: 'none',
+      maxWidth: 'none',
+      data: {title: 'Tisk - Objednavka' + ds, doc: DD}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+
   get diag() {
     return JSON.stringify({calendar: this.calendar, event: this.event});
   }
