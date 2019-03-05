@@ -32,4 +32,32 @@ export class LocationService {
     }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.location));
   }
 
+  updateLocation(loc: ILocation): Observable<ILocation> {
+    return this.apollo.mutate<{updateLocation: ILocation}, ILocation>({
+      mutation: gql`
+        mutation($_id: ID! $archived: Boolean $name: String $address: String) {
+          updateLocation(_id: $_id name: $name archived: $archived address: $address) {
+            _id archived name address
+          }
+        }
+      `,
+      variables: {
+        ...loc
+      }
+    }).pipe( /*tap(r => console.log('CalendarService.updateCalendar res=', r)),*/  map(res => res.data.updateLocation));
+  }
+
+  createLocation(calendar: ILocation): Observable<ILocation> {
+    return this.apollo.mutate<{createLocation: ILocation}, ILocation>({
+      mutation: gql`
+        mutation($name: String! $address: String!) {
+          createLocation(name: $name address: $address) { _id archived name address }
+        }
+      `,
+      variables: {
+        ...calendar
+      }
+    }).pipe( /* tap(r => console.log('CalendarService.createCalendar res=', r)),*/ map(res => res.data.createLocation));
+  }
+
 }
