@@ -12,7 +12,8 @@ import {
   IDayOpeningHours,
   ICalendarEventType,
   ICalendarStatusDays,
-  ICalendarEvent
+  ICalendarEvent,
+  ILocation
 } from './types';
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 
@@ -29,6 +30,8 @@ const typeDefs = gql`
     users: [User]
     calendars(all: Boolean, ids: [ID]): [Calendar]
     calendar(_id: ID!): Calendar
+    locations(all: Boolean, ids: [ID]): [Location]
+    location(_id: ID!): Location
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
     calendarEventTypes(calendar_id: ID!): [CalendarEventType]
@@ -152,6 +155,12 @@ const typeDefs = gql`
     phone: String
     year: Int
   }
+  type Location {
+    _id: ID
+    archived: Boolean
+    name: String,
+    address: String,
+  }
 `;
 
 interface IContext extends IContextBase {
@@ -171,6 +180,15 @@ const resolvers: IResolvers<any, IContext> = {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();
     },
+
+    locations: async (parent, {all, ids}, context, info): Promise<ILocation[]> => {
+      return await context.dataSources.location.getLocations(all, ids);
+    },
+
+    location: async (parent, { _id} , context, info): Promise<ILocation> => {
+      return await context.dataSources.location.getLocation(_id);
+    },
+
     calendars: async (parent, {all, ids}, context, info): Promise<ICalendar[]> => {
         return await context.dataSources.calendar.getCalendars(all, ids);
     },

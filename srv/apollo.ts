@@ -58,6 +58,9 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
 export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const dataSources = createDataSources(store);
 
+    const loc_A = await dataSources.location.createLocation('Loc_A', 'loc A address');
+    const loc_B = await dataSources.location.createLocation('Loc_B', 'loc B address');
+
     const cal1 = await dataSources.calendar.createCalendar('cal1', 15, 4 * 7, 4 * 10, [1, 2, 3, 4, 5]);
     const cal2 = await dataSources.calendar.createCalendar('cal2', 10, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
     const cal3 = await dataSources.calendar.createCalendar('cal3', 30, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
@@ -86,6 +89,10 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', 'k1', '#red', 1, 1);
     const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', 'k2', '#blue', 2, 1);
     const ud3 = await dataSources.calendar.createET(cal1._id, 'ud3', 'k3', '#green', 3, 1);
+
+    const ud1b = await dataSources.calendar.createET(cal2._id, 'ud1_b', 'k1', '#red', 1, 1);
+    const ud2b = await dataSources.calendar.createET(cal2._id, 'ud2_b', 'k2', '#blue', 2, 1);
+    const ud3b = await dataSources.calendar.createET(cal2._id, 'ud3_b', 'k3', '#green', 3, 1);
 
     // tslint:disable-next-line:max-line-length
     await dataSources.calendar.createEvent(cal1._id, ud1._id, { first_name: 'karel', last_name: 'vomacka', year: 1990, title: null, phone: null },  today, 40, 'poznamka');

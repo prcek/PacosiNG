@@ -17,6 +17,13 @@ export interface ICalendar {
     week_days: number[];
 }
 
+export interface ILocation {
+    _id: any;
+    archived: boolean;
+    name: string;
+    address: string;
+}
+
 
 export interface IOpeningHoursTemplate extends IOpeningHours {
     _id: any;

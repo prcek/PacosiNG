@@ -3,7 +3,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as mongoose from 'mongoose';
-import { IUser, ICalendar, IOpeningHoursTemplate, IDayOpeningHours, ICalendarEventType, ICalendarEvent } from './types';
+import { IUser, ICalendar, IOpeningHoursTemplate, IDayOpeningHours, ICalendarEventType, ICalendarEvent, ILocation } from './types';
 import { config } from './config';
 
 async function startLocalMongoDB(): Promise<string> {
@@ -33,6 +33,9 @@ export interface IUserModel extends mongoose.Document, IUser {
 }
 
 export interface ICalendarModel extends mongoose.Document, ICalendar {
+}
+
+export interface ILocationModel extends mongoose.Document, ILocation {
 }
 
 export interface IOpeningHoursTemplateModel extends mongoose.Document, IOpeningHoursTemplate {
@@ -69,6 +72,12 @@ function createModels(connection: mongoose.Connection) {
     });
     const CalendarModel = connection.model<ICalendarModel>('Calendar', calendarSchema, 'calendars');
 
+    const locationSchema = new mongoose.Schema({
+        archived: Boolean,
+        name: String,
+        address: String,
+    });
+    const LocationModel = connection.model<ILocationModel>('Location', locationSchema, 'locations');
 
     const openingHoursTemplateSchema = new mongoose.Schema({
         calendar_id: {
@@ -145,12 +154,21 @@ function createModels(connection: mongoose.Connection) {
         calendarEventSchema, 'calendar_events');
 
 
-    return { UserModel, CalendarModel, OpeningHoursTemplateModel, DayOpeningHoursModel, CalendarEventTypeModel, CalendarEventModel} ;
+    return {
+        UserModel,
+        CalendarModel,
+        LocationModel,
+        OpeningHoursTemplateModel,
+        DayOpeningHoursModel,
+        CalendarEventTypeModel,
+        CalendarEventModel
+    } ;
 }
 
 export interface IStore  {
     userModel: mongoose.Model<IUserModel>;
     calendarModel: mongoose.Model<ICalendarModel>;
+    locationModel: mongoose.Model<ILocationModel>;
     openingHoursTemplateModel: mongoose.Model<IOpeningHoursTemplateModel>;
     dayOpeningHoursModel: mongoose.Model<IDayOpeningHoursModel>;
     calendarEventTypeModel: mongoose.Model<ICalendarEventTypeModel>;
@@ -164,6 +182,7 @@ export async function createStore(productionMode: boolean): Promise<IStore> {
     return {
         userModel: models.UserModel,
         calendarModel: models.CalendarModel,
+        locationModel: models.LocationModel,
         openingHoursTemplateModel: models.OpeningHoursTemplateModel,
         dayOpeningHoursModel: models.DayOpeningHoursModel,
         calendarEventTypeModel: models.CalendarEventTypeModel,
