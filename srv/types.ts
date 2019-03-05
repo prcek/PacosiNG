@@ -37,6 +37,7 @@ export interface IOpeningHours {
 export interface ICalendarEventType {
     _id: any;
     calendar_id: any;
+    match_key: string;
     name: string;
     color: string;
     len: number;

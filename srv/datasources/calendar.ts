@@ -250,22 +250,24 @@ export class CalendarAPI implements DataSource {
         return oo;
     }
 
-    async createET(calendar_id: string, name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+    // tslint:disable-next-line:max-line-length
+    async createET(calendar_id: string, name: string, match_key: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
         return this.store.calendarEventTypeModel.create({
             calendar_id,
             name,
+            match_key,
             color,
             len,
             order
         });
     }
 
-    async updateET(_id: string,  name: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+    async updateET(_id: string,  name: string, match_key: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
         const cal = await this.store.calendarEventTypeModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({name, color, len, order});
+        cal.set({name, match_key, color, len, order});
         return cal.save();
     }
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { ICalendarEventType, ICalendar } from 'srv/types';
 import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
-import { CalendarService } from '../calendar.service';
+import { CalendarService, ICalendarEventType, ICalendar } from '../calendar.service';
 
 @Component({
   selector: 'app-calendar-et-editor',
@@ -17,6 +16,7 @@ export class CalendarEtEditorComponent implements OnInit {
 
   etForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required}),
+    match_key: new FormControl(''),
     color: new FormControl('', { validators: Validators.required}),
     len: new FormControl(1, { validators: [Validators.required, Validators.min(1), Validators.max(60)]}),
     order: new FormControl(1, { validators: [Validators.required, Validators.min(0), Validators.max(1000)]}),
@@ -33,6 +33,7 @@ export class CalendarEtEditorComponent implements OnInit {
       this.etForm.setValue({
         name: this.event_type.name,
         color: this.event_type.color,
+        match_key: this.event_type.match_key,
         len: this.event_type.len,
         order: this.event_type.order,
       });

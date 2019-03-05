@@ -19,6 +19,7 @@ export interface ICalendar {
 export interface ICalendarEventType {
   _id: string;
   calendar_id: string;
+  match_key: string;
   name: string;
   color: string;
   len: number;
@@ -284,7 +285,7 @@ export class CalendarService {
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
           _id
-          calendar_id name color len order
+          calendar_id name match_key color len order
         }
       }`,
       variables: {
@@ -382,7 +383,7 @@ export class CalendarService {
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
           _id
-          calendar_id name color len order
+          calendar_id name match_key color len order
         }
       }`,
       variables: {
@@ -451,10 +452,10 @@ export class CalendarService {
   updateEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
     return this.apollo.mutate<{ updateCalendarEventType: ICalendarEventType}, ICalendarEventType>({
       mutation: gql`
-        mutation($_id: ID! $name: String $color: String $len: Int $order: Int) {
-          updateCalendarEventType(_id: $_id name: $name color: $color
+        mutation($_id: ID! $name: String $match_key: String $color: String $len: Int $order: Int) {
+          updateCalendarEventType(_id: $_id name: $name  match_key: $match_key color: $color
             len: $len order: $order) {
-              _id calendar_id name color len order
+              _id calendar_id name match_key color len order
             }
         }
       `,
@@ -470,10 +471,10 @@ export class CalendarService {
   createEventType(event_type: ICalendarEventType): Observable<ICalendarEventType> {
     return this.apollo.mutate<{createCalendarEventType: ICalendarEventType}, ICalendarEventType>({
       mutation: gql`
-        mutation($calendar_id: ID! $name: String! $color: String! $len: Int! $order: Int!) {
-          createCalendarEventType(calendar_id: $calendar_id name: $name color: $color
+        mutation($calendar_id: ID! $name: String! $match_key: String! $color: String! $len: Int! $order: Int!) {
+          createCalendarEventType(calendar_id: $calendar_id name: $name match_key: $match_key color: $color
             len: $len order: $order  ) {
-              _id calendar_id name color len order
+              _id calendar_id name match_key color len order
             }
         }
       `,

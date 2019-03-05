@@ -51,8 +51,8 @@ const typeDefs = gql`
     createOpeningHours(calendar_id: ID! day: Date! begin: Int! len: Int!): DayOpeningHours!
     deleteOpeningHours(_id: ID!): DeleteResponse!
 
-    createCalendarEventType(calendar_id: ID! name: String! color: String! len: Int! order: Int!): CalendarEventType!
-    updateCalendarEventType(_id: ID! name: String color: String len: Int order: Int): CalendarEventType!
+    createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! order: Int!): CalendarEventType!
+    updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int order: Int): CalendarEventType!
     deleteCalendarEventType(_id: ID!): DeleteResponse!
 
 
@@ -107,6 +107,7 @@ const typeDefs = gql`
   type CalendarEventType {
     _id: ID
     calendar_id: ID
+    match_key: String
     name: String
     color: String
     len: Int
@@ -238,11 +239,11 @@ const resolvers: IResolvers<any, IContext> = {
     deleteOpeningHours: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteOH(_id),
 
-    createCalendarEventType: (_, { calendar_id, name, color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
-        dataSources.calendar.createET(calendar_id, name, color, len, order),
+    createCalendarEventType: (_, { calendar_id, name, match_key, color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
+        dataSources.calendar.createET(calendar_id, name, match_key, color, len, order),
 
-    updateCalendarEventType: (_, { _id, name, color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
-      dataSources.calendar.updateET(_id, name, color, len, order),
+    updateCalendarEventType: (_, { _id, name, match_key,  color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
+      dataSources.calendar.updateET(_id, name, match_key, color, len, order),
 
     deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteET(_id),

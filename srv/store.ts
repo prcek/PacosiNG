@@ -103,6 +103,7 @@ function createModels(connection: mongoose.Connection) {
             required: true
         },
         name: String,
+        match_key: String,
         color: String,
         len: Number,
         order: Number,
