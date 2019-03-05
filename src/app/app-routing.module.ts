@@ -32,7 +32,6 @@ const routes: Routes = [
 
   { path: 'locations', canActivate: [AuthGuard], component: LocationsPageComponent },
 
-
   { path: 'calendars', canActivate: [AuthGuard], component: CalendarsPageComponent },
   { path: 'calendars/edit/:id', canActivate: [AuthGuard], component: CalendarPageComponent },
   { path: 'calendars/et/:id', canActivate: [AuthGuard], component: CalendarEtPageComponent },
