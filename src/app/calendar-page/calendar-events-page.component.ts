@@ -139,7 +139,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
       this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/edit/' + slot.event._id]);
     } else {
       if (this.clip) {
-        alert('paste todo!');
+        // alert('paste todo!');
         this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/paste/' + slot.slot]);
       } else {
         this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/new/' + slot.slot]);

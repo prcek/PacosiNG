@@ -67,6 +67,7 @@ import { BusyfreePipe } from './pipes/busyfree.pipe';
 import { PdfViewComponent } from './pdf/pdf-view.component';
 import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
 import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.component';
+import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-paste-page.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.
     BusyfreePipe,
     PdfViewComponent,
     DialogPdfComponent,
-    CalendarEventClipComponent
+    CalendarEventClipComponent,
+    CalendarEventPastePageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

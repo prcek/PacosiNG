@@ -18,6 +18,7 @@ import { CalendarEventsPageComponent } from './calendar-page/calendar-events-pag
 import { CalendarEventPageComponent } from './calendar-page/calendar-event-page.component';
 import { CalendarEventNewPageComponent } from './calendar-page/calendar-event-new-page.component';
 import { RedirGuard } from './redir.guard';
+import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-paste-page.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'calendars/events/:id/day/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
   { path: 'calendars/events/:id/day/:day/edit/:e_id', canActivate: [AuthGuard], component: CalendarEventPageComponent },
   { path: 'calendars/events/:id/day/:day/new/:slot', canActivate: [AuthGuard], component: CalendarEventNewPageComponent },
+  { path: 'calendars/events/:id/day/:day/paste/:slot', canActivate: [AuthGuard], component: CalendarEventPastePageComponent },
 
   { path: '',   redirectTo: '/main', pathMatch: 'full' },
 ];
