@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, Subject } from 'rxjs';
-import { switchMap, filter, map, tap, delay } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, map, tap } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import * as M from 'moment';

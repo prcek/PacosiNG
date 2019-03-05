@@ -68,6 +68,7 @@ import { PdfViewComponent } from './pdf/pdf-view.component';
 import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
 import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.component';
 import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-paste-page.component';
+import { LocationsPageComponent } from './locations-page/locations-page.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-
     PdfViewComponent,
     DialogPdfComponent,
     CalendarEventClipComponent,
-    CalendarEventPastePageComponent
+    CalendarEventPastePageComponent,
+    LocationsPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
