@@ -25,5 +25,11 @@ export class LocationService {
       variables: {all},
     }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.locations));
   }
+  getLocation(_id: string): Observable<ILocation> {
+    return this.apollo.query<{location: ILocation}>({
+      query: gql`query($_id:ID!) { location(_id:$_id) { _id archived name address }}`,
+      variables: {_id},
+    }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.location));
+  }
 
 }

@@ -1,0 +1,6 @@
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <h1>Úprava lokality: {{loc?.name}} </h1>
+    <app-location-editor fxFlexFill *ngIf="loc" [loc]="loc" (saved)="goBack()"></app-location-editor>
+    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+</div>

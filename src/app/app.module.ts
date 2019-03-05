@@ -68,8 +68,11 @@ import { PdfViewComponent } from './pdf/pdf-view.component';
 import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
 import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.component';
 import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-paste-page.component';
-import { LocationsPageComponent } from './locations-page/locations-page.component';
+import { LocationsPageComponent } from './locations/locations-page.component';
 import { AccessDirective } from './access.directive';
+import { LocationEditorComponent } from './locations/location-editor.component';
+import { LocationPageComponent } from './locations/location-page.component';
+import { LocationNewPageComponent } from './locations/location-new-page.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +119,10 @@ import { AccessDirective } from './access.directive';
     CalendarEventClipComponent,
     CalendarEventPastePageComponent,
     LocationsPageComponent,
-    AccessDirective
+    AccessDirective,
+    LocationEditorComponent,
+    LocationPageComponent,
+    LocationNewPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
