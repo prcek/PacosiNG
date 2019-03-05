@@ -48,6 +48,10 @@ const typeDefs = gql`
     createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]! calendar_ids: [String]!): User!
     updateCalendar(_id: ID! archived: Boolean name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
     createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
+
+    updateLocation(_id: ID! archived: Boolean name: String address: String): Location!
+    createLocation(name: String! address: String!): Location!
+
     createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
     deleteOpeningHoursTemplate(_id: ID!): DeleteResponse!
 
@@ -244,6 +248,13 @@ const resolvers: IResolvers<any, IContext> = {
 
     createCalendar: (_, { name, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
         dataSources.calendar.createCalendar(name, span, day_begin, day_len, week_days),
+
+    updateLocation: (_, { _id, archived, name, address }, { dataSources }): Promise<ILocation> =>
+        dataSources.location.updateLocation(_id, archived, name, address),
+
+    createLocation: (_, { name, address }, { dataSources }): Promise<ILocation> =>
+        dataSources.location.createLocation(name, address),
+
 
     createOpeningHoursTemplate: (_, { calendar_id, week_day, begin, len }, { dataSources }): Promise<IOpeningHoursTemplate> =>
         dataSources.calendar.createOHTemplate(calendar_id, week_day, begin, len),
