@@ -32,9 +32,9 @@ export class CalendarsPageComponent implements OnInit, OnDestroy {
   }
   get displayedColumns(): string[] {
     if (this.all) {
-      return ['archived', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
+      return ['archived', 'location', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
     } else {
-      return ['name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
+      return ['location', 'name', 'span', 'day_begin', 'day_len', 'week_days', 'actions'];
     }
   }
 

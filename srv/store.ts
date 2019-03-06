@@ -64,6 +64,7 @@ function createModels(connection: mongoose.Connection) {
 
     const calendarSchema = new mongoose.Schema({
         archived: Boolean,
+        location_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
         name: String,
         span: Number,
         day_begin: Number,

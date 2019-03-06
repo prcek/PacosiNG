@@ -63,10 +63,11 @@ export class CalendarAPI implements DataSource {
         return events;
     }
 
-    async createCalendar(name: string, span: number,
+    async createCalendar(location_id: string, name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({
             archived: false,
+            location_id,
             name,
             span,
             day_begin,
@@ -74,13 +75,13 @@ export class CalendarAPI implements DataSource {
             week_days
         });
     }
-    async updateCalendar(_id: string, archived: boolean, name: string, span: number,
+    async updateCalendar(_id: string, archived: boolean, location_id: string, name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         const cal = await this.store.calendarModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({archived, name, span, day_begin, day_len, week_days});
+        cal.set({archived, location_id, name, span, day_begin, day_len, week_days});
         return cal.save();
     }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ICalendar, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { WeekDay, ALL_WEEK_DAYS } from './common';
+import { LocationService, ILocation } from '../location.service';
 
 
 
@@ -22,6 +23,7 @@ export class CalendarEditorComponent implements OnInit {
 
   calendarForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required}),
+    location_id: new FormControl(null, {validators: Validators.required}),
     span: new FormControl(15, { validators: [Validators.required, Validators.min(5), Validators.max(60)]}),
     day_begin: new FormControl(7 * 4, { validators: [Validators.required, Validators.min(0), Validators.max(60)]}),
     day_len: new FormControl(10 * 4, { validators: [Validators.required, Validators.min(1), Validators.max(100)]}),
@@ -31,16 +33,20 @@ export class CalendarEditorComponent implements OnInit {
   error_msg: string;
   submitted = false;
 
+  all_locs: ILocation[] = null;
 
-  constructor(private calendarService: CalendarService) { }
+  constructor(private calendarService: CalendarService, private locationService: LocationService) { }
 
   ngOnInit() {
     console.log('CalendarEditorComponent.ngOnInit', this.calendar, this.new_mode);
+    this.locationService.getLocations().subscribe(locs => this.all_locs = locs);
+
     if (this.new_mode) {
 
     } else {
       this.calendarForm.setValue({
         name: this.calendar.name,
+        location_id: this.calendar.location_id,
         span: this.calendar.span,
         day_begin: this.calendar.day_begin,
         day_len: this.calendar.day_len,

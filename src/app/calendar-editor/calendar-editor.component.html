@@ -1,5 +1,5 @@
 
-<mat-card class="form-container">
+<mat-card *ngIf="all_locs" class="form-container">
     <form [formGroup]="calendarForm"  (ngSubmit)="onSubmit()">
       <mat-card-header>
           <ng-template #newcal>
@@ -12,6 +12,19 @@
             <mat-label>Název</mat-label>
             <input matInput type="text" id="name" formControlName="name"> 
         </mat-form-field>
+
+
+
+        <mat-form-field>
+            <mat-label>Pobočka</mat-label>
+            <mat-select placeholder="pobočka"  formControlName="location_id">
+                <mat-option *ngFor="let loc of all_locs" [value]="loc._id">
+                    {{loc.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
         <mat-form-field>
           <mat-label>Časová jednotka</mat-label>
           <input matInput type="number" id="span" formControlName="span"> 

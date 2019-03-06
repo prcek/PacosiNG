@@ -46,8 +46,8 @@ const typeDefs = gql`
     relogin: LoginResponse!
     updateUser(login: String! password: String name: String sudo: Boolean roles: [String] calendar_ids: [String]): User!
     createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]! calendar_ids: [String]!): User!
-    updateCalendar(_id: ID! archived: Boolean name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
-    createCalendar(name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
+    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
+    createCalendar(location_id: ID! name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
 
     updateLocation(_id: ID! archived: Boolean name: String address: String): Location!
     createLocation(name: String! address: String!): Location!
@@ -91,6 +91,7 @@ const typeDefs = gql`
   type Calendar {
     _id: ID
     archived: Boolean
+    location_id: ID
     name: String
     span: Int
     day_begin: Int
@@ -243,11 +244,11 @@ const resolvers: IResolvers<any, IContext> = {
     createUser: (_, { login, password, name, sudo, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
         dataSources.user.createUser(login, password, name, sudo, roles, calendar_ids),
 
-    updateCalendar: (_, { _id, archived, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.updateCalendar(_id, archived, name, span, day_begin, day_len, week_days),
+    updateCalendar: (_, { _id, archived, location_id, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, day_begin, day_len, week_days),
 
-    createCalendar: (_, { name, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.createCalendar(name, span, day_begin, day_len, week_days),
+    createCalendar: (_, { name, location_id, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.createCalendar(location_id, name, span, day_begin, day_len, week_days),
 
     updateLocation: (_, { _id, archived, name, address }, { dataSources }): Promise<ILocation> =>
         dataSources.location.updateLocation(_id, archived, name, address),
