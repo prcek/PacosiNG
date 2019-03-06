@@ -1,7 +1,6 @@
 
+<app-sub-menu title="Založení nového kalendáře" (back)="goBack()" showBack="true"></app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Založení nového kalendáře</h1>
     <app-calendar-editor fxFlexFill [calendar]="null"  [new_mode]="true" (saved)="goBack()"></app-calendar-editor>
-    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>

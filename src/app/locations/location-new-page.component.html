@@ -1,6 +1,5 @@
+<app-sub-menu title="Nová pobočka" (back)="goBack()" showBack="true"></app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Založení nové lokality</h1>
     <app-location-editor fxFlexFill [loc]="null"  [new_mode]="true" (saved)="goBack()"></app-location-editor>
-    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>

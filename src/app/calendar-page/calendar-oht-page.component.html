@@ -7,14 +7,12 @@
   
 
 
+<app-sub-menu title="Šablona provozní doby" (back)="goBack()" showBack="true"></app-sub-menu>
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Šablona provozní doby kalendáře: {{calendar?.name}} </h1>
+    <h1>{{calendar?.name}}/{{(calendar?.location_id|location)?.name}}</h1>
     <div *ngIf="template_groups" fxLayout="row wrap" fxLayoutGap="10px" fxFlexFill>
-        
-       
-    
         <mat-card fxFlex="1 0 auto">
             <mat-card-header>
                 <mat-card-title>Aktuální šablona pro dny v týdnu</mat-card-title>
@@ -41,5 +39,4 @@
 
       
     </div>
-    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
 </div>

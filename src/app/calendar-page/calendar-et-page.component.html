@@ -1,6 +1,7 @@
+<app-sub-menu title="Typy událostí kalendáře" (back)="goBack()" showBack="true"></app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>Typy událostí kalendáře {{calendar?.name}}</h1>
+    <h1>{{calendar?.name}}</h1>
     <div fxFlexFill>
     <table mat-table [dataSource]="event_types" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
@@ -46,6 +47,6 @@
       </table>
 </div>
 <app-calendar-et-editor *ngIf="calendar" [calendar]="calendar" [event_type]="null" [new_mode]="true" (saved)="getCalendarWithETs()"></app-calendar-et-editor>
-<button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+
 
 </div>
