@@ -1,6 +1,6 @@
-import { Pipe, PipeTransform, OnInit, OnDestroy, ChangeDetectorRef, WrappedValue } from '@angular/core';
+import { Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, WrappedValue } from '@angular/core';
 import { LocationService, ILocation } from '../location.service';
-import { Subscription, SubscriptionLike } from 'rxjs';
+import { SubscriptionLike } from 'rxjs';
 
 @Pipe({
   name: 'locationName',
