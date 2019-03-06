@@ -32,6 +32,14 @@ export class LocationService {
     }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.location));
   }
 
+  watchLocation(_id: string): Observable<ILocation> {
+    return this.apollo.watchQuery<{location: ILocation}>({
+      query: gql`query($_id:ID!) { location(_id:$_id) { _id archived name address }}`,
+      variables: {_id},
+    }).valueChanges.pipe(map(res => res.data.location));
+  }
+
+
   updateLocation(loc: ILocation): Observable<ILocation> {
     return this.apollo.mutate<{updateLocation: ILocation}, ILocation>({
       mutation: gql`

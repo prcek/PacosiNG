@@ -33,9 +33,9 @@ export class LocationsPageComponent implements OnInit, OnDestroy {
   }
   get displayedColumns(): string[] {
     if (this.all) {
-      return ['archived', 'name', 'address', 'actions'];
+      return ['archived', 'pipename', 'name', 'address', 'actions'];
     } else {
-      return ['name', 'address', 'actions'];
+      return ['name',  'pipename', 'address', 'actions'];
     }
   }
 

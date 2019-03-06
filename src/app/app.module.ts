@@ -73,6 +73,7 @@ import { AccessDirective } from './access.directive';
 import { LocationEditorComponent } from './locations/location-editor.component';
 import { LocationPageComponent } from './locations/location-page.component';
 import { LocationNewPageComponent } from './locations/location-new-page.component';
+import { LocationNamePipe } from './pipes/location-name.pipe';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { LocationNewPageComponent } from './locations/location-new-page.componen
     AccessDirective,
     LocationEditorComponent,
     LocationPageComponent,
-    LocationNewPageComponent
+    LocationNewPageComponent,
+    LocationNamePipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
