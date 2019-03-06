@@ -6,9 +6,9 @@
   </ng-template>
   <span *ngIf="dev_mode; else nodev">DEV MODE</span>
  
-  <a *ngIf="isAuth" mat-button routerLink="/">Home</a>
+  <a *ngIf="isAuth" mat-button routerLink="/">Přehled</a>
   <a *ngIf="dev_mode" mat-button routerLink="/test">TEST</a>
-  <a *ngIf="isAuth" mat-button [routerLink]="['/main', {cals: user.calendar_ids} ]">Main</a>
+  <a *ngIf="isAuth" mat-button [routerLink]="['/main', {cals: user.calendar_ids, plan:true} ]">planovani</a>
   <a *appAccess="'super'" mat-button routerLink="/calendars">kalendáře</a>
   <a *appAccess="'super'" mat-button routerLink="/users">uživatelé</a>
   <a *appAccess="'super'" mat-button routerLink="/locations">pobočky</a>

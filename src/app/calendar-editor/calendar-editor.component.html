@@ -5,7 +5,7 @@
           <ng-template #newcal>
               <mat-card-title> Nový kalendář </mat-card-title>
           </ng-template>
-          <mat-card-title *ngIf="calendar; else newcal">Kalendář {{calendar?.name}}</mat-card-title>
+          <mat-card-title *ngIf="calendar; else newcal">{{calendar?.name}}/{{(calendar.location_id|location)?.name}}</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
         <mat-form-field>

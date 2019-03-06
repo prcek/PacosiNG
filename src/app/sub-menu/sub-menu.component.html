@@ -1,0 +1,9 @@
+
+<div class="toolbar mat-toolbar" fxLayout="row wrap">
+  <button *ngIf="showBack" class="item_b" mat-button color="primary"  (click)="goBack($event)">
+      <mat-icon>arrow_back</mat-icon>
+      zpět
+  </button>
+  <div class="item">{{title}}</div>
+  
+</div>
