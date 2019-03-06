@@ -74,6 +74,7 @@ import { LocationEditorComponent } from './locations/location-editor.component';
 import { LocationPageComponent } from './locations/location-page.component';
 import { LocationNewPageComponent } from './locations/location-new-page.component';
 import { LocationNamePipe } from './pipes/location-name.pipe';
+import { LocationPipe } from './pipes/location.pipe';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { LocationNamePipe } from './pipes/location-name.pipe';
     LocationEditorComponent,
     LocationPageComponent,
     LocationNewPageComponent,
-    LocationNamePipe
+    LocationNamePipe,
+    LocationPipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

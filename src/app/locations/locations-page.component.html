@@ -18,7 +18,7 @@
   
       <ng-container matColumnDef="pipename">
           <th mat-header-cell *matHeaderCellDef> pipename </th>
-          <td mat-cell *matCellDef="let element"> {{element._id | locationName}} </td>
+          <td mat-cell *matCellDef="let element"> {{ (element._id | location )?.name}} </td>
         </ng-container>
 
       <ng-container matColumnDef="archived">
