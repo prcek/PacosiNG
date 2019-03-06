@@ -43,3 +43,6 @@
 .busy {
     background-color: lightcoral; 
 }
+.nomargin {
+    margin: 0px;
+}
