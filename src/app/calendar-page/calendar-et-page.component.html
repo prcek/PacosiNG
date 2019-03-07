@@ -1,7 +1,8 @@
-<app-sub-menu title="Typy událostí kalendáře" (back)="goBack()" showBack="true"></app-sub-menu>
+<app-sub-menu title="Typy událostí kalendáře" (back)="goBack()" showBack="true">
+    <app-calendar-chip *ngIf="calendar" [calendar_id]="calendar._id"></app-calendar-chip>
+</app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>{{calendar?.name}}</h1>
     <div fxFlexFill>
     <table mat-table [dataSource]="event_types" class="mat-elevation-z8">
         <ng-container matColumnDef="id">

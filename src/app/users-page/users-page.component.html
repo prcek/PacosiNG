@@ -1,4 +1,6 @@
-<app-sub-menu title="Nastavení uživatelů"></app-sub-menu>
+<app-sub-menu title="Nastavení uživatelů">
+    <a  mat-raised-button routerLink="/users/new">vytvořit nového uživatele</a>
+</app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="center start">
     <table mat-table [dataSource]="users" class="mat-elevation-z8">
@@ -29,5 +31,4 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <a  mat-raised-button color="primary" routerLink="/users/new">vytvořit nového uživatele</a>
 </div>

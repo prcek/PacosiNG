@@ -76,6 +76,8 @@ import { LocationNewPageComponent } from './locations/location-new-page.componen
 import { LocationNamePipe } from './pipes/location-name.pipe';
 import { LocationPipe } from './pipes/location.pipe';
 import { SubMenuComponent } from './sub-menu/sub-menu.component';
+import { CalendarChipComponent } from './calendar/calendar-chip.component';
+import { CalendarPipe } from './pipes/calendar.pipe';
 
 @NgModule({
   declarations: [
@@ -128,7 +130,9 @@ import { SubMenuComponent } from './sub-menu/sub-menu.component';
     LocationNewPageComponent,
     LocationNamePipe,
     LocationPipe,
-    SubMenuComponent
+    SubMenuComponent,
+    CalendarChipComponent,
+    CalendarPipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

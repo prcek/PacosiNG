@@ -184,6 +184,15 @@ export class CalendarService {
       variables: {_id},
     }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendar));
   }
+
+  watchCalendar(_id: string): Observable<ICalendar> {
+    return this.apollo.watchQuery<{calendar: ICalendar}>({
+      query: gql`query($_id:ID!) { calendar(_id:$_id) { ${CALENDAR_ATTRS} }}`,
+      variables: {_id},
+    }).valueChanges.pipe(map(res => res.data.calendar));
+  }
+
+
   updateCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
       mutation: gql`

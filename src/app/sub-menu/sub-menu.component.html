@@ -1,9 +1,9 @@
 
-<div class="toolbar mat-toolbar" fxLayout="row wrap">
+<div class="toolbar mat-toolbar" fxLayout="row wrap" fxLayoutGap="20px" >
   <button *ngIf="showBack" class="item_b" mat-button color="primary"  (click)="goBack($event)">
       <mat-icon>arrow_back</mat-icon>
       zpět
   </button>
-  <div class="item">{{title}}</div>
-  
+  <div>{{title}}</div>
+  <ng-content></ng-content>
 </div>

@@ -7,11 +7,12 @@
   
 
 
-<app-sub-menu title="Šablona provozní doby" (back)="goBack()" showBack="true"></app-sub-menu>
+<app-sub-menu title="Šablona provozní doby" (back)="goBack()" showBack="true">
+        <app-calendar-chip *ngIf="calendar" [calendar_id]="calendar._id"></app-calendar-chip>
+</app-sub-menu>
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>{{calendar?.name}}/{{(calendar?.location_id|location)?.name}}</h1>
     <div *ngIf="template_groups" fxLayout="row wrap" fxLayoutGap="10px" fxFlexFill>
         <mat-card fxFlex="1 0 auto">
             <mat-card-header>

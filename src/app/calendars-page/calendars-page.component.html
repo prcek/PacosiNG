@@ -1,15 +1,15 @@
 
-<app-sub-menu title="Nastavení kalendářů"></app-sub-menu>
+<app-sub-menu title="Nastavení kalendářů">
+        <mat-slide-toggle
+            [checked]="all" (change)="onAll($event)">
+           <span class="mat-body">zobrazit i archivované</span>
+        </mat-slide-toggle>
+        <a  mat-raised-button  routerLink="/calendars/new">vytvořit nový kalendář</a>
+</app-sub-menu>
 
 <div class="container" fxLayout="column" fxLayoutAlign="center start">
  
-    <section class="example-section">
-      <mat-slide-toggle
-          class="example-margin"
-          [checked]="all" (change)="onAll($event)">
-         zobrazit i archivovane
-      </mat-slide-toggle>
-    </section>
+  
   <table mat-table [dataSource]="calendars" class="mat-elevation-z8">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> id </th>
@@ -63,6 +63,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <a  mat-raised-button color="primary" routerLink="/calendars/new">vytvořit nový kalendář</a>
+ 
 
 </div>

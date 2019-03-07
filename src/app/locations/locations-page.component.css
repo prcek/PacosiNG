@@ -5,3 +5,9 @@ table {
     width: 100%;
     max-width: 800px;
 }
+.smitem {
+    margin-right: 8px;
+}
+.xxx {
+    line-height: 24px;
+}
