@@ -151,7 +151,33 @@ const CALENDARS: ICalendar[] = [
 */
 
 
-const CALENDAR_ATTRS = `_id archived location_id name span day_begin day_len week_days`;
+const ALL_CALENDAR_ATTRS = `
+  _id
+  archived
+  location_id
+  name span
+  day_begin
+  day_len
+  week_days
+`;
+
+const ALL_CALENDAR_EVENT_ATTRS = `
+  _id
+  calendar_id
+  event_type_id
+  event_name
+  day
+  begin
+  len
+  client {
+    last_name
+    first_name
+    year
+    phone
+  }
+  comment
+  color
+`;
 
 @Injectable({
   providedIn: 'root'
@@ -165,7 +191,7 @@ export class CalendarService {
   getCalendars(all: boolean = false): Observable<ICalendar[]> {
     // console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
-      query: gql`query($all:Boolean) { calendars(all:$all) { ${CALENDAR_ATTRS} }}`,
+      query: gql`query($all:Boolean) { calendars(all:$all) { ${ALL_CALENDAR_ATTRS} }}`,
       variables: {all},
     }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendars));
   }
@@ -173,21 +199,21 @@ export class CalendarService {
   getCalendarsByIds(ids: string[]): Observable<ICalendar[]> {
     // console.log('CalendarService.getCalendars', {all});
     return this.apollo.query<{calendars: ICalendar[]}>({
-      query: gql`query($ids:[ID]!) { calendars(ids: $ids) { ${CALENDAR_ATTRS} }}`,
+      query: gql`query($ids:[ID]!) { calendars(ids: $ids) { ${ALL_CALENDAR_ATTRS} }}`,
       variables: {ids},
     }).pipe( /*tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendars));
   }
 
   getCalendar(_id: string): Observable<ICalendar> {
     return this.apollo.query<{calendar: ICalendar}>({
-      query: gql`query($_id:ID!) { calendar(_id:$_id) { ${CALENDAR_ATTRS} }}`,
+      query: gql`query($_id:ID!) { calendar(_id:$_id) { ${ALL_CALENDAR_ATTRS} }}`,
       variables: {_id},
     }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendar));
   }
 
   watchCalendar(_id: string): Observable<ICalendar> {
     return this.apollo.watchQuery<{calendar: ICalendar}>({
-      query: gql`query($_id:ID!) { calendar(_id:$_id) { ${CALENDAR_ATTRS} }}`,
+      query: gql`query($_id:ID!) { calendar(_id:$_id) { ${ALL_CALENDAR_ATTRS} }}`,
       variables: {_id},
     }).valueChanges.pipe(map(res => res.data.calendar));
   }
@@ -198,7 +224,7 @@ export class CalendarService {
       mutation: gql`
         mutation($_id: ID! $archived: Boolean $location_id: ID $name: String $span: Int $day_begin: Int $day_len: Int $week_days: [Int]) {
           updateCalendar(_id: $_id name: $name location_id: $location_id archived: $archived span: $span
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
@@ -212,7 +238,7 @@ export class CalendarService {
       mutation: gql`
         mutation($name: String! $location_id: ID! $span: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!) {
           createCalendar(name: $name  location_id: $location_id span: $span
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
@@ -273,7 +299,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, templates: IOpeningHoursTemplate[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
-          ${CALENDAR_ATTRS}
+          ${ALL_CALENDAR_ATTRS}
         }
         templates: calendarOpeningHoursTemplates(calendar_id:$calendar_id) {
           _id
@@ -294,7 +320,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, event_types: ICalendarEventType[]}, {calendar_id: string}>({
       query: gql`query($calendar_id:ID!) {
         calendar(_id:$calendar_id) {
-          ${CALENDAR_ATTRS}
+          ${ALL_CALENDAR_ATTRS}
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
           _id
@@ -320,7 +346,7 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
-          ${CALENDAR_ATTRS}
+          ${ALL_CALENDAR_ATTRS}
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
@@ -371,24 +397,10 @@ export class CalendarService {
     return this.apollo.query<{calendar: ICalendar, ohs: IOpeningHours[], events: ICalendarEvent[], event_types: ICalendarEventType[]}, {calendar_id: string, start_date: string, end_date: string}>({
       query: gql`query($calendar_id:ID!, $start_date: Date!, $end_date: Date!) {
         calendar(_id:$calendar_id) {
-          ${CALENDAR_ATTRS}
+          ${ALL_CALENDAR_ATTRS}
         }
         events: calendarEvents(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
-          _id
-          calendar_id
-          event_type_id
-          event_name
-          day
-          begin
-          len
-          client {
-            last_name
-            first_name
-            year
-            phone
-          }
-          comment
-          color
+          ${ALL_CALENDAR_EVENT_ATTRS}
         }
         ohs: calendarOpeningHours(calendar_id:$calendar_id, start_date:$start_date, end_date:$end_date) {
           _id
@@ -421,6 +433,20 @@ export class CalendarService {
     return this.getCalendarWithEvents(calendar_id, day).pipe(map(r => {
       return { ...r, event: R.find<ICalendarEvent>(R.propEq('_id', calendar_event_id), r.events)};
     }));
+  }
+
+  getCalendarEvent(_id: string): Observable<ICalendarEvent> {
+    return this.apollo.query<{calendarEvent: ICalendarEvent}>({
+      query: gql`query($_id:ID!) { calendarEvent(_id:$_id) { ${ALL_CALENDAR_EVENT_ATTRS} }}`,
+      variables: {_id},
+    }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data.calendarEvent));
+  }
+
+  watchCalendarEvent(_id: string): Observable<ICalendarEvent> {
+    return this.apollo.watchQuery<{calendarEvent: ICalendarEvent}>({
+      query: gql`query($_id:ID!) { calendarEvent(_id:$_id) { ${ALL_CALENDAR_EVENT_ATTRS} }}`,
+      variables: {_id},
+    }).valueChanges.pipe(map(res => res.data.calendarEvent));
   }
 
 
@@ -547,21 +573,7 @@ export class CalendarService {
       mutation: gql`
         mutation($_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
           updateCalendarEvent(_id: $_id client: $client event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
-              _id
-              calendar_id
-              event_type_id
-              event_name
-              day
-              begin
-              len
-              client {
-                last_name
-                first_name
-                year
-                phone
-              }
-              comment
-              color
+              ${ALL_CALENDAR_EVENT_ATTRS}
             }
         }
       `,
@@ -580,21 +592,7 @@ export class CalendarService {
         mutation($calendar_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
           createCalendarEvent(calendar_id: $calendar_id client: $client
             event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
-              _id
-              calendar_id
-              event_type_id
-              event_name
-              day
-              begin
-              len
-              client {
-                last_name
-                first_name
-                year
-                phone
-              }
-              comment
-              color
+              ${ALL_CALENDAR_EVENT_ATTRS}
             }
         }
       `,

@@ -63,6 +63,11 @@ export class CalendarAPI implements DataSource {
         return events;
     }
 
+    async getCalendarEvent(_id: string): Promise<ICalendarEvent> {
+        return this.store.calendarEventModel.findById(_id);
+    }
+
+
     async createCalendar(location_id: string, name: string, span: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({

@@ -37,6 +37,7 @@ const typeDefs = gql`
     calendarEventTypes(calendar_id: ID!): [CalendarEventType]
     calendarOpeningHours(calendar_id: ID! start_date: Date! end_date: Date!): [DayOpeningHours]
     calendarEvents(calendar_id: ID! start_date: Date! end_date: Date!): [CalendarEvent]
+    calendarEvent(_id: ID!): CalendarEvent
     calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays
     calendarStatusDaysMulti(calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarStatusDays]
     me: User
@@ -217,6 +218,10 @@ const resolvers: IResolvers<any, IContext> = {
 
     calendarEvents: async (parent, { calendar_id, start_date, end_date } , context, info): Promise<ICalendarEvent[]> => {
       return await context.dataSources.calendar.getCalendarEvents(calendar_id, start_date, end_date);
+    },
+
+    calendarEvent: async (parent, { _id } , context, info): Promise<ICalendarEvent> => {
+      return await context.dataSources.calendar.getCalendarEvent(_id);
     },
 
     calendarEventTypes: async (parent, { calendar_id } , context, info): Promise<ICalendarEventType[]> => {

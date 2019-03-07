@@ -80,6 +80,8 @@ import { CalendarChipComponent } from './calendar/calendar-chip.component';
 import { CalendarPipe } from './pipes/calendar.pipe';
 import { DiagComponent } from './diag/diag.component';
 import { CalendarOhTemplateApplyComponent } from './calendar-editor/calendar-oh-template-apply.component';
+import { CalendarEventChipComponent } from './calendar/calendar-event-chip.component';
+import { CalendarEventPipe } from './pipes/calendar-event.pipe';
 
 @NgModule({
   declarations: [
@@ -136,7 +138,9 @@ import { CalendarOhTemplateApplyComponent } from './calendar-editor/calendar-oh-
     CalendarChipComponent,
     CalendarPipe,
     DiagComponent,
-    CalendarOhTemplateApplyComponent
+    CalendarOhTemplateApplyComponent,
+    CalendarEventChipComponent,
+    CalendarEventPipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
