@@ -1,5 +1,5 @@
 
-<app-sub-menu title="Události kalendáře" (back)="goBack()" showBack="true">
+<app-sub-menu title="Události kalendáře" (back)="goBack()" showBack="true" showEventClip="true">
     <ng-container *ngIf="calendar">
             <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
             <button mat-raised-button  (click)="onPrint()">tisk</button>
@@ -11,7 +11,6 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <app-calendar-event-clip></app-calendar-event-clip>
     <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start" >
         <div class="leftpanel" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
             <app-daycard [date]="day"></app-daycard>

@@ -6,4 +6,14 @@
   </button>
   <div>{{title}}</div>
   <ng-content></ng-content>
+  <ng-container *ngIf="showEventClip && clip">
+    <div class="spacer"></div>
+    <div>
+        <span> {{clip.event.event_name}} - {{clip.event.client.last_name}} </span>
+        <button mat-icon-button (click)="onClearClip()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+  </ng-container>
+  
 </div>

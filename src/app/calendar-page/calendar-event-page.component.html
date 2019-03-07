@@ -1,6 +1,6 @@
 
 
-<app-sub-menu title="Událost" (back)="goBack()" showBack="true">
+<app-sub-menu title="Událost" (back)="goBack()" showBack="true" showEventClip="true">
     <ng-container *ngIf="calendar && event">
         <app-calendar-event-chip [calendar_event_id]="event._id"></app-calendar-event-chip>
         <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
@@ -15,6 +15,5 @@
 
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <app-calendar-event-clip></app-calendar-event-clip>
     <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
 </div>
