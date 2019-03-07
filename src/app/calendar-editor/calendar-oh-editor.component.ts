@@ -68,7 +68,6 @@ export class CalendarOhEditorComponent implements OnInit, OnChanges {
       formDirective.resetForm();
       this.ohForm.reset();
       this.ohForm.enable();
-      this.saved.emit(r);
     }, (err) => {
       this.submitted = false;
       this.ohForm.enable();

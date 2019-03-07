@@ -50,7 +50,7 @@ export class CalendarAPI implements DataSource {
             calendar_id: calendar_id,
             day: { '$gte': start_date, '$lt': end_date }
         });
-        console.log('X0', R.map(o => M(o.day).toISOString(), ohs));
+        // console.log('X0', R.map(o => M(o.day).toISOString(), ohs));
         return ohs;
     }
 
@@ -111,6 +111,67 @@ export class CalendarAPI implements DataSource {
             begin,
             len
         });
+    }
+
+    async planOH(calendar_id: string, start_day: Date, end_day: Date): Promise<IDayOpeningHours[]> {
+        console.log('planOH', calendar_id, M(start_day).toISOString(), M(end_day).toISOString());
+
+        const calendar = await this.store.calendarModel.findById(calendar_id);
+        if (!calendar) {
+            throw new Error('Something bad happened');
+        }
+        const templates = await this.store.openingHoursTemplateModel.find({calendar_id: calendar_id});
+        if (!templates) {
+            throw new Error('Something bad happened');
+        }
+        const templatesGroups = R.groupBy<IOpeningHoursTemplate>(R.prop('week_day'), templates);
+        const day_count = M(end_day).utc().diff(start_day, 'days');
+
+        if ((day_count < 1) || (day_count > 365)) {
+            throw new Error('Something bad happened');
+        }
+
+        // console.log('day_count', day_count);
+        const days = R.map( day => (M(start_day).utc().add(day, 'days')), R.range(0, day_count) );
+        // console.log('days', days);
+
+        const new_ohs = R.flatten(R.map<M.Moment, IDayOpeningHours[]>( m => {
+            const week_day = m.weekday();
+            if (R.has(week_day, templatesGroups)) {
+                const templ = templatesGroups[week_day];
+                // console.log('XXX:', m.toISOString(), week_day, templ);
+                return R.map<IOpeningHoursTemplate, IDayOpeningHours>(t => ({
+                    _id: null,
+                    day: m.toDate(),
+                    calendar_id: calendar_id,
+                    begin: t.begin,
+                    len: t.len,
+                }), templ);
+                /*
+                return [{
+                    _id: null,
+                    day: m.toDate(),
+                    calendar_id: calendar_id,
+                    begin: 1,
+                    len: 2
+                }];
+                */
+            }
+            return [];
+        } , days));
+
+        const deleted = await this.store.dayOpeningHoursModel.deleteMany({
+            calendar_id: calendar_id,
+            day: { '$gte': start_day, '$lt': end_day }
+        });
+
+        const inserted = await this.store.dayOpeningHoursModel.insertMany(new_ohs);
+
+        const ohs = await this.store.dayOpeningHoursModel.find({
+            calendar_id: calendar_id,
+            day: { '$gte': start_day, '$lt': end_day }
+        });
+        return ohs;
     }
 
     async deleteOH(_id: string): Promise<IDeleteResponse> {

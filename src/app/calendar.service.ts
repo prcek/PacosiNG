@@ -424,6 +424,27 @@ export class CalendarService {
   }
 
 
+  planOpeningHours(calendar_id: string, start_day: Date, end_day: Date): Observable<IOpeningHours[]> {
+    return this.apollo.mutate<{planOpeningHours: IOpeningHours[]}, {calendar_id: string, start_day: string, end_day: string}>({
+      mutation: gql`
+        mutation($calendar_id: ID! $start_day: Date! $end_day: Date! ) {
+            planOpeningHours(calendar_id:$calendar_id start_day:$start_day end_day:$end_day) {
+            _id calendar_id day begin len
+          }
+        }
+      `,
+      variables: {
+        calendar_id,
+        start_day: M(start_day).utc().format('YYYY-MM-DD'),
+        end_day: M(end_day).utc().format('YYYY-MM-DD')
+      }
+    }).pipe(
+      tap(r => console.log('CalendarService.planOpeningHours res=', r)),
+      map(res => res.data.planOpeningHours)
+    );
+  }
+
+
   createOpeningHours(oh: IOpeningHours): Observable<IOpeningHours> {
     return this.apollo.mutate<{createOpeningHours: IOpeningHours}, IOpeningHoursV>({
       mutation: gql`

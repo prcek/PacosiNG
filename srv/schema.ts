@@ -58,6 +58,9 @@ const typeDefs = gql`
     createOpeningHours(calendar_id: ID! day: Date! begin: Int! len: Int!): DayOpeningHours!
     deleteOpeningHours(_id: ID!): DeleteResponse!
 
+    planOpeningHours(calendar_id: ID! start_day: Date! end_day: Date!): [DayOpeningHours]
+
+
     createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! order: Int!): CalendarEventType!
     updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int order: Int): CalendarEventType!
     deleteCalendarEventType(_id: ID!): DeleteResponse!
@@ -265,6 +268,9 @@ const resolvers: IResolvers<any, IContext> = {
 
     createOpeningHours: (_, { calendar_id, day, begin, len }, { dataSources }): Promise<IDayOpeningHours> =>
         dataSources.calendar.createOH(calendar_id, day, begin, len),
+
+    planOpeningHours: (_, { calendar_id, start_day, end_day }, { dataSources }): Promise<IDayOpeningHours[]> =>
+        dataSources.calendar.planOH(calendar_id, start_day, end_day),
 
     deleteOpeningHours: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteOH(_id),

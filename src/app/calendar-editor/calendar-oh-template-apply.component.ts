@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { ICalendar, IOpeningHours, CalendarService } from '../calendar.service';
 import * as R from 'ramda';
 import * as M from 'moment';
@@ -18,7 +18,7 @@ export interface Day {
 export class CalendarOhTemplateApplyComponent implements OnInit, OnChanges {
   @Input() calendar: ICalendar;
   @Input() day_list: string[];
-  @Output() saved = new EventEmitter<IOpeningHours>();
+  @Output() saved = new EventEmitter<IOpeningHours[]>();
   days: Day[];
   submitted = false;
   error_msg: string;
@@ -46,6 +46,29 @@ export class CalendarOhTemplateApplyComponent implements OnInit, OnChanges {
       this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
       this.ohForm.patchValue({start_day: this.days[0].value});
     }
+  }
+  onSubmit(formDirective: FormGroupDirective) {
+
+
+    const sm = M.utc(this.ohForm.value.start_day);
+    const start_day = sm.toDate();
+    const end_day = sm.add(this.ohForm.value.day_count, 'day').toDate();
+    this.submitted = true;
+    this.ohForm.disable();
+    this.error_msg = null;
+    console.log('CalendarOhTemplateApplyComponent.onSubmit');
+    this.calendarService.planOpeningHours(this.calendar._id, start_day, end_day).subscribe((r) => {
+      this.saved.emit(r);
+      this.submitted = false;
+      formDirective.resetForm();
+      // this.ohForm.reset();
+      this.ohForm.enable();
+    }, (err) => {
+      this.submitted = false;
+      this.ohForm.enable();
+      this.error_msg = err;
+    });
+
   }
 
 }
