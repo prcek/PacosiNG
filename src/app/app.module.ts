@@ -79,6 +79,7 @@ import { SubMenuComponent } from './sub-menu/sub-menu.component';
 import { CalendarChipComponent } from './calendar/calendar-chip.component';
 import { CalendarPipe } from './pipes/calendar.pipe';
 import { DiagComponent } from './diag/diag.component';
+import { CalendarOhTemplateApplyComponent } from './calendar-editor/calendar-oh-template-apply.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import { DiagComponent } from './diag/diag.component';
     SubMenuComponent,
     CalendarChipComponent,
     CalendarPipe,
-    DiagComponent
+    DiagComponent,
+    CalendarOhTemplateApplyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

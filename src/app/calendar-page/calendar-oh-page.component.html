@@ -35,7 +35,7 @@
       
      
         <app-calendar-oh-editor *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-editor>
-        
+        <app-calendar-oh-template-apply *ngIf="calendar" [calendar]="calendar" [day_list]="day_list" (saved)="getCalendarWithOHs()"></app-calendar-oh-template-apply> 
     </div>
 </div>
 

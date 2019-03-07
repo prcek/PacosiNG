@@ -1,0 +1,27 @@
+<mat-card class="form-container">
+    <form [formGroup]="ohForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+        <mat-card-header>
+            <mat-card-title>Použít šablonu</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center stretch">
+            <mat-form-field>
+                <mat-label>první den</mat-label>
+                <mat-select  formControlName="start_day">
+                    <mat-option *ngFor="let day of days" [value]="day.value">
+                        {{day.viewValue}}
+                      </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>počet dnů</mat-label>
+                <input matInput type="number" id="day_count" formControlName="day_count"> 
+                <mat-hint>poslední den bude {{last_day}}</mat-hint>
+            </mat-form-field>
+      
+            <div *ngIf="ohForm.errors?.invalidInterval && (ohForm.touched || ohForm.dirty)">
+              spatny interval! (konec je drive nez zacatek)
+            </div>
+            <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!ohForm.valid">Naplánovat</button>
+        </mat-card-content>
+    </form>
+</mat-card>

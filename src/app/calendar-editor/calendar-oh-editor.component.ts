@@ -54,7 +54,7 @@ export class CalendarOhEditorComponent implements OnInit, OnChanges {
     const t: IOpeningHours = {
       _id: null,
       calendar_id: this.calendar._id,
-      day: M(this.ohForm.value.day).toDate(),
+      day: M.utc(this.ohForm.value.day).toDate(),
       begin: this.ohForm.value.time,
       len: this.ohForm.value.time_end - this.ohForm.value.time,
     };
