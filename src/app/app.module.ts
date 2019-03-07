@@ -78,6 +78,7 @@ import { LocationPipe } from './pipes/location.pipe';
 import { SubMenuComponent } from './sub-menu/sub-menu.component';
 import { CalendarChipComponent } from './calendar/calendar-chip.component';
 import { CalendarPipe } from './pipes/calendar.pipe';
+import { DiagComponent } from './diag/diag.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { CalendarPipe } from './pipes/calendar.pipe';
     LocationPipe,
     SubMenuComponent,
     CalendarChipComponent,
-    CalendarPipe
+    CalendarPipe,
+    DiagComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
