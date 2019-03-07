@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ICalendar, IOpeningHoursTemplate, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, FormGroupDirective } from '@angular/forms';
 import { WeekDay, ALL_WEEK_DAYS } from './common';
-
+import * as R from 'ramda';
 
 export const timeIntervalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const time = control.get('time');
@@ -18,7 +18,7 @@ export const timeIntervalValidator: ValidatorFn = (control: FormGroup): Validati
 export class CalendarOhtEditorComponent implements OnInit {
   @Input() calendar: ICalendar;
   @Output() saved = new EventEmitter<IOpeningHoursTemplate>();
-  week_days = ALL_WEEK_DAYS;
+  week_days: WeekDay[];
   submitted = false;
   error_msg: string;
 
@@ -34,6 +34,7 @@ export class CalendarOhtEditorComponent implements OnInit {
     if (!this.calendar) {
       throw Error('A CalendarOhtEditorComponent without calendar');
     }
+    this.week_days = R.filter<WeekDay>(wd => R.contains(wd.value, this.calendar.week_days), ALL_WEEK_DAYS);
     // this.ohtForm.setValidators(timeIntervalValidator);
   }
   onSubmit(formDirective: FormGroupDirective) {
