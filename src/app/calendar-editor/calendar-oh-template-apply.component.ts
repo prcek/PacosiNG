@@ -24,7 +24,7 @@ export class CalendarOhTemplateApplyComponent implements OnInit, OnChanges {
   error_msg: string;
   ohForm = new FormGroup({
     start_day: new FormControl(null, { validators: Validators.required}),
-    day_count: new FormControl(28, { validators: Validators.required}),
+    day_count: new FormControl(28, { validators: [Validators.required, Validators.min(1), Validators.max(99)]}),
   });
   constructor(private calendarService: CalendarService) { }
   get last_day(): string {
