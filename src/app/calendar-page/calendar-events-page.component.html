@@ -1,9 +1,11 @@
 
 <app-sub-menu title="Události kalendáře" (back)="goBack()" showBack="true">
-    <app-calendar-chip *ngIf="calendar" [calendar_id]="calendar._id"></app-calendar-chip>
-    <button mat-raised-button  (click)="onPrint()">tisk</button>
-    <button mat-raised-button  (click)="onNextDay()">další den</button>
-    <button mat-raised-button  (click)="onPrevDay()">předcházející den</button>
+    <ng-container *ngIf="calendar">
+            <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
+            <button mat-raised-button  (click)="onPrint()">tisk</button>
+            <button mat-raised-button  (click)="onNextDay()">další den</button>
+            <button mat-raised-button  (click)="onPrevDay()">předcházející den</button>
+    </ng-container>
 </app-sub-menu>
 
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
