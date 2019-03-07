@@ -86,6 +86,10 @@ export class CalendarEventPageComponent implements OnInit {
   onCopy(): void {
     this.calendarService.clipboardCopy(this.calendar, this.event);
   }
+  onCut(): void {
+    this.calendarService.clipboardCut(this.calendar, this.event);
+  }
+
   goBack(): void {
     this.location.back();
   }

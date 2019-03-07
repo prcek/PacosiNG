@@ -48,6 +48,7 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() event_types: ICalendarEventType[];
   @Input() free_slots: number[];
   @Input() new_mode: boolean;
+  @Input() cut_mode: boolean;
   @Input() new_day: Date;
   @Input() new_time: number;
 
@@ -75,17 +76,33 @@ export class CalendarEventEditorComponent implements OnInit {
     console.log('CalendarEventEditorComponent.ngOnInit', this.event);
 
     if (this.new_mode) {
-      this.eventForm.setValue({
-        client: {
-          last_name: '',
-          first_name: '',
-          year: null,
-          phone: '',
-        },
-        event_type_id: null,
-        begin: this.new_time,
-        comment: ''
-      });
+      if (this.event) {
+        this.eventForm.setValue({
+          client: {
+            last_name: this.event.client.last_name,
+            first_name: this.event.client.first_name,
+            year: this.event.client.year,
+            phone: this.event.client.phone,
+          },
+          event_type_id: this.event.event_type_id,
+          begin: this.event.begin,
+          comment: this.event.comment
+        });
+        this.eventForm.markAsTouched();
+      } else {
+        this.eventForm.setValue({
+          client: {
+            last_name: '',
+            first_name: '',
+            year: null,
+            phone: '',
+          },
+          event_type_id: null,
+          begin: this.new_time,
+          comment: ''
+        });
+      }
+
     } else {
 
       this.eventForm.setValue({

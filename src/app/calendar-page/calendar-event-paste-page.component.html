@@ -1,7 +1,12 @@
+
+<app-sub-menu [title]="cut_mode?'Přesun události':'Kopie události'" (back)="goBack()" showBack="true">
+        <ng-container *ngIf="calendar_id && day">
+            <app-calendar-chip  [calendar_id]="calendar_id"></app-calendar-chip>
+            <div>{{day | czdate}}</div>
+        </ng-container>
+</app-sub-menu>
+
+
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <h1>PASTE událost do kalendáře "{{calendar?.name}}", {{day | czdate}} </h1>
-    <app-calendar-event-clip></app-calendar-event-clip> 
-    <app-calendar-event-editor *ngIf="calendar && event_types && clip" [calendar]="calendar" [event_types]="event_types" [event]="null" [new_mode]="true" [new_time]="time" [new_day]="day" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
- 
-    <button mat-raised-button color="primary" (click)="goBack()">zpět</button>
+    <app-calendar-event-editor *ngIf="calendar && event_types && clip_event && ready" [calendar]="calendar" [event_types]="event_types" [event]="clip_event" [new_mode]="true" [new_time]="time" [new_day]="day" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
 </div>

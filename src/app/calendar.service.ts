@@ -179,6 +179,16 @@ const ALL_CALENDAR_EVENT_ATTRS = `
   color
 `;
 
+const ALL_CALENDAR_EVENT_TYPE_ATTRS = `
+  _id
+  calendar_id
+  name
+  match_key
+  color
+  len
+  order
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -323,8 +333,7 @@ export class CalendarService {
           ${ALL_CALENDAR_ATTRS}
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
-          _id
-          calendar_id name match_key color len order
+          ${ALL_CALENDAR_EVENT_TYPE_ATTRS}
         }
       }`,
       variables: {
@@ -407,8 +416,7 @@ export class CalendarService {
           calendar_id day begin len
         }
         event_types: calendarEventTypes(calendar_id:$calendar_id) {
-          _id
-          calendar_id name match_key color len order
+          ${ALL_CALENDAR_EVENT_TYPE_ATTRS}
         }
       }`,
       variables: {
