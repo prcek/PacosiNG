@@ -30,14 +30,18 @@
           <input matInput type="number" id="span" formControlName="span"> 
         </mat-form-field>
 
-
         <mat-form-field>
-          <mat-label>Minimální začátek (v časovkách od 00:00)</mat-label>
+            <mat-label>Základní délka časovek</mat-label>
+            <input matInput type="number" id="cluster_len" formControlName="cluster_len"> 
+          </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>Minimální začátek (v jednotkách času od 00:00)</mat-label>
           <input matInput type="number" id="day_begin" formControlName="day_begin"> 
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Maximální počet časovek</mat-label>
+          <mat-label>Maximální počet jednotek času</mat-label>
           <input matInput type="number" id="day_len" formControlName="day_len"> 
         </mat-form-field>
 

@@ -19,6 +19,7 @@ export class CalendarEtEditorComponent implements OnInit {
     match_key: new FormControl(''),
     color: new FormControl('', { validators: Validators.required}),
     len: new FormControl(1, { validators: [Validators.required, Validators.min(1), Validators.max(60)]}),
+    short_len: new FormControl(1, { validators: [Validators.required, Validators.min(1), Validators.max(60)]}),
     order: new FormControl(1, { validators: [Validators.required, Validators.min(0), Validators.max(1000)]}),
   });
   error_msg: string;
@@ -35,6 +36,7 @@ export class CalendarEtEditorComponent implements OnInit {
         color: this.event_type.color,
         match_key: this.event_type.match_key,
         len: this.event_type.len,
+        short_len: this.event_type.short_len,
         order: this.event_type.order,
       });
     }

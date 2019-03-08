@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
 import { PdfService } from '../pdf.service';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
+import { Apollo } from 'apollo-angular';
 
 
 const DD = {
@@ -40,9 +41,10 @@ export class TestPageComponent implements OnInit {
   submitted = false;
   disabled = false;
   now = new Date();
-  constructor(public dialog: MatDialog, private pdf: PdfService) { }
+  constructor(public dialog: MatDialog, private pdf: PdfService, private apollo: Apollo) { }
 
   ngOnInit() {
+    console.log(this.apollo.getClient().cache.extract());
   }
   onSubmit() {}
   onTest() {

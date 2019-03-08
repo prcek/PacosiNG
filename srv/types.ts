@@ -13,6 +13,7 @@ export interface ICalendar {
     location_id: string;
     name: string;
     span: number;
+    cluster_len: number;
     day_len: number;
     day_begin: number;
     week_days: number[];
@@ -49,6 +50,7 @@ export interface ICalendarEventType {
     name: string;
     color: string;
     len: number;
+    short_len: number;
     order: number;
 }
 

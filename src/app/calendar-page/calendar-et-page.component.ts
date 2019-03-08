@@ -13,7 +13,7 @@ import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
 export class CalendarEtPageComponent implements OnInit {
   calendar: ICalendar;
   event_types: ICalendarEventType[];
-  displayedColumns: string[] = ['name', 'match_key', 'color', 'len', 'order', 'actions'];
+  displayedColumns: string[] = ['name', 'match_key', 'color', 'len', 'short_len', 'order', 'actions'];
   constructor(
     private route: ActivatedRoute,
     private router: Router,

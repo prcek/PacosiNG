@@ -24,7 +24,8 @@ export class CalendarEditorComponent implements OnInit {
   calendarForm = new FormGroup({
     name: new FormControl('', { validators: Validators.required}),
     location_id: new FormControl(null, {validators: Validators.required}),
-    span: new FormControl(15, { validators: [Validators.required, Validators.min(5), Validators.max(60)]}),
+    span: new FormControl(10, { validators: [Validators.required, Validators.min(5), Validators.max(60)]}),
+    cluster_len: new FormControl(2, { validators: [Validators.required, Validators.min(1), Validators.max(10)]}),
     day_begin: new FormControl(7 * 4, { validators: [Validators.required, Validators.min(0), Validators.max(60)]}),
     day_len: new FormControl(10 * 4, { validators: [Validators.required, Validators.min(1), Validators.max(100)]}),
     week_days: new FormControl([1, 2, 3, 4, 5], {validators: Validators.required}),
@@ -48,6 +49,7 @@ export class CalendarEditorComponent implements OnInit {
         name: this.calendar.name,
         location_id: this.calendar.location_id,
         span: this.calendar.span,
+        cluster_len: this.calendar.cluster_len,
         day_begin: this.calendar.day_begin,
         day_len: this.calendar.day_len,
         week_days: this.calendar.week_days,

@@ -68,25 +68,26 @@ export class CalendarAPI implements DataSource {
     }
 
 
-    async createCalendar(location_id: string, name: string, span: number,
+    async createCalendar(location_id: string, name: string, span: number, cluster_len: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         return this.store.calendarModel.create({
             archived: false,
             location_id,
             name,
             span,
+            cluster_len,
             day_begin,
             day_len,
             week_days
         });
     }
-    async updateCalendar(_id: string, archived: boolean, location_id: string, name: string, span: number,
+    async updateCalendar(_id: string, archived: boolean, location_id: string, name: string, span: number, cluster_len: number,
         day_begin: number, day_len: number, week_days: number[]): Promise<ICalendar> {
         const cal = await this.store.calendarModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({archived, location_id, name, span, day_begin, day_len, week_days});
+        cal.set({archived, location_id, name, span, cluster_len, day_begin, day_len, week_days});
         return cal.save();
     }
 
@@ -318,23 +319,25 @@ export class CalendarAPI implements DataSource {
     }
 
     // tslint:disable-next-line:max-line-length
-    async createET(calendar_id: string, name: string, match_key: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+    async createET(calendar_id: string, name: string, match_key: string, color: string, len: number, short_len: number, order: number): Promise<ICalendarEventType> {
         return this.store.calendarEventTypeModel.create({
             calendar_id,
             name,
             match_key,
             color,
             len,
+            short_len,
             order
         });
     }
 
-    async updateET(_id: string,  name: string, match_key: string, color: string, len: number, order: number): Promise<ICalendarEventType> {
+    // tslint:disable-next-line:max-line-length
+    async updateET(_id: string,  name: string, match_key: string, color: string, len: number, short_len: number, order: number): Promise<ICalendarEventType> {
         const cal = await this.store.calendarEventTypeModel.findById(_id);
         if (!cal) {
             throw new Error('Something bad happened');
         }
-        cal.set({name, match_key, color, len, order});
+        cal.set({name, match_key, color, len, short_len, order});
         return cal.save();
     }
 

@@ -47,8 +47,8 @@ const typeDefs = gql`
     relogin: LoginResponse!
     updateUser(login: String! password: String name: String sudo: Boolean roles: [String] calendar_ids: [String]): User!
     createUser(login: String! password: String! name: String! sudo: Boolean! roles: [String]! calendar_ids: [String]!): User!
-    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
-    createCalendar(location_id: ID! name: String! span: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
+    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int cluster_len: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
+    createCalendar(location_id: ID! name: String! span: Int! cluster_len: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
 
     updateLocation(_id: ID! archived: Boolean name: String address: String): Location!
     createLocation(name: String! address: String!): Location!
@@ -62,8 +62,8 @@ const typeDefs = gql`
     planOpeningHours(calendar_id: ID! start_day: Date! end_day: Date!): [DayOpeningHours]
 
 
-    createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! order: Int!): CalendarEventType!
-    updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int order: Int): CalendarEventType!
+    createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! short_len: Int! order: Int!): CalendarEventType!
+    updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int short_len: Int order: Int): CalendarEventType!
     deleteCalendarEventType(_id: ID!): DeleteResponse!
 
 
@@ -98,6 +98,7 @@ const typeDefs = gql`
     location_id: ID
     name: String
     span: Int
+    cluster_len: Int
     day_begin: Int
     day_len: Int
     week_days: [Int]
@@ -123,6 +124,7 @@ const typeDefs = gql`
     name: String
     color: String
     len: Int
+    short_len: Int
     order: Int
   }
 
@@ -252,11 +254,11 @@ const resolvers: IResolvers<any, IContext> = {
     createUser: (_, { login, password, name, sudo, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
         dataSources.user.createUser(login, password, name, sudo, roles, calendar_ids),
 
-    updateCalendar: (_, { _id, archived, location_id, name, span, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, day_begin, day_len, week_days),
+    updateCalendar: (_, { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days }, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days),
 
-    createCalendar: (_, { name, location_id, span , day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.createCalendar(location_id, name, span, day_begin, day_len, week_days),
+    createCalendar: (_, { name, location_id, span , cluster_len, day_begin, day_len, week_days}, { dataSources }): Promise<ICalendar> =>
+        dataSources.calendar.createCalendar(location_id, name, span, cluster_len, day_begin, day_len, week_days),
 
     updateLocation: (_, { _id, archived, name, address }, { dataSources }): Promise<ILocation> =>
         dataSources.location.updateLocation(_id, archived, name, address),
@@ -280,11 +282,11 @@ const resolvers: IResolvers<any, IContext> = {
     deleteOpeningHours: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteOH(_id),
 
-    createCalendarEventType: (_, { calendar_id, name, match_key, color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
-        dataSources.calendar.createET(calendar_id, name, match_key, color, len, order),
+    createCalendarEventType: (_, { calendar_id, name, match_key, color, len, short_len, order }, { dataSources }): Promise<ICalendarEventType> =>
+        dataSources.calendar.createET(calendar_id, name, match_key, color, len, short_len, order),
 
-    updateCalendarEventType: (_, { _id, name, match_key,  color, len, order }, { dataSources }): Promise<ICalendarEventType> =>
-      dataSources.calendar.updateET(_id, name, match_key, color, len, order),
+    updateCalendarEventType: (_, { _id, name, match_key,  color, len, short_len, order }, { dataSources }): Promise<ICalendarEventType> =>
+      dataSources.calendar.updateET(_id, name, match_key, color, len, short_len, order),
 
     deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteET(_id),

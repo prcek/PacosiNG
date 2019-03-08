@@ -67,6 +67,7 @@ function createModels(connection: mongoose.Connection) {
         location_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
         name: String,
         span: Number,
+        cluster_len: Number,
         day_begin: Number,
         day_len: Number,
         week_days: [Number],
@@ -116,6 +117,7 @@ function createModels(connection: mongoose.Connection) {
         match_key: String,
         color: String,
         len: Number,
+        short_len: Number,
         order: Number,
     });
     const CalendarEventTypeModel = connection.model<ICalendarEventTypeModel>('CalendarEventType',
