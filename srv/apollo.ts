@@ -94,6 +94,8 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const ud2b = await dataSources.calendar.createET(cal2._id, 'ud2_b', 'k2', '#blue', 2, 1);
     const ud3b = await dataSources.calendar.createET(cal2._id, 'ud3_b', 'k3', '#green', 3, 1);
 
+    const planC2 = await dataSources.calendar.planOH(cal2._id, today, nextweek2);
+
     // tslint:disable-next-line:max-line-length
     await dataSources.calendar.createEvent(cal1._id, ud1._id, { first_name: 'karel', last_name: 'vomacka', year: 1990, title: null, phone: null },  today, 40, 'poznamka');
     // tslint:disable-next-line:max-line-length
