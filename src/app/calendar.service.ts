@@ -391,7 +391,7 @@ export class CalendarService {
       }
       return false;
     };
-    
+
 
     const slots = R.map<number, ICalendarDaySlot>(n => {
       const ce = R.find<ICalendarEvent>(e => lookup_event(e, n), events);
@@ -409,7 +409,7 @@ export class CalendarService {
           console.log('_convertEvents2List -  nenalezeny et', ce);
         }
       }
-      
+
       return {
         slot: n,
         cluster_idx: (n % calendar.cluster_len),
