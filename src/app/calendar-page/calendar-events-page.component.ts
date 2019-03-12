@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot, IClipBoardRecord } from '../calendar.service';
 import * as M from 'moment';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSlideToggleChange } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -14,11 +14,13 @@ import { Subscription } from 'rxjs';
 })
 export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   calendar: ICalendar;
+  calendar_id: string;
   day: Date;
   events: ICalendarEvent[];
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
   loading = true;
+  extra = false;
   sub: Subscription;
   clip: IClipBoardRecord;
   ce_sub: Subscription;
@@ -35,8 +37,9 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
         this.loading = true;
         const day = M.utc(params.get('day')).toDate();
         this.day = day;
-        const id = params.get('id');
-        return this.calendarService.getCalendarWithEvents(id, day);
+        this.extra = (params.get('extra') === 'yes');
+        this.calendar_id = params.get('id');
+        return this.calendarService.getCalendarWithEvents(this.calendar_id, day);
       })
     ).subscribe(d => {
       console.log('CalendarEventsPageComponent params change!');
@@ -64,6 +67,12 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
   }*/
+
+  onExtra(event: MatSlideToggleChange) {
+    // tslint:disable-next-line:max-line-length
+    this.router.navigate(['calendars', 'events', this.calendar_id, 'day', M(this.day).utc().format('YYYY-MM-DD') , { extra: event.checked ? 'yes' : 'no' }]);
+  }
+
   goBack(): void {
     this.location.back();
   }

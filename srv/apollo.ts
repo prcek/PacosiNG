@@ -61,16 +61,16 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const loc_A = await dataSources.location.createLocation('Loc_A', 'loc A address');
     const loc_B = await dataSources.location.createLocation('Loc_B', 'loc B address');
 
-    const cal1 = await dataSources.calendar.createCalendar(loc_A._id, 'cal1', 15, 2, 4 * 7, 4 * 10, [1, 2, 3, 4, 5]);
-    const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 10, 2, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
+    const cal1 = await dataSources.calendar.createCalendar(loc_A._id, 'cal1', 10, 2, 42, 72, [1, 2, 3, 4, 5]);
+    const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 15, 2, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
     const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 30, 1, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
 
     const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super'], []);
     const duser = await dataSources.user.createUser('doctor', 'secret', 'Doctor', false, ['view'], [cal1._id]);
 
-    const c1oht1  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 40, 5);
-    const c1oht2  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 50, 5);
-    const c1oht3  = await dataSources.calendar.createOHTemplate(cal1._id, 2, 30, 5);
+    const c1oht1  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 42, 26);
+    const c1oht2  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 72, 18);
+    const c1oht3  = await dataSources.calendar.createOHTemplate(cal1._id, 2, 42, 26);
 
     const c2oht1  = await dataSources.calendar.createOHTemplate(cal2._id, 3, 40, 5);
     const c2oht2  = await dataSources.calendar.createOHTemplate(cal2._id, 1, 50, 5);
@@ -80,11 +80,11 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const tom = M(today).add(1, 'days').toDate();
     const nextweek = M(today).add(7, 'days').toDate();
     const nextweek2 = M(today).add(10, 'days').toDate();
-    await dataSources.calendar.createOH(cal1._id, today, 40, 5);
-    await dataSources.calendar.createOH(cal1._id, today, 50, 6);
-    await dataSources.calendar.createOH(cal1._id, nextweek, 45, 10);
-    await dataSources.calendar.createOH(cal1._id, tom, 35, 5);
-    await dataSources.calendar.createOH(cal1._id, nextweek2, 35, 10);
+    await dataSources.calendar.createOH(cal1._id, today, 42, 26);
+    await dataSources.calendar.createOH(cal1._id, today, 72, 18);
+    await dataSources.calendar.createOH(cal1._id, nextweek, 72, 10);
+    await dataSources.calendar.createOH(cal1._id, tom, 42, 6);
+    await dataSources.calendar.createOH(cal1._id, nextweek2, 42, 10);
 
     const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', 'k1', '#red', 1, 1, 1);
     const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', 'k2', '#blue', 2, 1, 1);

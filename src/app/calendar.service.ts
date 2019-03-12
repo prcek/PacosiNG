@@ -96,6 +96,8 @@ export interface ICalendarDaySlot {
   empty: boolean;
   event: ICalendarEvent | null;
   event_leg: number | null;
+  event_s_leg: boolean;
+  cluster_idx: number;
 }
 
 export interface ICalendarWithEventTypes {
@@ -374,7 +376,8 @@ export class CalendarService {
     }).pipe( /* tap(res => console.log('apollo res', res)),*/ map(res => res.data));
   }
 
-  _convertEvents2List(calendar: ICalendar, events: ICalendarEvent[], ohs: IOpeningHours[]): ICalendarDaySlot[] {
+  // tslint:disable-next-line:max-line-length
+  _convertEvents2List(calendar: ICalendar, event_types: ICalendarEventType[],  events: ICalendarEvent[], ohs: IOpeningHours[]): ICalendarDaySlot[] {
 
     const a = R.flatten(R.map<ICalendarEvent, number[]>(e => R.range(e.begin, e.begin + e.len), events)).sort();
     const b = R.flatten(R.map<IOpeningHours, number[]>(e => R.range(e.begin, e.begin + e.len), ohs)).sort();
@@ -388,17 +391,34 @@ export class CalendarService {
       }
       return false;
     };
+    
 
     const slots = R.map<number, ICalendarDaySlot>(n => {
       const ce = R.find<ICalendarEvent>(e => lookup_event(e, n), events);
+      let event_s_leg = false;
+      if (ce) {
+        const et = R.find<ICalendarEventType>(R.propEq('_id', ce.event_type_id), event_types);
+        if (et) {
+          const short_len  = et.short_len;
+          const c_len = n - ce.begin;
+          if ((c_len + 1 ) > short_len) {  //  +1 ?>?>  mozna jen >= ?
+            event_s_leg = true;
+          }
+          console.log('_convertEvents2List -  et', ce, et, short_len, c_len);
+        } else {
+          console.log('_convertEvents2List -  nenalezeny et', ce);
+        }
+      }
+      
       return {
         slot: n,
+        cluster_idx: (n % calendar.cluster_len),
         event: ce,
         event_leg: (ce ) ? n - ce.begin : undefined,
+        event_s_leg: event_s_leg,
         empty: !(ce)
       };
     }, c);
-    // console.log('_convertEvents2List', a, b, c, slots);
     return slots;
   }
 
@@ -436,7 +456,7 @@ export class CalendarService {
             events: res.data.events,
             event_types: res.data.event_types,
             ohs: res.data.ohs,
-            slots: this._convertEvents2List(res.data.calendar, res.data.events, res.data.ohs)
+            slots: this._convertEvents2List(res.data.calendar, res.data.event_types, res.data.events, res.data.ohs)
           };
         }));
   }
