@@ -86,13 +86,13 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     await dataSources.calendar.createOH(cal1._id, tom, 42, 6);
     await dataSources.calendar.createOH(cal1._id, nextweek2, 42, 10);
 
-    const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', 'k1', '#red', 1, 1, 1);
-    const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', 'k2', '#blue', 2, 1, 1);
-    const ud3 = await dataSources.calendar.createET(cal1._id, 'ud3', 'k3', '#green', 3, 2, 1);
+    const ud1 = await dataSources.calendar.createET(cal1._id, 'ud1', 'k1', 'red', 1, 1, 1);
+    const ud2 = await dataSources.calendar.createET(cal1._id, 'ud2', 'k2', 'blue', 2, 1, 1);
+    const ud3 = await dataSources.calendar.createET(cal1._id, 'ud3', 'k3', 'green', 3, 2, 1);
 
-    const ud1b = await dataSources.calendar.createET(cal2._id, 'ud1_b', 'k1', '#red', 1, 1, 1);
-    const ud2b = await dataSources.calendar.createET(cal2._id, 'ud2_b', 'k2', '#blue', 2, 1, 1);
-    const ud3b = await dataSources.calendar.createET(cal2._id, 'ud3_b', 'k3', '#green', 3, 3, 1);
+    const ud1b = await dataSources.calendar.createET(cal2._id, 'ud1_b', 'k1', 'red', 1, 1, 1);
+    const ud2b = await dataSources.calendar.createET(cal2._id, 'ud2_b', 'k2', 'blue', 2, 1, 1);
+    const ud3b = await dataSources.calendar.createET(cal2._id, 'ud3_b', 'k3', 'green', 3, 3, 1);
 
     const planC2 = await dataSources.calendar.planOH(cal2._id, today, nextweek2);
 
