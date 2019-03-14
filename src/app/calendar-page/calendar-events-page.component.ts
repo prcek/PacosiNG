@@ -144,14 +144,18 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
 
   onSlot(slot: ICalendarDaySlot) {
     const d = M.utc(this.day).format('YYYY-MM-DD');
-    if (slot.event) {
-      this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/edit/' + slot.event._id]);
+    const as_edit =  (!this.extra && !!slot.event ) || (this.extra && !!slot.event && !slot.event_s_leg);
+    console.log('as_edit', as_edit);
+    if /*(slot.event && !slot.event_s_leg)*/ (as_edit) {
+      // tslint:disable-next-line:max-line-length
+      this.router.navigate(['calendars', 'events', this.calendar._id, 'day', d, 'edit', slot.event._id,  { extra: this.extra ? 'yes' : 'no' }]);
     } else {
       if (this.clip) {
         // alert('paste todo!');
-        this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/paste/' + slot.slot]);
+        // tslint:disable-next-line:max-line-length
+        this.router.navigate(['calendars', 'events', this.calendar._id, 'day', d,  'paste', slot.slot, { extra: this.extra ? 'yes' : 'no' }]);
       } else {
-        this.router.navigate(['/calendars/events/' + this.calendar._id + '/day/' + d + '/new/' + slot.slot]);
+        this.router.navigate(['calendars', 'events', this.calendar._id, 'day', d,  'new', slot.slot, { extra: this.extra ? 'yes' : 'no' }]);
       }
     }
 

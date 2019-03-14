@@ -13,9 +13,9 @@
 </app-sub-menu>
 
 <ng-template #xxx let-slot='slot'>
-        <div *ngIf="extra || slot.cluster_idx==0 || slot.event_leg==0" fxLayout="row"  class="boxitem">
+        <div *ngIf="(extra && slot.extra_slot) || (!extra && slot.normal_slot)" fxLayout="row"  class="boxitem">
              <div class="time mat-title"> {{slot.slot | tstime:calendar.span }} </div> <div class="name mat-title" fxFlex="1 1 auto" (click)="onSlot(slot)"> 
-                 <span *ngIf="slot.event_leg==0">{{slot.event?.client.last_name}} {{slot.event?.client.first_name}}</span>
+                 <span *ngIf="slot.event_leg==0">{{slot.event?.client.last_name}} {{slot.event?.client.first_name}} {{slot.event?.len}}</span>
             </div>
         </div>
 </ng-template>

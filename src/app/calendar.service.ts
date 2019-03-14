@@ -97,6 +97,8 @@ export interface ICalendarDaySlot {
   event: ICalendarEvent | null;
   event_leg: number | null;
   event_s_leg: boolean;
+  normal_slot: boolean;
+  extra_slot: boolean;
   cluster_idx: number;
 }
 
@@ -410,11 +412,16 @@ export class CalendarService {
         }
       }
 
+      const  cluster_idx = (n % calendar.cluster_len);
+      const event_leg = (ce ) ? n - ce.begin : undefined;
+
       return {
         slot: n,
-        cluster_idx: (n % calendar.cluster_len),
+        normal_slot: (((!!ce) && event_leg === 0) || (cluster_idx === 0 && !ce)),
+        extra_slot: ((cluster_idx && (!ce)) || (cluster_idx && event_s_leg)),
+        cluster_idx,
         event: ce,
-        event_leg: (ce ) ? n - ce.begin : undefined,
+        event_leg,
         event_s_leg: event_s_leg,
         empty: !(ce)
       };
