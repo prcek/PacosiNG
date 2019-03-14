@@ -21,9 +21,15 @@
 .name {
     margin: 2px;
     padding-left: 10px;
+}
+.actions {
+    margin: 2px;
+    padding-right: 5px;
+}
+.slot {
     cursor: pointer;
 }
-.name:hover {
+.slot:hover {
     background-color: lightgray;
 }
 
@@ -45,4 +51,13 @@
 }
 .boxitem:last-child {
     border: none;
+}
+
+.action_b {
+    line-height: 16px;
+    height:16px; 
+    width:16px;
+    font-size:16px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
