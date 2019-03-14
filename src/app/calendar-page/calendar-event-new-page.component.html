@@ -9,5 +9,7 @@
     
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <app-calendar-event-editor *ngIf="calendar && event_types" [calendar]="calendar" [event_types]="event_types" [event]="null" [new_mode]="true" [new_time]="time" [new_day]="day" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
+    <app-calendar-event-editor *ngIf="calendar && event_types" [calendar]="calendar" [event_types]="event_types" [event]="null" [new_mode]="true" [new_time]="time" [new_day]="day" [free_slots]="free_slots" [start_slots]="start_slots" [extra]="extra" (saved)="goBack()"></app-calendar-event-editor>
 </div>
+
+<app-diag>{{diag}}</app-diag>

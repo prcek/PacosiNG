@@ -17,6 +17,7 @@ export class CalendarEventNewPageComponent implements OnInit {
   day: Date;
   time: number;
   loading = true;
+  extra = false;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -26,14 +27,27 @@ export class CalendarEventNewPageComponent implements OnInit {
   ngOnInit() {
     this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
     this.time = parseInt(this.route.snapshot.paramMap.get('slot'), 10);
+    this.extra = this.route.snapshot.paramMap.get('extra') === 'yes';
     this.getCalendarWithEvents();
   }
   get free_slots(): number[] {
+    // tslint:disable-next-line:max-line-length
+    const ft = this.extra ? R.anyPass([R.propEq('empty', true), R.propEq('event_s_leg', true)]) : R.propEq('empty', true);
     if (this.slots) {
-      return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(R.propEq('empty', true), this.slots));
+        return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(ft, this.slots));
     }
     return [];
   }
+
+  get start_slots(): number[] {
+    // tslint:disable-next-line:max-line-length
+    const ft = this.extra ? R.anyPass([R.propEq('empty', true), R.propEq('event_s_leg', true)]) : R.allPass([R.propEq('empty', true), R.propEq('cluster_idx', 0)]);
+    if (this.slots) {
+        return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(ft, this.slots));
+    }
+    return [];
+  }
+
   getCalendarWithEvents() {
     const id = this.route.snapshot.paramMap.get('id');
     this.loading = true;
@@ -51,6 +65,12 @@ export class CalendarEventNewPageComponent implements OnInit {
     this.location.back();
   }
   get diag() {
-    return JSON.stringify({calendar: this.calendar});
+    return JSON.stringify({
+      calendar: this.calendar,
+      extra: this.extra,
+      free_slots: this.free_slots,
+      start_slots: this.start_slots,
+      time: this.time
+    });
   }
 }

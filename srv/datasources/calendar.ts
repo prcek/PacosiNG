@@ -63,6 +63,13 @@ export class CalendarAPI implements DataSource {
         return events;
     }
 
+    async _getCalendarDayEvents(calendar_id: string, day: Date): Promise<ICalendarEvent[]> {
+        const sd = M.utc(day).startOf('day');
+        const ed = M(sd).utc().add(1, 'day');
+        return this.getCalendarEvents(calendar_id, sd.toDate(), ed.toDate());
+    }
+
+
     async getCalendarEvent(_id: string): Promise<ICalendarEvent> {
         return this.store.calendarEventModel.findById(_id);
     }
@@ -188,9 +195,22 @@ export class CalendarAPI implements DataSource {
         return {ok: false, _id: _id};
     }
 
+    async _shortenEvent(_id, new_len): Promise<ICalendarEvent> {
+        const event = await this.store.calendarEventModel.findById(_id);
+        if (!event) {
+            throw new Error('Something bad happened');
+        }
+        // tslint:disable-next-line:max-line-length
+        const overlap_check = R.map( s => (M(event.day).utc().format('YYYY-MM-DD') + '#' + s), R.range(event.begin, event.begin + new_len) );
+        event.set({
+            len: new_len,
+            overlap_check
+        });
+        return event.save();
+    }
 
     // tslint:disable-next-line:max-line-length
-    async createEvent(calendar_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string): Promise<ICalendarEvent> {
+    async createEvent(calendar_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string, extra_mode: boolean): Promise<ICalendarEvent> {
         console.log('createEvent', M(day).toISOString(), event_type_id);
 
         const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
@@ -200,7 +220,36 @@ export class CalendarAPI implements DataSource {
         if (event_type.calendar_id.toString() !== calendar_id.toString()) {
             throw new Error('Something bad happened');
         }
-        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), R.range(begin, begin + event_type.len) );
+
+        const len = extra_mode ? event_type.short_len : event_type.len;
+        const event_range = R.range(begin, begin + len);
+
+        if (extra_mode) {
+
+            const events = await this._getCalendarDayEvents(calendar_id, day);
+
+            const c_event = R.find<ICalendarEvent>( e => {
+                const er = R.range(e.begin, e.begin + e.len);
+                if (R.intersection(er, event_range).length) {
+                    return true;
+                }
+                return false;
+            }, events);
+            if (c_event) {
+                const ce_event_type = await this.store.calendarEventTypeModel.findById(c_event.event_type_id);
+                if (!ce_event_type) {
+                    throw new Error('Something bad happened');
+                }
+                const ser = R.range(c_event.begin, c_event.begin + ce_event_type.short_len);
+                if (R.intersection(ser, event_range).length) {
+                    throw new Error('Something bad happened');
+                }
+                const se = await this._shortenEvent(c_event._id, ce_event_type.short_len);
+            }
+        }
+
+
+        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), event_range );
 
         return this.store.calendarEventModel.create({
             calendar_id,
@@ -210,14 +259,14 @@ export class CalendarAPI implements DataSource {
             color: event_type.color,
             day,
             begin,
-            len: event_type.len,
+            len,
             comment,
             overlap_check
         });
     }
 
     // tslint:disable-next-line:max-line-length
-    async updateEvent(_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string): Promise<ICalendarEvent> {
+    async updateEvent(_id: string, event_type_id: string,  client: ICalendarEventClient,  day: Date, begin: number, comment: string, extra_mode: boolean): Promise<ICalendarEvent> {
         console.log('updateEvent', M(day).toISOString(), event_type_id);
 
         const event = await this.store.calendarEventModel.findById(_id);
@@ -233,7 +282,10 @@ export class CalendarAPI implements DataSource {
             throw new Error('Something bad happened');
         }
 
-        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), R.range(begin, begin + event_type.len) );
+        const len = extra_mode ? event_type.short_len : event_type.len;
+        const event_range = R.range(begin, begin + len);
+
+        const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), event_range );
 
         event.set({
             event_type_id,
@@ -242,7 +294,7 @@ export class CalendarAPI implements DataSource {
             color: event_type.color,
             day,
             begin,
-            len: event_type.len,
+            len,
             comment,
             overlap_check
         });

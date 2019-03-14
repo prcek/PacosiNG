@@ -607,17 +607,20 @@ export class CalendarService {
 
 
 
-  updateEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
-    return this.apollo.mutate<{ updateCalendarEvent: ICalendarEvent}, ICalendarEvent>({
+  updateEvent(event: ICalendarEvent, extra_mode: boolean): Observable<ICalendarEvent> {
+    return this.apollo.mutate<{ updateCalendarEvent: ICalendarEvent}, ICalendarEvent | { extra_mode: boolean }>({
       mutation: gql`
-        mutation($_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
-          updateCalendarEvent(_id: $_id client: $client event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
+        mutation($_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!
+        $extra_mode: Boolean) {
+          updateCalendarEvent(_id: $_id client: $client event_type_id: $event_type_id day: $day begin: $begin comment: $comment
+          extra_mode: $extra_mode) {
               ${ALL_CALENDAR_EVENT_ATTRS}
             }
         }
       `,
       variables: {
-        ...event
+        ...event,
+        extra_mode
       }
     }).pipe(
       // tap(r => console.log('CalendarService.updateEvent res=', r)),
@@ -625,18 +628,20 @@ export class CalendarService {
     );
   }
 
-  createEvent(event: ICalendarEvent): Observable<ICalendarEvent> {
-    return this.apollo.mutate<{createCalendarEvent: ICalendarEvent}, ICalendarEvent>({
+  createEvent(event: ICalendarEvent, extra_mode: boolean = false): Observable<ICalendarEvent> {
+    return this.apollo.mutate<{createCalendarEvent: ICalendarEvent}, ICalendarEvent | {extra_mode: boolean}>({
       mutation: gql`
-        mutation($calendar_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!) {
+        mutation($calendar_id: ID! $client: CalendarEventClientInput! $event_type_id: ID!  $day: Date! $begin: Int! $comment: String!
+        $extra_mode: Boolean) {
           createCalendarEvent(calendar_id: $calendar_id client: $client
-            event_type_id: $event_type_id day: $day begin: $begin comment: $comment) {
+            event_type_id: $event_type_id day: $day begin: $begin comment: $comment, extra_mode: $extra_mode) {
               ${ALL_CALENDAR_EVENT_ATTRS}
             }
         }
       `,
       variables: {
-        ...event
+        ...event,
+        extra_mode
       }
     }).pipe(
       // tap(r => console.log('CalendarService.createEvent res=', r)),

@@ -51,6 +51,9 @@
         <mat-error *ngIf="eventForm.errors?.overlap && (eventForm.touched || eventForm.dirty)">
                 ve zvoleném čase není volno
         </mat-error>
+        <mat-error *ngIf="eventForm.errors?.wrongbegin && (eventForm.touched || eventForm.dirty)">
+                ve zvolený čas nelze plánovat
+        </mat-error>
         <button *ngIf="!submitted" type="submit" mat-raised-button color="primary"  [disabled]="!eventForm.valid">uložit</button>
         <mat-error *ngIf="error_msg" class="red mat-body-strong">{{error_msg}}</mat-error>
       </mat-card-content>

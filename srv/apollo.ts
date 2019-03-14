@@ -97,13 +97,16 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const planC2 = await dataSources.calendar.planOH(cal2._id, today, nextweek2);
 
     // tslint:disable-next-line:max-line-length
-    await dataSources.calendar.createEvent(cal1._id, ud1._id, { first_name: 'karel', last_name: 'vomacka', year: 1990, title: null, phone: null },  today, 40, 'poznamka');
+    await dataSources.calendar.createEvent(cal1._id, ud1._id, { first_name: 'karel', last_name: 'vomacka', year: 1990, title: null, phone: null },  today, 42, 'poznamka', false);
     // tslint:disable-next-line:max-line-length
-    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'jiri', last_name: 'duchna', year: 1990, title: null, phone: null },  today, 43, null);
+    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'jiri', last_name: 'duchna', year: 1990, title: null, phone: null },  today, 50, '', false);
     // tslint:disable-next-line:max-line-length
-    await dataSources.calendar.createEvent(cal1._id, ud3._id, { first_name: 'marie', last_name: 'janeckova', year: 1990, title: null, phone: null },  tom, 37, null);
+    await dataSources.calendar.createEvent(cal1._id, ud3._id, { first_name: 'marie', last_name: 'janeckova', year: 1990, title: null, phone: null },  tom, 37, '', false);
     // tslint:disable-next-line:max-line-length
-    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'ferda', last_name: 'mravenec', year: 2010, title: null, phone: null },  tom, 35, null);
+    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'ferda', last_name: 'mravenec', year: 2010, title: null, phone: null },  tom, 35, '', false);
+
+    // tslint:disable-next-line:max-line-length
+    await dataSources.calendar.createEvent(cal1._id, ud2._id, { first_name: 'extra', last_name: 'extra', year: 1990, title: null, phone: null },  today, 51, '', true);
 
     return true; // store_setup_res;
 }

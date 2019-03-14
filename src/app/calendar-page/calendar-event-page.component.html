@@ -14,7 +14,8 @@
 
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 
-
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" [free_slots]="free_slots" (saved)="goBack()"></app-calendar-event-editor>
+    <app-calendar-event-editor *ngIf="calendar && event && event_types" [calendar]="calendar" [event_types]="event_types" [event]="event" [free_slots]="free_slots" [start_slots]="start_slots" (saved)="goBack()"></app-calendar-event-editor>
 </div>
+
+<app-diag>{{diag}}</app-diag>

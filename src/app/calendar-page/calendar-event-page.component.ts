@@ -22,6 +22,7 @@ export class CalendarEventPageComponent implements OnInit {
   slots: ICalendarDaySlot[];
   day: Date;
   loading = true;
+  extra = false;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -31,6 +32,7 @@ export class CalendarEventPageComponent implements OnInit {
 
   ngOnInit() {
     this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
+    this.extra = this.route.snapshot.paramMap.get('extra') === 'yes';
     this.getCalendarWithEvent();
   }
 
@@ -45,6 +47,18 @@ export class CalendarEventPageComponent implements OnInit {
         }
         return false;
       }, this.slots));
+    }
+    return [];
+  }
+
+  get start_slots(): number[] {
+    // tslint:disable-next-line:max-line-length
+    const ft = this.extra ? R.anyPass([R.propEq('empty', true), R.propEq('event_s_leg', true)]) : R.allPass([R.propEq('empty', true), R.propEq('cluster_idx', 0)]);
+    const ft2 = R.anyPass([ft, (s) => {
+      return (s.event && this.event && s.event._id === this.event._id && s.event_leg === 0);
+    }]);
+    if (this.slots) {
+        return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(ft2, this.slots));
     }
     return [];
   }
@@ -162,7 +176,8 @@ export class CalendarEventPageComponent implements OnInit {
   }
 
   get diag() {
-    return JSON.stringify({calendar: this.calendar, event: this.event});
+    // tslint:disable-next-line:max-line-length
+    return JSON.stringify({calendar: this.calendar, event: this.event, extra: this.extra, free_slots: this.free_slots, start_slots: this.start_slots});
   }
 
 }

@@ -12,7 +12,8 @@ export const timeIntervalValidator: ValidatorFn = (control: FormGroup): Validati
 };
 */
 
-function overlapValidator(free_slots: number[], event_types: ICalendarEventType[]): ValidatorFn  {
+// tslint:disable-next-line:max-line-length
+function overlapValidator(free_slots: number[], start_slots: number[], event_types: ICalendarEventType[], extra: boolean, orig_len: number): ValidatorFn  {
   const v: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
     const begin = control.get('begin');
     const event_type_id = control.get('event_type_id');
@@ -22,10 +23,24 @@ function overlapValidator(free_slots: number[], event_types: ICalendarEventType[
         return {'missing_event_type': true};
       }
       const bv = <number> begin.value;
-      const required_slots =  R.range(bv, bv + event_type.len);
+      if (!R.contains(bv, start_slots)) {
+        return { 'wrongbegin': true};
+      }
+
+
+      const required_slots =  extra ? R.range(bv, bv + event_type.short_len) : R.range(bv, bv + event_type.len);
       const ct = R.contains(R.__, free_slots);
       if ( R.all(ct, required_slots) ) {
         return null;
+      }
+      if (orig_len && !extra) {
+        if (orig_len >= event_type.short_len) {
+          // puvodni byl zkraceny, zkusime i novy zkratit
+          const rs = R.range(bv, bv + event_type.short_len);
+          if (R.all(ct, rs)) {
+            return null;
+          }
+        }
       }
       return {'overlap': true};
     }
@@ -47,10 +62,12 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() event: ICalendarEvent;
   @Input() event_types: ICalendarEventType[];
   @Input() free_slots: number[];
+  @Input() start_slots: number[];
   @Input() new_mode: boolean;
   @Input() cut_mode: boolean;
   @Input() new_day: Date;
   @Input() new_time: number;
+  @Input() extra: boolean;
 
 
   eventForm = new FormGroup({
@@ -74,9 +91,9 @@ export class CalendarEventEditorComponent implements OnInit {
 
   ngOnInit() {
     console.log('CalendarEventEditorComponent.ngOnInit', this.event);
-
+    let orig_len = 0;
     if (this.new_mode) {
-      if (this.event) {
+      if (this.event) {  // paste mode
         this.eventForm.setValue({
           client: {
             last_name: this.event.client.last_name,
@@ -88,6 +105,7 @@ export class CalendarEventEditorComponent implements OnInit {
           begin: this.event.begin,
           comment: this.event.comment
         });
+        orig_len = this.event.len;
         this.eventForm.markAsTouched();
       } else {
         this.eventForm.setValue({
@@ -116,8 +134,9 @@ export class CalendarEventEditorComponent implements OnInit {
         begin: this.event.begin,
         comment: this.event.comment
       });
+      orig_len = this.event.len;
     }
-    this.eventForm.setValidators(overlapValidator(this.free_slots, this.event_types));
+    this.eventForm.setValidators(overlapValidator(this.free_slots, this.start_slots, this.event_types, this.extra, orig_len));
   }
   onSubmit(formDirective: FormGroupDirective) {
     if (this.new_mode) {
@@ -131,7 +150,7 @@ export class CalendarEventEditorComponent implements OnInit {
       this.eventForm.disable();
       this.error_msg = null;
       console.log('CalendarEventEditorComponent.onSubmit', u);
-      this.calendarService.createEvent(u).subscribe((r) => {
+      this.calendarService.createEvent(u, this.extra).subscribe((r) => {
         this.saved.emit(r);
         this.submitted = false;
         this.eventForm.enable();
@@ -143,11 +162,35 @@ export class CalendarEventEditorComponent implements OnInit {
     } else {
 
      const u: ICalendarEvent = {_id: this.event._id, day: this.event.day, ...this.eventForm.getRawValue()};
+
+
+     let use_short_len = this.extra;
+     if (!this.extra) {
+       // kdyz byl puvodni zkraceny a novy by se tam jako dlouhy nevesel, pak naplanujem zkracenou variantu
+        const event_type = R.find<ICalendarEventType>(R.propEq('_id', u.event_type_id), this.event_types);
+        const ct = R.contains(R.__, this.free_slots);
+        const full_range = R.range(u.begin, u.begin + event_type.len);
+        const short_range = R.range(u.begin, u.begin + event_type.short_len);
+        if (R.all(ct, full_range)) {
+          // dlouhy se tam vejde.
+          // alert('long ok');
+        } else if (R.all(ct, short_range)) {
+          // kratky se tam vleze
+          // alert('short ok');
+          use_short_len = true;
+        } else {
+          // chyba;
+          alert('chyba - neni volny cas');
+          return;
+        }
+
+     }
      this.submitted = true;
      this.eventForm.disable();
      this.error_msg = null;
+
      console.log('CalendarEventEditorComponent.onSubmit', u);
-     this.calendarService.updateEvent(u).subscribe((r) => {
+     this.calendarService.updateEvent(u, use_short_len).subscribe((r) => {
        this.saved.emit(r);
        this.submitted = false;
        this.eventForm.enable();
