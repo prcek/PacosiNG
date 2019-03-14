@@ -14,10 +14,10 @@
 
 <ng-template #xxx let-slot='slot'>
         <div *ngIf="(extra && slot.extra_slot) || (!extra && slot.normal_slot)" fxLayout="row"  class="boxitem">
-             <div class="time mat-title"> {{slot.slot | tstime:calendar.span }} {{slot.slot}} </div> 
+             <div class="time mat-body"> {{slot.slot | tstime:calendar.span }} </div> 
              <div *ngIf="slot.event && slot.event_leg==0" class="type_color"  [ngStyle]="{'background-color': slot.event.color}">&nbsp;</div>         
-             <div class="name mat-title" fxFlex="1 1 auto" (click)="onSlot(slot)"> 
-                 <span *ngIf="slot.event_leg==0">{{slot.event?.client.last_name}} {{slot.event?.client.first_name}} len:{{slot.event?.len}}</span>
+             <div class="name mat-body" fxFlex="1 1 auto" (click)="onSlot(slot)"> 
+                 <span *ngIf="slot.event_leg==0">{{slot.event?.client.last_name}} {{slot.event?.client.first_name}}</span>
             </div>
         </div>
 </ng-template>

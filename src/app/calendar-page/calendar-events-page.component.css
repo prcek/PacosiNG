@@ -23,6 +23,9 @@
     padding-left: 10px;
     cursor: pointer;
 }
+.name:hover {
+    background-color: lightgray;
+}
 
 
 .leftpanel {
