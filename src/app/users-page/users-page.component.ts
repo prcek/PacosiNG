@@ -9,7 +9,7 @@ import { UserService, IUser } from '../user.service';
 })
 export class UsersPageComponent implements OnInit {
   users: IUser[];
-  displayedColumns: string[] = ['login', 'name', 'sudo', 'roles', 'actions'];
+  displayedColumns: string[] = ['login', 'name', 'root', 'roles', 'actions'];
   constructor(private router: Router, private userService: UserService) { }
   ngOnInit() {
     this.getUsers();

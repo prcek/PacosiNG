@@ -56,7 +56,7 @@ function createModels(connection: mongoose.Connection) {
         login: {type: String, index: true, unique: true},
         password: String,
         name: String,
-        sudo: Boolean,
+        root: Boolean,
         roles: [String],
         calendar_ids: [{type: mongoose.Schema.Types.ObjectId, ref: 'Calendar'}]
     });
@@ -194,6 +194,6 @@ export async function createStore(productionMode: boolean): Promise<IStore> {
 }
 
 export async function setupDevStoreRawData(store: IStore): Promise<boolean> {
-    // const adminUser = await store.userModel.create({login: 'admin', password: 'secret', sudo: true, roles: ['super']});
+    // const adminUser = await store.userModel.create({login: 'admin', password: 'secret', root: true, roles: ['super']});
     return true;
 }

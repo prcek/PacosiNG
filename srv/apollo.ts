@@ -65,8 +65,13 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 15, 2, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
     const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 30, 1, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
 
-    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super'], []);
+    // tslint:disable-next-line:max-line-length
+    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super', 'view', 'edit'], [cal1._id, cal2._id, cal3._id]);
     const duser = await dataSources.user.createUser('doctor', 'secret', 'Doctor', false, ['view'], [cal1._id]);
+    const euser = await dataSources.user.createUser('evidence', 'secret', 'Evidence', false, ['view', 'edit'], [cal1._id, cal2._id]);
+    // tslint:disable-next-line:max-line-length
+    const suser = await dataSources.user.createUser('plan', 'secret', 'Planovac', false, ['setup_ot', 'view', 'edit'], [cal1._id, cal2._id]);
+
 
     const c1oht1  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 42, 26);
     const c1oht2  = await dataSources.calendar.createOHTemplate(cal1._id, 1, 72, 18);

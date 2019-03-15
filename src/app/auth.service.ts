@@ -38,7 +38,7 @@ interface IDevToken {
 
 export interface IUserInfo {
   login: string;
-  sudo: boolean;
+  root: boolean;
   name: string;
   roles: string[];
   calendar_ids: string[];
@@ -130,7 +130,7 @@ export class AuthService {
             token
             user {
               login
-              sudo
+              root
               roles
               name
               calendar_ids
@@ -189,7 +189,7 @@ export class AuthService {
             token
             user {
               login
-              sudo
+              root
               roles
               name
               calendar_ids

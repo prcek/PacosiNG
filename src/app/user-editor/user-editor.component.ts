@@ -28,9 +28,10 @@ export class UserEditorComponent implements OnInit {
   hide1 = true;
   hide2 = true;
   roles: Role[] = [
-    {value: 'super', viewValue: 'Super'},
-    {value: 'view', viewValue: 'View'},
-    {value: 'edit', viewValue: 'Edit'}
+    {value: 'super', viewValue: 'Správce'},
+    {value: 'view', viewValue: 'Zobrazení'},
+    {value: 'edit', viewValue: 'Evidence'},
+    {value: 'setup_ot', viewValue: 'Plánování'},
   ];
 
   userForm = new FormGroup({
@@ -38,7 +39,7 @@ export class UserEditorComponent implements OnInit {
     name: new FormControl('', {validators: Validators.required}),
     password: new FormControl(''),
     password_copy: new FormControl(''),
-    sudo: new FormControl(false),
+    root: new FormControl(false),
     roles: new FormControl([], {validators: Validators.required}),
     calendar_ids: new FormControl([], {validators: Validators.required}),
   }, { validators: passwordValidator });
@@ -57,7 +58,7 @@ export class UserEditorComponent implements OnInit {
       this.userForm.setValue({
         login: this.user.login,
         name: this.user.name,
-        sudo: this.user.sudo,
+        root: this.user.root,
         roles: this.user.roles,
         calendar_ids: this.user.calendar_ids,
         password: null,

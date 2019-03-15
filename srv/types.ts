@@ -2,7 +2,7 @@
 export interface IUser {
     login: string;
     name: string;
-    sudo: boolean;
+    root: boolean;
     roles: string[];
     calendar_ids: string[];
 }

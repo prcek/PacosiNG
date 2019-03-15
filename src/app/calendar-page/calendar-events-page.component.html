@@ -1,11 +1,9 @@
 
-<app-sub-menu title="Události kalendáře" (back)="goBack()" showBack="true" showEventClip="true">
+<app-sub-menu title="Události kalendáře" (back)="goBack()" showBack="false" showEventClip="true">
     <ng-container *ngIf="calendar">
             <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
             <button mat-raised-button  (click)="onPrint()">tisk</button>
-            <button mat-raised-button  (click)="onNextDay()">další den</button>
-            <button mat-raised-button  (click)="onPrevDay()">předcházející den</button>
-            <mat-slide-toggle
+            <mat-slide-toggle *appAccess="'edit'"
                 [checked]="extra" (change)="onExtra($event)">
                 <span class="mat-body">extra</span>
             </mat-slide-toggle>
@@ -20,7 +18,7 @@
                 <div  class="name" fxFlex="1 1 auto">
                     <span *ngIf="slot.event_leg==0"> {{slot.event?.client.last_name}} {{slot.event?.client.first_name}} </span>
                 </div>
-                <div class="actions mat-body"> 
+                <div *appAccess="'edit'" class="actions mat-body"> 
                         <button mat-icon-button  class="action_b" (click)="onSlot(slot)" >
                                 <mat-icon>edit</mat-icon>
                         </button>
