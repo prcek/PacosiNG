@@ -7,6 +7,7 @@ import { MatDialog, MatSlideToggleChange } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -29,6 +30,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private calendarService: CalendarService,
+    private auth: AuthService,
     public dialog: MatDialog) {}
 
   ngOnInit() {
@@ -76,6 +78,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   goBack(): void {
     this.location.back();
   }
+  /*
   onNextDay(): void {
     // 'calendars/events/5c780c3983788bfdbf9e5b57/day/2019-03-07'
     const nd =  M(this.day).utc().add(1, 'day').format('YYYY-MM-DD'); // TODO: skip calendar off days!
@@ -85,6 +88,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     const pd =  M(this.day).utc().subtract(1, 'day').format('YYYY-MM-DD');  // TODO: skip calendar off days!
     this.router.navigate(['/calendars', 'events', this.calendar._id, 'day', pd]);
   }
+  */
   onPrint(): void {
     const ds = M.utc(this.day).format('YYYY-MM-DD');
     const DD = {
@@ -142,7 +146,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSlot(slot: ICalendarDaySlot) {
+  onSlotEdit(slot: ICalendarDaySlot) {
     const d = M.utc(this.day).format('YYYY-MM-DD');
     const as_edit =  (!this.extra && !!slot.event ) || (this.extra && !!slot.event && !slot.event_s_leg);
     console.log('as_edit', as_edit);
@@ -159,6 +163,20 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
       }
     }
 
+  }
+  onSlotMove(slot: ICalendarDaySlot) {
+    alert('onSlotMove - TOOD');
+  }
+  onSlotView(slot: ICalendarDaySlot) {
+    alert('onSlotView - TOOD');
+  }
+
+  onSlot(slot: ICalendarDaySlot) {
+    if (slot.empty && this.auth.accessCheck('edit')) {
+      this.onSlotEdit(slot);
+    } else if (!slot.empty && this.auth.accessCheck('view')) {
+      this.onSlotView(slot);
+    }
   }
 
   get diag() {

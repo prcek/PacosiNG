@@ -180,6 +180,13 @@ export class AuthService {
     return false;
   }
 
+  accessCheck(role: string): boolean {
+    if (this.userInfo) {
+      return this.userInfo.roles.includes(role);
+    }
+    return false;
+  }
+
   doLogin(login: string, password: string): Observable<boolean> {
     const x =  this.apollo.mutate<ILoginResponse, ILoginVariables>({
       mutation:  gql`

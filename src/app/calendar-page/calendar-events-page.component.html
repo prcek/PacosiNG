@@ -15,14 +15,14 @@
              <div class="time mat-body"> {{slot.slot | tstime:calendar.span }} </div> 
              <div class="slot mat-body" fxFlex="1 1 auto" fxLayout="row"> 
                 <div *ngIf="slot.event && slot.event_leg==0" class="type_color"  [ngStyle]="{'background-color': slot.event.color}">&nbsp;</div>         
-                <div  class="name" fxFlex="1 1 auto">
+                <div  class="name" fxFlex="1 1 auto" (click)="onSlot(slot)">
                     <span *ngIf="slot.event_leg==0"> {{slot.event?.client.last_name}} {{slot.event?.client.first_name}} </span>
                 </div>
-                <div *appAccess="'edit'" class="actions mat-body"> 
-                        <button mat-icon-button  class="action_b" (click)="onSlot(slot)" >
+                <div *ngIf="slot.event && slot.event_leg==0"   class="actions mat-body"> 
+                        <button *appAccess="'edit'" mat-icon-button  class="action_b" (click)="onSlotEdit(slot)" >
                                 <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button   class="action_b" (click)="onSlot(slot)">
+                        <button *appAccess="'edit'" mat-icon-button   class="action_b" (click)="onSlotMove(slot)">
                                 <mat-icon>low_priority</mat-icon>
                         </button>
                 </div>
