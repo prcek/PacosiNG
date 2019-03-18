@@ -24,6 +24,7 @@ export class CalendarEventPastePageComponent implements OnInit {
   clip: IClipBoardRecord;
   clip_event: ICalendarEvent;
   cut_mode = false;
+  clip_event_cut_id: string;
   calendar_id: string;
   calendar: ICalendar;
   event_types: ICalendarEventType[];
@@ -32,6 +33,8 @@ export class CalendarEventPastePageComponent implements OnInit {
   day: Date;
   time: number;
   loading = true;
+  extra = false;
+
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -42,6 +45,7 @@ export class CalendarEventPastePageComponent implements OnInit {
     this.day = M.utc(this.route.snapshot.paramMap.get('day')).toDate();
     this.time = parseInt(this.route.snapshot.paramMap.get('slot'), 10);
     this.calendar_id = this.route.snapshot.paramMap.get('id');
+    this.extra = this.route.snapshot.paramMap.get('extra') === 'yes';
     this.clip = this.calendarService.clipboardValue();
 
     if (!this.clip)  { return; }
@@ -56,6 +60,7 @@ export class CalendarEventPastePageComponent implements OnInit {
       this.slots = d.slots;
       this.cut_mode = this.clip.cutMode;
       this.clip_event = R.clone(this.clip.event);
+      this.clip_event_cut_id =  this.clip.cutMode ? this.clip.event._id : null;
       this.clip_event._id = null;
       this.clip_event.day = this.day;
       this.clip_event.begin = this.time;
@@ -86,8 +91,19 @@ export class CalendarEventPastePageComponent implements OnInit {
 
   }
   get free_slots(): number[] {
+    // tslint:disable-next-line:max-line-length
+    const ft = this.extra ? R.anyPass([R.propEq('empty', true), R.propEq('event_s_leg', true)]) : R.propEq('empty', true);
     if (this.slots) {
-      return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(R.propEq('empty', true), this.slots));
+        return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(ft, this.slots));
+    }
+    return [];
+  }
+
+  get start_slots(): number[] {
+    // tslint:disable-next-line:max-line-length
+    const ft = this.extra ? R.anyPass([R.propEq('empty', true), R.propEq('event_s_leg', true)]) : R.allPass([R.propEq('empty', true), R.propEq('cluster_idx', 0)]);
+    if (this.slots) {
+        return R.map<ICalendarDaySlot, number>(s => s.slot, R.filter<ICalendarDaySlot>(ft, this.slots));
     }
     return [];
   }
@@ -106,6 +122,7 @@ export class CalendarEventPastePageComponent implements OnInit {
   */
 
   goBack(): void {
+    this.calendarService.clipboardClear();
     this.location.back();
   }
   get diag() {

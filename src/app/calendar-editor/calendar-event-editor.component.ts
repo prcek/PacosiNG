@@ -64,7 +64,7 @@ export class CalendarEventEditorComponent implements OnInit {
   @Input() free_slots: number[];
   @Input() start_slots: number[];
   @Input() new_mode: boolean;
-  @Input() cut_mode: boolean;
+  @Input() cut_id: string;
   @Input() new_day: Date;
   @Input() new_time: number;
   @Input() extra: boolean;
@@ -151,9 +151,18 @@ export class CalendarEventEditorComponent implements OnInit {
       this.error_msg = null;
       console.log('CalendarEventEditorComponent.onSubmit', u);
       this.calendarService.createEvent(u, this.extra).subscribe((r) => {
-        this.saved.emit(r);
-        this.submitted = false;
-        this.eventForm.enable();
+
+        if (this.cut_id) {
+          this.calendarService.deleteEvent(this.cut_id).subscribe((rr) => {
+            this.saved.emit(r);
+            this.submitted = false;
+            this.eventForm.enable();
+          });
+        } else {
+          this.saved.emit(r);
+          this.submitted = false;
+          this.eventForm.enable();
+        }
       }, (err) => {
         this.submitted = false;
         this.eventForm.enable();
