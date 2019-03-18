@@ -1,8 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CalendarService, ICalendar, ICalendarEvent, IOpeningHours, ICalendarDaySlot, IClipBoardRecord } from '../calendar.service';
+import {
+  CalendarService,
+  ICalendar,
+  ICalendarEvent,
+  IOpeningHours,
+  ICalendarDaySlot,
+  IClipBoardRecord,
+  ICalendarEventType
+} from '../calendar.service';
 import * as M from 'moment';
+import * as R from 'ramda';
 import { MatDialog, MatSlideToggleChange } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
@@ -18,6 +27,8 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   calendar_id: string;
   day: Date;
   events: ICalendarEvent[];
+  event_types: ICalendarEventType[];
+  allow_extra = true;
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
   loading = true;
@@ -47,7 +58,17 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     ).subscribe(d => {
       console.log('CalendarEventsPageComponent params change!');
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
-
+      this.event_types = d.event_types;
+      if (R.find<ICalendarEventType>((et) => {
+        if (et.len > et.short_len) {
+          return true;
+        }
+        return false;
+      }, this.event_types)) {
+        this.allow_extra = true;
+      } else {
+        this.allow_extra = false;
+      }
       this.loading = false;
     });
     this.clip = this.calendarService.clipboardValue();

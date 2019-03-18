@@ -3,10 +3,12 @@
     <ng-container *ngIf="calendar">
             <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
             <button mat-raised-button  (click)="onPrint()">tisk</button>
-            <mat-slide-toggle *appAccess="'edit'"
-                [checked]="extra" (change)="onExtra($event)">
-                <span class="mat-body">extra</span>
-            </mat-slide-toggle>
+            <ng-container *ngIf="allow_extra">
+                <mat-slide-toggle *appAccess="'edit'"
+                    [checked]="extra" (change)="onExtra($event)">
+                    <span class="mat-body">extra</span>
+                </mat-slide-toggle>
+            </ng-container>
     </ng-container>
 </app-sub-menu>
 
