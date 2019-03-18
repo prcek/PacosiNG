@@ -18,6 +18,11 @@ import {
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 import { defaultFieldResolver } from 'graphql';
 
+import * as gitversiondata from './git-version.json';
+
+
+
+
 // The GraphQL schema
 // tslint:disable:max-line-length
 const typeDefs = gql`
@@ -32,6 +37,7 @@ const typeDefs = gql`
   type Query {
     "A simple type for getting started!"
     hello: String
+    serverHash: String
     users: [User] @auth_access(role:"view")
     calendars(all: Boolean, ids: [ID]): [Calendar] @auth_access(role:"view")
     calendar(_id: ID!): Calendar @auth_access(role:"view")
@@ -192,6 +198,12 @@ const resolvers: IResolvers<any, IContext> = {
     hello: async (parent, args, context, info) => {
         return await context.dataSources.hero.getHello();
     },
+
+    serverHash: async (parent, args, context, info) => {
+      return gitversiondata['hash'];
+    },
+
+
     users: async (parent, args, context, info): Promise<IUser[]> => {
         const ds: IDataSources = context.dataSources;
         return await ds.user.getAllUsers();

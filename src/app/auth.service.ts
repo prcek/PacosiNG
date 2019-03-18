@@ -11,6 +11,9 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
 import * as jwtdecode from 'jwt-decode';
+import * as verdata from './git-version.json';
+
+const gitver = verdata.default;
 
 
 interface ILoginVariables {
@@ -68,6 +71,7 @@ export class AuthService {
   private isBrowser: boolean;
   private isServer: boolean;
   public redirectUrl: string;  // filled by auth guard (when redirecting to /login)
+  public githash = gitver.hash;
   private userInfoSource = new Subject<IUserInfo>();
   private tick$ = timer(10000, 5 * 60000);
   // private effectiveUserSource = new Subject<IUser>();
