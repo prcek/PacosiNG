@@ -36,45 +36,45 @@ const typeDefs = gql`
     calendars(all: Boolean, ids: [ID]): [Calendar] @auth_access(role:"view")
     calendar(_id: ID!): Calendar @auth_access(role:"view")
     locations(all: Boolean, ids: [ID]): [Location] @auth_access(role:"view")
-    location(_id: ID!): Location
-    openingHoursTemplates: [OpeningHoursTemplate]
-    calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
-    calendarEventTypes(calendar_id: ID!): [CalendarEventType]
-    calendarOpeningHours(calendar_id: ID! start_date: Date! end_date: Date!): [DayOpeningHours]
-    calendarEvents(calendar_id: ID! start_date: Date! end_date: Date!): [CalendarEvent]
-    calendarEvent(_id: ID!): CalendarEvent
-    calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays
-    calendarStatusDaysMulti(calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarStatusDays]
+    location(_id: ID!): Location @auth_access(role:"view")
+    openingHoursTemplates: [OpeningHoursTemplate] @auth_access(role:"view")
+    calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate] @auth_access(role:"view")
+    calendarEventTypes(calendar_id: ID!): [CalendarEventType] @auth_access(role:"view")
+    calendarOpeningHours(calendar_id: ID! start_date: Date! end_date: Date!): [DayOpeningHours] @auth_access(role:"view")
+    calendarEvents(calendar_id: ID! start_date: Date! end_date: Date!): [CalendarEvent] @auth_access(role:"view")
+    calendarEvent(_id: ID!): CalendarEvent @auth_access(role:"view")
+    calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays @auth_access(role:"view")
+    calendarStatusDaysMulti(calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarStatusDays] @auth_access(role:"view")
     me: User
   }
   type Mutation {
     login(login: String! password: String!): LoginResponse!
     relogin: LoginResponse!
-    updateUser(login: String! password: String name: String root: Boolean roles: [String] calendar_ids: [String]): User!
-    createUser(login: String! password: String! name: String! root: Boolean! roles: [String]! calendar_ids: [String]!): User!
-    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int cluster_len: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!
-    createCalendar(location_id: ID! name: String! span: Int! cluster_len: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!
+    updateUser(login: String! password: String name: String root: Boolean roles: [String] calendar_ids: [String]): User! @auth_access(role:"super")
+    createUser(login: String! password: String! name: String! root: Boolean! roles: [String]! calendar_ids: [String]!): User!  @auth_access(role:"super")
+    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int cluster_len: Int day_begin: Int day_len: Int week_days: [Int]): Calendar!  @auth_access(role:"super")
+    createCalendar(location_id: ID! name: String! span: Int! cluster_len: Int! day_begin: Int! day_len: Int! week_days: [Int]!): Calendar!  @auth_access(role:"super")
 
-    updateLocation(_id: ID! archived: Boolean name: String address: String): Location!
-    createLocation(name: String! address: String!): Location!
+    updateLocation(_id: ID! archived: Boolean name: String address: String): Location!  @auth_access(role:"super")
+    createLocation(name: String! address: String!): Location!  @auth_access(role:"super")
 
-    createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate!
-    deleteOpeningHoursTemplate(_id: ID!): DeleteResponse!
+    createOpeningHoursTemplate(calendar_id: ID! week_day: Int! begin: Int! len: Int!): OpeningHoursTemplate! @auth_access(role:"setup_ot")
+    deleteOpeningHoursTemplate(_id: ID!): DeleteResponse! @auth_access(role:"setup_ot")
 
-    createOpeningHours(calendar_id: ID! day: Date! begin: Int! len: Int!): DayOpeningHours!
-    deleteOpeningHours(_id: ID!): DeleteResponse!
+    createOpeningHours(calendar_id: ID! day: Date! begin: Int! len: Int!): DayOpeningHours! @auth_access(role:"setup_ot")
+    deleteOpeningHours(_id: ID!): DeleteResponse! @auth_access(role:"setup_ot")
 
-    planOpeningHours(calendar_id: ID! start_day: Date! end_day: Date!): [DayOpeningHours]
-
-
-    createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! short_len: Int! order: Int!): CalendarEventType!
-    updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int short_len: Int order: Int): CalendarEventType!
-    deleteCalendarEventType(_id: ID!): DeleteResponse!
+    planOpeningHours(calendar_id: ID! start_day: Date! end_day: Date!): [DayOpeningHours]  @auth_access(role:"setup_ot")
 
 
+    createCalendarEventType(calendar_id: ID! name: String! match_key: String! color: String! len: Int! short_len: Int! order: Int!): CalendarEventType!  @auth_access(role:"super")
+    updateCalendarEventType(_id: ID! name: String  match_key: String color: String len: Int short_len: Int order: Int): CalendarEventType!  @auth_access(role:"super")
+    deleteCalendarEventType(_id: ID!): DeleteResponse!  @auth_access(role:"super")
 
-    createCalendarEvent(calendar_id: ID! client: CalendarEventClientInput! event_type_id: ID! day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!
-    updateCalendarEvent(_id: ID! client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!
+
+
+    createCalendarEvent(calendar_id: ID! client: CalendarEventClientInput! event_type_id: ID! day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!  @auth_access(role:"edit")
+    updateCalendarEvent(_id: ID! client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!  @auth_access(role:"edit")
     deleteCalendarEvent(_id: ID!): DeleteResponse! @auth_access(role:"edit")
 
   }
@@ -312,13 +312,33 @@ const resolvers: IResolvers<any, IContext> = {
 
 class AuthAccessDirective extends SchemaDirectiveVisitor {
   visitObject(type) {
-      type._requiredRole = this.args.role;
-      this.ensureFieldsWrapped(type);
+      console.error('AuthAccessDirective.visitObject', type);
+      // type._requiredRole = this.args.role;
+      // this.ensureFieldsWrapped(type);
   }
   visitFieldDefinition(field, details) {
       field._requiredRole = this.args.role;
-      this.ensureFieldsWrapped(details.objectType);
+      const { resolve = defaultFieldResolver } = field;
+      const requiredRole = field._requiredRole;
+      if (requiredRole) {
+        console.log('AccessDirective wrapping ', field.name);
+        field.description = `@auth_access role: ${requiredRole}`;
+        field.resolve = async function (...args) {
+            const context = <IContext> args[2];
+            console.log('AuthAccessDirective - check role', requiredRole, 'field', field.name);
+            if (! context.user) {
+              throw new Error('not authorized');
+            }
+            if ( !context.user.roles.includes(requiredRole)) {
+              throw new Error('access denied');
+            }
+
+            return resolve.apply(this, args);
+        };
+    }
   }
+
+ /*
   ensureFieldsWrapped(objectType) {
       if (objectType._accessFieldsWrapped) {
           return;
@@ -332,7 +352,7 @@ class AuthAccessDirective extends SchemaDirectiveVisitor {
           const requiredRole = field._requiredRole || objectType._requiredRole;
 
           if (requiredRole) {
-              // console.log('AccessDirective wrapping ', fieldName);
+              console.log('AccessDirective wrapping ', fieldName);
               field.description += `@auth_access role: ${requiredRole}`;
               field.resolve = async function (...args) {
                   const context = <IContext> args[2];
@@ -349,6 +369,7 @@ class AuthAccessDirective extends SchemaDirectiveVisitor {
           }
     });
   }
+  */
 }
 
 
