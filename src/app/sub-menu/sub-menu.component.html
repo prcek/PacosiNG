@@ -9,6 +9,7 @@
   <ng-container *ngIf="showEventClip && clip">
     <div class="spacer"></div>
     <div>
+        <span>přesun:</span>
         <span> {{clip.event.event_name}} - {{clip.event.client.last_name}} </span>
         <button mat-icon-button (click)="onClearClip()">
             <mat-icon>close</mat-icon>

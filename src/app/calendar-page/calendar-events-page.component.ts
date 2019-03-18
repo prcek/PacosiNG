@@ -167,7 +167,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
 
   }
   onSlotMove(slot: ICalendarDaySlot) {
-    alert('onSlotMove - TOOD');
+    this.calendarService.clipboardCut(this.calendar, slot.event);
   }
   onSlotView(slot: ICalendarDaySlot) {
     this.selected_event = slot.event;
