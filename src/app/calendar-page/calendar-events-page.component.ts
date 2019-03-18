@@ -25,6 +25,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   sub: Subscription;
   clip: IClipBoardRecord;
   ce_sub: Subscription;
+  selected_event: ICalendarEvent = null;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -168,7 +169,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     alert('onSlotMove - TOOD');
   }
   onSlotView(slot: ICalendarDaySlot) {
-    alert('onSlotView - TOOD');
+    this.selected_event = slot.event;
   }
 
   onSlot(slot: ICalendarDaySlot) {

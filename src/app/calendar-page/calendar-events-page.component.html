@@ -34,15 +34,20 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-    <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start" >
-        <div class="leftpanel" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" >
+        <div class="leftpanel red" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center">
             <app-daycard [date]="day"></app-daycard>
         </div>
-        <div class="rightpanel mat-elevation-z8" fxFlex="5 1 auto">
+        <div class="rightpanel mat-elevation-z8 red" fxFlex="5 1 auto">
             <ng-container *ngFor="let slot of slots">
                 <ng-content *ngTemplateOutlet='xxx; context:{slot:slot}'></ng-content>
             </ng-container>
         </div>
-      </div>
+        <div *ngIf="selected_event" fxFlex="5 1 auto" class="red">
+                <app-calendar-event-view  [event]="selected_event" [calendar]="calendar" (close)="selected_event=null"></app-calendar-event-view>
+        </div>
+       
+    </div>
+    
 </div>
 <app-diag>{{diag}}</app-diag>
