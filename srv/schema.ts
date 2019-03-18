@@ -1,6 +1,6 @@
 
 
-import { gql, makeExecutableSchema, IResolvers } from 'apollo-server';
+import { gql, makeExecutableSchema, IResolvers, SchemaDirectiveVisitor } from 'apollo-server';
 import { IDataSources } from './datasources';
 import {
   IContextBase,
@@ -16,6 +16,7 @@ import {
   ILocation
 } from './types';
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
+import { defaultFieldResolver } from 'graphql';
 
 // The GraphQL schema
 // tslint:disable:max-line-length
@@ -24,13 +25,17 @@ const typeDefs = gql`
   scalar Time
   scalar DateTime
 
+  directive @auth_access(
+    role: String,
+  ) on OBJECT | FIELD_DEFINITION
+
   type Query {
     "A simple type for getting started!"
     hello: String
-    users: [User]
-    calendars(all: Boolean, ids: [ID]): [Calendar]
-    calendar(_id: ID!): Calendar
-    locations(all: Boolean, ids: [ID]): [Location]
+    users: [User] @auth_access(role:"view")
+    calendars(all: Boolean, ids: [ID]): [Calendar] @auth_access(role:"view")
+    calendar(_id: ID!): Calendar @auth_access(role:"view")
+    locations(all: Boolean, ids: [ID]): [Location] @auth_access(role:"view")
     location(_id: ID!): Location
     openingHoursTemplates: [OpeningHoursTemplate]
     calendarOpeningHoursTemplates(calendar_id: ID!): [OpeningHoursTemplate]
@@ -70,7 +75,7 @@ const typeDefs = gql`
 
     createCalendarEvent(calendar_id: ID! client: CalendarEventClientInput! event_type_id: ID! day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!
     updateCalendarEvent(_id: ID! client: CalendarEventClientInput! event_type_id: ID!  day: Date! begin: Int! comment: String! extra_mode: Boolean): CalendarEvent!
-    deleteCalendarEvent(_id: ID!): DeleteResponse!
+    deleteCalendarEvent(_id: ID!): DeleteResponse! @auth_access(role:"edit")
 
   }
 
@@ -305,9 +310,55 @@ const resolvers: IResolvers<any, IContext> = {
 };
 
 
+class AuthAccessDirective extends SchemaDirectiveVisitor {
+  visitObject(type) {
+      type._requiredRole = this.args.role;
+      this.ensureFieldsWrapped(type);
+  }
+  visitFieldDefinition(field, details) {
+      field._requiredRole = this.args.role;
+      this.ensureFieldsWrapped(details.objectType);
+  }
+  ensureFieldsWrapped(objectType) {
+      if (objectType._accessFieldsWrapped) {
+          return;
+      }
+      // console.log('ensureFieldsWrapped', objectType);
+      objectType._accessFieldsWrapped = true;
+      const fields = objectType.getFields();
+      Object.keys(fields).forEach(fieldName => {
+          const field = fields[fieldName];
+          const { resolve = defaultFieldResolver } = field;
+          const requiredRole = field._requiredRole || objectType._requiredRole;
+
+          if (requiredRole) {
+              // console.log('AccessDirective wrapping ', fieldName);
+              field.description += `@auth_access role: ${requiredRole}`;
+              field.resolve = async function (...args) {
+                  const context = <IContext> args[2];
+                  console.log('AuthAccessDirective - check role', requiredRole);
+                  if (! context.user) {
+                    throw new Error('not authorized');
+                  }
+                  if ( !context.user.roles.includes(requiredRole)) {
+                    throw new Error('access denied');
+                  }
+
+                  return resolve.apply(this, args);
+              };
+          }
+    });
+  }
+}
+
+
+
 export const schema = makeExecutableSchema<IContext>({
   typeDefs,
   resolvers,
+  schemaDirectives: {
+            auth_access: AuthAccessDirective,
+  },
   allowUndefinedInResolve: false,
   resolverValidationOptions: {
     requireResolversForArgs: true,

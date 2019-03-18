@@ -1,6 +1,6 @@
 
 import {Express} from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, SchemaDirectiveVisitor } from 'apollo-server-express';
 import { createDataSources } from './datasources';
 import { schema } from './schema';
 import { createStore, setupDevStoreRawData, IStore } from './store';
@@ -9,7 +9,10 @@ import { Context } from 'apollo-server-core';
 import { decodeAuthToken } from './datasources/user';
 import { config } from './config';
 import * as M from 'moment';
+import { defaultFieldResolver } from 'graphql';
 let global_counter = 1;
+
+
 
 
 export async function createAndRegisterApolloServer(app: Express, productionMode: boolean) {
