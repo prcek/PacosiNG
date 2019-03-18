@@ -47,6 +47,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     ).subscribe(d => {
       console.log('CalendarEventsPageComponent params change!');
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
+
       this.loading = false;
     });
     this.clip = this.calendarService.clipboardValue();

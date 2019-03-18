@@ -1,5 +1,24 @@
-<div class="container">
-  <button mat-raised-button  (click)="onClose()">zavrit nahled</button>
-  calendar-event-view {{event | json}} {{calendar | json}}
- 
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+  <div fxFlexFill fxLayout="row"  fxLayoutAlign="start center"> 
+    <div class="mat-body-strong val spacer">{{event?.event_name}},  {{event?.begin | tstime:calendar.span}} </div>
+    <button mat-icon-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+  </div>
+  <div fxFlexFill class="item" fxLayout="row">
+      <div class="lab mat-small">jméno</div> <div class="val mat-body spacer">{{event?.client.last_name}} {{event?.client.first_name}}</div>
+  </div>
+  <div fxFlexFill class="item" fxLayout="row">
+      <div class="lab mat-small">telefon</div> <div class="val mat-body spacer">{{event?.client.phone}}</div>
+  </div>
+
+  <div fxFlexFill class="item" fxLayout="row">
+      <div class="lab mat-small">ročník</div> <div  class="val mat-body spacer">{{event?.client.year}}</div>
+  </div>
+
+  <div fxFlexFill class="item" fxLayout="row">
+      <div class="lab mat-small">poznámka</div> <div class="val mat-body spacer">{{event?.comment}}</div>
+  </div>
+
+
 </div>

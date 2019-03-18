@@ -1,3 +1,25 @@
 .container {
     max-width: 500px;
+    padding: 5px;
+}
+
+
+.red {
+    border: 1px solid red;
+}
+.item {
+    border-bottom: 1px solid lightgray;
+}
+
+.lab {
+    min-width: 100px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.val {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.spacer {
+    flex: 1 1 auto;
 }
