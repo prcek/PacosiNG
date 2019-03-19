@@ -11,7 +11,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
 import * as jwtdecode from 'jwt-decode';
-import * as verdata from './git-version.json';
+import * as verdata from './../git-version.json';
 
 const gitver = verdata.default;
 
