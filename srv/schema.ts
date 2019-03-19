@@ -18,7 +18,7 @@ import {
 import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 import { defaultFieldResolver } from 'graphql';
 
-import * as gitversiondata from './git-version.json';
+import { git_hash } from './git-version';
 
 
 
@@ -200,7 +200,7 @@ const resolvers: IResolvers<any, IContext> = {
     },
 
     serverHash: async (parent, args, context, info) => {
-      return gitversiondata['hash'];
+      return git_hash;
     },
 
 

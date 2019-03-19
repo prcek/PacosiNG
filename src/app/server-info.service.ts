@@ -3,9 +3,8 @@ import { timer, Observable, Subscriber, Subject } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map, tap, switchMap } from 'rxjs/operators';
-import * as verdata from './../git-version.json';
-const gitver = verdata.default;
 
+import { git_hash } from './../git-version';
 
 
 export interface IServerInfo {
@@ -20,12 +19,13 @@ export interface IServerInfo {
 })
 export class ServerInfoService {
   private vtick$ = timer(2000, 10000);
-  public local_version = gitver.hash;
+  public local_version = git_hash;
 
   serverInfoSource = new Subject<IServerInfo>();
   serverInfo: IServerInfo;
 
   constructor(private apollo: Apollo) {
+    console.log('ServerInfoService.constructor', git_hash);
     this.serverInfo = {
       local_version: this.local_version,
       reload: false,

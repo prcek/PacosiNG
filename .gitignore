@@ -6,8 +6,8 @@
 /out-tsc
 
 
-/src/git-version.json
-/srv/git-version.json
+/src/git-version.ts
+/srv/git-version.ts
 
 # dependencies
 /node_modules

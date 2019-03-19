@@ -8,7 +8,7 @@ const path = require('path');
 
 
 const ver = process.env.SOURCE_VERSION || '<undefined>'
-const infoJson = JSON.stringify({hash: ver});
-writeFileSync(path.join(__dirname, 'srv/git-version.json'), infoJson);
-writeFileSync(path.join(__dirname, 'src/git-version.json'), infoJson);
+const infots = "export const git_hash = '"+ ver +"';\n";
+writeFileSync(path.join(__dirname, 'srv/git-version.ts'), infots);
+writeFileSync(path.join(__dirname, 'src/git-version.ts'), infots);
 
