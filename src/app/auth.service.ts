@@ -11,9 +11,6 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
 import * as jwtdecode from 'jwt-decode';
-import * as verdata from './../git-version.json';
-
-const gitver = verdata.default;
 
 
 interface ILoginVariables {
@@ -71,10 +68,6 @@ export class AuthService {
   private isBrowser: boolean;
   private isServer: boolean;
   public redirectUrl: string;  // filled by auth guard (when redirecting to /login)
-  public githash = gitver.hash;
-  public server_online = true;
-  public server_githash = null;
-  public server_newversion = false;
   private userInfoSource = new Subject<IUserInfo>();
   private tick$ = timer(10000, 5 * 60000);
   private vtick$ = timer(2000, 10000);
@@ -125,27 +118,6 @@ export class AuthService {
         switchMap(() => this.renewToken()),
         tap((x) => console.log('renew token result', x)),
         ).subscribe();
-      this.vtick$.pipe(
-        tap((x) => console.log('version check tick')),
-        switchMap(() => this.checkServer()),
-        catchError(err => of(undefined)),
-      ).subscribe((sv) => {
-        // console.log('server version = ', sv);
-        if (sv) {
-          this.server_online = true;
-          this.server_githash = sv;
-          if (this.server_githash !== this.githash) {
-            this.server_newversion = true;
-            console.log('new version available', this.server_githash);
-          }
-        } else {
-          this.server_online = false;
-          console.log('server is offline');
-        }
-      }, (err) => {
-        console.log('can\'t check server');
-        this.server_online = false;
-      });
     }
 
   }
@@ -263,25 +235,5 @@ export class AuthService {
     this.userInfo = null;
     this.userInfoSource.next(null);
     return of(true);
-  }
-  checkServer(): Observable<string> {
-
-    const x = this.apollo.query<{serverHash: string}>({
-      query: gql`query {  serverHash }`
-    }).pipe( /*tap((c) => { console.log(c); } ),*/ map(res => res.data.serverHash));
-
-
-    const ob = Observable.create( (o: Subscriber<string>) => {
-      x.subscribe((s) => {
-        console.log('ok path');
-        o.next(s);
-        o.complete();
-      }, (err) => {
-        console.log('err path');
-        o.next(null);
-        o.complete();
-      });
-    });
-    return ob;
   }
 }

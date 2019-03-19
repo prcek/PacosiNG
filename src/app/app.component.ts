@@ -4,17 +4,9 @@ import { TEST_TOKEN } from './token';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 import { Subscription } from 'rxjs';
+import { IServerInfo, ServerInfoService } from './server-info.service';
 
-
-const HELLO_KEY = makeStateKey<string>('hello');
-
-const getHello = gql`
-  query {
-    hello
-  }
-`;
 
 
 @Component({
@@ -24,39 +16,30 @@ const getHello = gql`
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'pacosi';
-  hello = '?';
   private isServer: boolean;
-  private querySubscription: Subscription;
+  private sinfoSub: Subscription;
+  private sinfo: IServerInfo;
   constructor(
       @Optional() @Inject(APP_BASE_HREF) app_base_href: string,
       @Optional() @Inject(TEST_TOKEN) test_token: string,
       @Inject(PLATFORM_ID) platformId,
       @Inject(APP_ID) appID,
-      private tstate: TransferState,
-      private apollo: Apollo,
+      private serverInfo: ServerInfoService
       ) {
     this.isServer = isPlatformServer(platformId);
     console.log('AppComponent.constructor', app_base_href, test_token, this.isServer, appID);
   }
   ngOnInit(): void {
-    if (this.tstate.hasKey(HELLO_KEY)) {
-      console.log('transferstate client');
-      this.hello = this.tstate.get(HELLO_KEY, '!');
-      this.tstate.remove(HELLO_KEY);
-    }
-    this.querySubscription = this.apollo.watchQuery<any>({
-      query: getHello
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
-        this.hello = data.hello;
-      });
-    if (this.isServer) {
-      this.tstate.onSerialize(HELLO_KEY, () => this.hello);
-    }
+
+    this.sinfo = this.serverInfo.serverInfo;
+    this.sinfoSub = this.serverInfo.serverInfoSource.subscribe({
+      next: (v) => { this.sinfo = v; console.log('new server info', v); }
+    });
+
+
   }
   ngOnDestroy(): void {
-    this.querySubscription.unsubscribe();
+    this.sinfoSub.unsubscribe();
   }
 
 }
