@@ -1,0 +1,8 @@
+.alertbox {
+    width:  100%;
+    background-color: red;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}

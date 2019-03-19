@@ -1,3 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="isOffline" class="alertbox">server není dostupný</div>
+<div *ngIf="newVersionReady" class="alertbox" (click)="doReload()">používáte starou verzi, prosím obnovte stránku v prohlížeči nebo klikněte na tento proužek</div>
+
 <app-main-menu></app-main-menu>
 <router-outlet></router-outlet>

@@ -29,17 +29,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isServer = isPlatformServer(platformId);
     console.log('AppComponent.constructor', app_base_href, test_token, this.isServer, appID);
   }
-  ngOnInit(): void {
 
+  get isOffline(): boolean {
+    return false;
+  }
+  get newVersionReady(): boolean {
+    return true;
+  }
+  ngOnInit(): void {
     this.sinfo = this.serverInfo.serverInfo;
     this.sinfoSub = this.serverInfo.serverInfoSource.subscribe({
       next: (v) => { this.sinfo = v; console.log('new server info', v); }
     });
-
-
   }
   ngOnDestroy(): void {
     this.sinfoSub.unsubscribe();
   }
-
+  doReload() {
+    console.log('do reaload!');
+    location.reload(true);
+  }
 }
