@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { timer, Observable, Subscriber, Subject } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map, tap, switchMap } from 'rxjs/operators';
 
 import { git_hash } from './../git-version';
+import { isPlatformServer } from '@angular/common';
 
 
 export interface IServerInfo {
@@ -24,7 +25,7 @@ export class ServerInfoService {
   serverInfoSource = new Subject<IServerInfo>();
   serverInfo: IServerInfo;
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, @Inject(PLATFORM_ID) platformId) {
     console.log('ServerInfoService.constructor', git_hash);
     this.serverInfo = {
       local_version: this.local_version,
@@ -32,6 +33,10 @@ export class ServerInfoService {
       online: true,
       remote_version: null,
     };
+
+    if (isPlatformServer(platformId)) {
+      return;
+    }
 
     this.vtick$.pipe(
       // tap((x) => console.log('version check tick')),
