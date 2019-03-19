@@ -4,8 +4,8 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 
-import { Subject, Observable, of, timer } from 'rxjs';
-import { tap, filter, switchMap, map } from 'rxjs/operators';
+import { Subject, Observable, of, timer, Subscriber, Observer } from 'rxjs';
+import { tap, filter, switchMap, map, catchError } from 'rxjs/operators';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -126,8 +126,9 @@ export class AuthService {
         tap((x) => console.log('renew token result', x)),
         ).subscribe();
       this.vtick$.pipe(
-        // tap((x) => console.log('version check tick')),
+        tap((x) => console.log('version check tick')),
         switchMap(() => this.checkServer()),
+        catchError(err => of(undefined)),
       ).subscribe((sv) => {
         // console.log('server version = ', sv);
         if (sv) {
@@ -264,8 +265,23 @@ export class AuthService {
     return of(true);
   }
   checkServer(): Observable<string> {
-    return this.apollo.query<{serverHash: string}>({
+
+    const x = this.apollo.query<{serverHash: string}>({
       query: gql`query {  serverHash }`
     }).pipe( /*tap((c) => { console.log(c); } ),*/ map(res => res.data.serverHash));
+
+
+    const ob = Observable.create( (o: Subscriber<string>) => {
+      x.subscribe((s) => {
+        console.log('ok path');
+        o.next(s);
+        o.complete();
+      }, (err) => {
+        console.log('err path');
+        o.next(null);
+        o.complete();
+      });
+    });
+    return ob;
   }
 }
