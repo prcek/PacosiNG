@@ -31,10 +31,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   get isOffline(): boolean {
+    if (this.sinfo && this.sinfo.online === false) {
+      return true;
+    }
     return false;
   }
   get newVersionReady(): boolean {
-    return true;
+    return this.sinfo && this.sinfo.reload;
   }
   ngOnInit(): void {
     this.sinfo = this.serverInfo.serverInfo;
