@@ -27,8 +27,8 @@ if (config.is_production) {
 function ssl_redirect(req, res, next) {
   if (config.is_production) {
     if (req.headers['x-forwarded-proto'] !== 'https') {
-      console.log('ssl redirect');
-      res.redirect(status, 'https://' + req.hostname + req.originalUrl);
+      console.log('ssl redirect', 'https://' + req.hostname + req.originalUrl);
+      res.redirect(302, 'https://' + req.hostname + req.originalUrl);
     } else {
       next();
     }
