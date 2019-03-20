@@ -22,6 +22,7 @@ export class MainPageComponent implements OnInit {
   first_day: Date;
   selected_day: Date;
   loading = true;
+  search_submitted = false;
   constructor(private calendarService: CalendarService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -69,6 +70,9 @@ export class MainPageComponent implements OnInit {
      // alert(status.calendar_id + '/' + d);
      this.router.navigate(['/calendars/events/' + status.calendar_id + '/day/' + d]);
    }
-
+   onSearch(str: string) {
+     this.search_submitted = true;
+     this.router.navigate(['calendars', 'search', {str}]);
+   }
   get diag() { return JSON.stringify({grid: this.grid, selected_day: M(this.selected_day).toISOString()}); }
 }
