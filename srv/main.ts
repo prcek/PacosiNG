@@ -18,7 +18,10 @@ import { decodeAuthToken } from './datasources/user';
 import { createAndRegisterPdfRender } from './pdf';
 
 if (config.is_production) {
+  console.log('PRODUCTION MODE ON!');
   enableProdMode();
+} else {
+  console.log('DEV MODE ON!');
 }
 
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
