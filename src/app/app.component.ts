@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sinfo = this.serverInfo.serverInfo;
     this.sinfoSub = this.serverInfo.serverInfoSource.subscribe({
-      next: (v) => { this.sinfo = v; console.log('new server info', v); }
+      next: (v) => { this.sinfo = v; /* console.log('new server info', v); */ }
     });
   }
   ngOnDestroy(): void {
