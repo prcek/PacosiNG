@@ -1,0 +1,12 @@
+
+<app-sub-menu title="Hledání" (back)="goBack()" showBack="true" showEventClip="true">
+</app-sub-menu>
+
+
+
+
+<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+
+    <app-calendar-event-search (search)="onSearch($event)" [submitted]="submitted"></app-calendar-event-search>
+
+</div>

@@ -1,0 +1,7 @@
+
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput required placeholder="Zadej přijmení" [(ngModel)]="search_string" name="search_string">
+    </mat-form-field>
+    <button *ngIf="!submitted" type="submit" mat-raised-button color="primary" [disabled]="empty">hledat</button>
+</form>     
