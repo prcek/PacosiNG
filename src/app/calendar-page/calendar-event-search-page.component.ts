@@ -9,8 +9,8 @@ import { CalendarService } from '../calendar.service';
   styleUrls: ['./calendar-event-search-page.component.css']
 })
 export class CalendarEventSearchPageComponent implements OnInit {
-  private search_string = '';
-  private submitted = false;
+  search_string = '';
+  submitted = false;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
