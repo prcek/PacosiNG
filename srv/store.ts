@@ -141,7 +141,11 @@ function createModels(connection: mongoose.Connection) {
             last_name: String,
             title: String,
             phone: String,
-            year: Number
+            year: Number,
+        },
+        client_nd_search: {
+            first_name: String,
+            last_name: String,
         },
         color: String,
         day: Date,

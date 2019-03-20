@@ -73,6 +73,10 @@ export interface ICalendarEventClient {
     phone: string;
     year: number;
 }
+export interface ICalendarEventClientND {
+    first_name: string;
+    last_name: string;
+}
 
 export interface ICalendarStatusDay {
     day: Date;

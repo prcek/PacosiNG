@@ -11,11 +11,27 @@ import {
     ICalendarStatusDays,
     ICalendarEvent,
     ICalendarEventClient,
+    ICalendarEventClientND,
 } from './../types';
 
 import * as R from 'ramda';
 import * as M from 'moment';
 import { of } from 'rxjs';
+import { remove as removeDia } from 'diacritics';
+
+function safe_remove_dia(s: string): string {
+    if (s) {
+        return removeDia(s).trim();
+    }
+    return s;
+}
+
+function remove_client_dia(client: ICalendarEventClient): ICalendarEventClientND {
+    return  {
+        first_name: safe_remove_dia(client.first_name),
+        last_name: safe_remove_dia(client.last_name)
+    };
+}
 
 
 export class CalendarAPI implements DataSource {
@@ -250,12 +266,13 @@ export class CalendarAPI implements DataSource {
 
 
         const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), event_range );
-
+        const client_nd_search = remove_client_dia(client);
         return this.store.calendarEventModel.create({
             calendar_id,
             event_type_id,
             event_name: event_type.name,
             client,
+            client_nd_search,
             color: event_type.color,
             day,
             begin,
@@ -286,11 +303,12 @@ export class CalendarAPI implements DataSource {
         const event_range = R.range(begin, begin + len);
 
         const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), event_range );
-
+        const client_nd_search = remove_client_dia(client);
         event.set({
             event_type_id,
             event_name: event_type.name,
             client,
+            client_nd_search,
             color: event_type.color,
             day,
             begin,
