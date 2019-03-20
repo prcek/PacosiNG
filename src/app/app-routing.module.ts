@@ -22,6 +22,7 @@ import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-
 import { LocationsPageComponent } from './locations/locations-page.component';
 import { LocationPageComponent } from './locations/location-page.component';
 import { LocationNewPageComponent } from './locations/location-new-page.component';
+import { CalendarEventSearchPageComponent } from './calendar-page/calendar-event-search-page.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,8 @@ const routes: Routes = [
   { path: 'calendars/oh/:id', canActivate: [AuthGuard], component: CalendarOhPageComponent },
   { path: 'calendars/oht/:id', canActivate: [AuthGuard], component: CalendarOhtPageComponent },
   { path: 'calendars/new', canActivate: [AuthGuard], component: CalendarNewPageComponent},
+
+  { path: 'calendars/search', canActivate: [AuthGuard], component: CalendarEventSearchPageComponent},
 
   { path: 'calendars/events/:id/day/:day', canActivate: [AuthGuard], component: CalendarEventsPageComponent },
   { path: 'calendars/events/:id/day/:day/edit/:e_id', canActivate: [AuthGuard], component: CalendarEventPageComponent },
