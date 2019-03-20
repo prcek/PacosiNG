@@ -24,6 +24,19 @@ if (config.is_production) {
   console.log('DEV MODE ON!');
 }
 
+function ssl_redirect(req, res, next) {
+  if (config.is_production) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      console.log('ssl redirect');
+      res.redirect(status, 'https://' + req.hostname + req.originalUrl);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+}
+
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP, TEST_TOKEN, AUTH_USER_INFO_TOKEN } = require('../ssr/main');
 const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString();
@@ -63,6 +76,7 @@ console.log('testtoken', TEST_TOKEN);
 */
     app.set('view engine', 'html');
     app.set('views', DIST_FOLDER);
+    app.use(ssl_redirect);
     app.use(responseTime());
     app.use(cookieParser());
     app.get('*.*', express.static(DIST_FOLDER, {
