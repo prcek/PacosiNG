@@ -31,8 +31,15 @@
     <div class="rightpanel" fxFlex="1 0 auto">
         <app-daypicker-panel [first_day]="first_day" [selected_day]="selected_day"  (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
         
-        <div>hledani:</div>
-        <app-calendar-event-search (search)="onSearch($event)" [submitted]="search_submitted"></app-calendar-event-search>
+       
+        <mat-card>
+            <mat-card-header><mat-card-title>Hledání</mat-card-title></mat-card-header>
+            <mat-card-content>
+                <app-calendar-event-search (search)="onSearch($event)" [submitted]="search_submitted"></app-calendar-event-search>
+            </mat-card-content>
+        </mat-card>
+        
+       
 
     </div>
   </div>
