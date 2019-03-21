@@ -25,6 +25,7 @@ export class CalendarEventPageComponent implements OnInit {
   extra = false;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location,
     private calendarService: CalendarService,
     public dialog: MatDialog
@@ -102,6 +103,7 @@ export class CalendarEventPageComponent implements OnInit {
   }
   onCut(): void {
     this.calendarService.clipboardCut(this.calendar, this.event);
+    this.router.navigate(['/main']);
   }
 
   goBack(): void {

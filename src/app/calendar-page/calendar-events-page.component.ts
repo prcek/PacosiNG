@@ -189,6 +189,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   }
   onSlotMove(slot: ICalendarDaySlot) {
     this.calendarService.clipboardCut(this.calendar, slot.event);
+    this.router.navigate(['/main']);
   }
   onSlotView(slot: ICalendarDaySlot) {
     this.selected_event = slot.event;

@@ -66,7 +66,7 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
 
     const cal1 = await dataSources.calendar.createCalendar(loc_A._id, 'cal1', 10, 2, 42, 72, [1, 2, 3, 4, 5]);
     const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 15, 2, 6 * 7, 6 * 10, [1, 2, 3, 4, 5]);
-    const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 30, 1, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
+    const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 15, 1, 28, 2 * 10, [1, 2, 3, 4, 5]);
 
     // tslint:disable-next-line:max-line-length
     const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super', 'view', 'edit', 'setup_ot'], [cal1._id, cal2._id, cal3._id]);
@@ -102,11 +102,18 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const ud2b = await dataSources.calendar.createET(cal2._id, 'ud2_b', 'k2', 'blue', 2, 1, 1);
     const ud3b = await dataSources.calendar.createET(cal2._id, 'ud3_b', 'k3', 'green', 3, 3, 1);
 
+    const ud1c = await dataSources.calendar.createET(cal3._id, 'kratka', 'k', 'red', 1, 1, 1);
+    const ud2c = await dataSources.calendar.createET(cal3._id, 'dlouha', 'd', 'blue', 2, 2, 2);
+
+
+
     await dataSources.calendar.createOH(cal2._id, today, 40, 5);
     // tslint:disable-next-line:max-line-length
     await dataSources.calendar.createEvent(cal2._id, ud1b._id, { first_name: 'reg', last_name: 'reg', year: 1990, title: null, phone: null },  today, 40, '', false);
     // tslint:disable-next-line:max-line-length
     await dataSources.calendar.createEvent(cal2._id, ud3b._id, { first_name: 'reg', last_name: 'reg', year: 1990, title: null, phone: null },  today, 42, '', false);
+
+    await dataSources.calendar.createOH(cal3._id, today, 40, 4);
 
 
 
