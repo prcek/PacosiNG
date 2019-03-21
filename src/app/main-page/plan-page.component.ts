@@ -56,6 +56,6 @@ export class PlanPageComponent implements OnInit {
   }
 
   onSelect(status: ICalendarDayStatusE) {
-    alert('todo');
+    this.router.navigate(['calendars', 'oh', status.calendar_id]);
   }
 }
