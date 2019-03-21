@@ -66,6 +66,7 @@ export class MainPageComponent implements OnInit {
 
    onSelect(status: ICalendarDayStatusE) {
      console.log('onSelect', status);
+     if (!status.any_ohs) { return; }
      const d = M.utc(status.day).format('YYYY-MM-DD');
      // alert(status.calendar_id + '/' + d);
      this.router.navigate(['/calendars/events/' + status.calendar_id + '/day/' + d]);

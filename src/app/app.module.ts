@@ -85,6 +85,7 @@ import { CalendarEventPipe } from './pipes/calendar-event.pipe';
 import { CalendarEventViewComponent } from './calendar-page/calendar-event-view.component';
 import { CalendarEventSearchPageComponent } from './calendar-page/calendar-event-search-page.component';
 import { CalendarEventSearchComponent } from './calendar/calendar-event-search.component';
+import { CalendarDayBoxComponent } from './calendar/calendar-day-box.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,8 @@ import { CalendarEventSearchComponent } from './calendar/calendar-event-search.c
     CalendarEventPipe,
     CalendarEventViewComponent,
     CalendarEventSearchPageComponent,
-    CalendarEventSearchComponent
+    CalendarEventSearchComponent,
+    CalendarDayBoxComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

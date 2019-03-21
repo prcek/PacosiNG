@@ -32,16 +32,8 @@
 }
 
 .calstatusbox {
-    width: 75%;
-    height: 75%;
-    background-color: lightgrey; 
-    cursor: pointer;
-}
-.any_ohs {
-    background-color: lightgreen;
-}
-.busy {
-    background-color: lightcoral; 
+    width: 90%;
+    height: 80%;
 }
 .nomargin {
     margin: 0px;

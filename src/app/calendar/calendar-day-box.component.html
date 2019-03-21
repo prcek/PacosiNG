@@ -1,0 +1,16 @@
+
+<ng-container [ngSwitch]="variant">
+  <div *ngSwitchCase="'free'" class="calstatusbox free mat-raised-button" fxLayoutAlign="center center">
+    volno
+  </div>
+  
+  <div *ngSwitchCase="'off'" class="calstatusbox" fxLayoutAlign="center center">
+     zavřeno
+  </div>
+
+  <div *ngSwitchCase="'busy'" class="calstatusbox busy mat-raised-button" fxLayoutAlign="center center">
+      obsazeno
+  </div>
+</ng-container>
+
+

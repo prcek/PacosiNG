@@ -1,0 +1,14 @@
+.calstatusbox {
+    width: 100%;
+    height: 100%;
+   
+}
+.free {
+    background-color: lightgreen;
+    cursor: pointer;
+}
+
+.busy {
+    background-color: lightcoral; 
+    cursor: pointer;
+}
