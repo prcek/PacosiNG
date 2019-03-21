@@ -9,4 +9,70 @@
 
     <app-calendar-event-search (search)="onSearch($event)" [submitted]="submitted" [init_val]="iss"></app-calendar-event-search>
 
+
+    <table mat-table [dataSource]="events" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> id </th>
+          <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="calendar_id">
+            <th mat-header-cell *matHeaderCellDef> Kalendář </th>
+            <td mat-cell *matCellDef="let element"> 
+              <ng-container *ngIf="element.calendar_id | calendar; let cal" >
+                  {{cal.name}} - {{(cal.location_id | location)?.name}}
+              </ng-container>
+            </td>
+          </ng-container>
+  
+        <ng-container matColumnDef="day">
+              <th mat-header-cell *matHeaderCellDef> Datum </th>
+              <td mat-cell *matCellDef="let element"> {{element.day | czdate}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef> Čas </th>
+            <td mat-cell *matCellDef="let element"> 
+                <ng-container *ngIf="element.calendar_id | calendar; let cal" >
+                  {{ element.begin | tstime:cal.span }}
+                </ng-container>
+            </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="event_name">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.event_name}} </td>
+      </ng-container>
+
+        <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef> Jméno </th>
+            <td mat-cell *matCellDef="let element"> {{element.client.first_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef> Přijmení </th>
+            <td mat-cell *matCellDef="let element"> {{element.client.last_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef> Telefon </th>
+            <td mat-cell *matCellDef="let element"> {{element.client.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+            <th mat-header-cell *matHeaderCellDef> Ročník </th>
+            <td mat-cell *matCellDef="let element"> {{element.client.year}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <button mat-icon-button (click)="onView(element)" matTooltip="zobrazit"><mat-icon>arrow_right_alt</mat-icon></button> 
+          </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    
 </div>
