@@ -7,8 +7,9 @@
 }
 
 .toolbar {
-    padding: 8px 16px;
+    padding-left: 16px;
+    padding-right: 16px;
     align-items: center;
-    min-height: 64px;
+    min-height: 48px;
     margin-bottom: 0px;
 }

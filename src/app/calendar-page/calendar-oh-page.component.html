@@ -7,19 +7,18 @@
 <app-sub-menu title="Provozní doba" (back)="goBack()" showBack="true">
     <app-calendar-chip *ngIf="calendar" [calendar_id]="calendar._id"></app-calendar-chip>
 </app-sub-menu>
-<app-diag>{{diag}}</app-diag>
 <div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <div *ngIf="oh_groups" fxLayout="row wrap" fxLayoutGap="10px" fxFlexFill>
         
         <app-daypicker-panel [first_day]="first_day" [selected_day]="first_day" [selected_week]="first_day" (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
         <mat-card fxFlex="1 0 auto">
             <mat-card-header>
-                <mat-card-title>Aktuální provozní doba pro zvolený týden</mat-card-title>
+                <mat-card-title>Aktuální provozní doba pro zvolený týden od {{first_day | czdate}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <ng-container *ngFor="let ohg of oh_groups">  
           
-                    <p>{{ohg.day | date }}</p>
+                    <p>{{ohg.day | czdate }}</p>
               
                     <mat-chip-list> 
                       <mat-chip *ngFor="let oh of ohg.ohs" (removed)="onDeleteOH(oh)"> 

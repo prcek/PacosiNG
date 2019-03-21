@@ -69,7 +69,7 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 30, 1, 2 * 7, 2 * 10, [1, 2, 3, 4, 5]);
 
     // tslint:disable-next-line:max-line-length
-    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super', 'view', 'edit'], [cal1._id, cal2._id, cal3._id]);
+    const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super', 'view', 'edit', 'setup_ot'], [cal1._id, cal2._id, cal3._id]);
     const duser = await dataSources.user.createUser('doctor', 'secret', 'Doctor', false, ['view'], [cal1._id]);
     const euser = await dataSources.user.createUser('evidence', 'secret', 'Evidence', false, ['view', 'edit'], [cal1._id, cal2._id]);
     // tslint:disable-next-line:max-line-length

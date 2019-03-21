@@ -1,9 +1,10 @@
 
 .toolbar {
-    padding: 8px 16px;
+    padding-left: 16px;
+    padding-right: 16px;
     align-items: center;
-    min-height: 64px;
-    margin-bottom: 8px;
+    min-height: 48px;
+    margin-bottom: 4px;
 }
 
 .spacer {
