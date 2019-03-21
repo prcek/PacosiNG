@@ -18,7 +18,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class MainPageComponent implements OnInit {
   cals: ICalendarStatus[];
   cal_ids: string[];
-  days: string[];
+  // days: string[];
   grid: ICalendarGridInfo;
   first_day: Date;
   selected_day: Date;

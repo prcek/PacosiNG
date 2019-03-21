@@ -1,1 +1,34 @@
 <app-sub-menu title="Plánování otevírací doby"></app-sub-menu>
+
+<mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
+<div class="container">
+  <div *ngIf="grid" fxLayout="row wrap" fxLayoutAlign="start start">
+    <div class="leftpanel" fxFlex="10 1 auto">
+      <div fxLayout="row">
+        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center">&nbsp;</div>
+        <mat-grid-list fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="70px">
+            <mat-grid-tile *ngFor="let cal of grid.calendars">
+              <div fxFlexFill fxLayout="column" fxLayoutAlign="start center"> 
+                  <div class="mat-body-strong nomargin" >{{cal.name}}</div>
+                  <div class="mat-small nomargin">{{(cal.location_id | location)?.name}}</div>
+              </div>
+            </mat-grid-tile>
+        </mat-grid-list> 
+      </div>
+      <div fxLayout="row" *ngFor="let day of grid.days">
+        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> <app-daycard [date]="day.day"></app-daycard></div>
+        <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="75px">
+            <mat-grid-tile *ngFor="let status of day.statuses"> 
+                <app-calendar-day-box class="calstatusbox" [status]="status"  [plan_mode]="true" (click)="onSelect(status)">
+                  
+                </app-calendar-day-box>
+             </mat-grid-tile> 
+        </mat-grid-list>  
+      </div> 
+    </div>
+    <div class="rightpanel" fxFlex="1 0 auto">
+        <app-daypicker-panel [first_day]="first_day" [selected_day]="selected_day"  (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
+    </div>
+  </div>
+</div>
+

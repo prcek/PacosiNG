@@ -15,6 +15,15 @@
   <div *ngSwitchCase="'busy'" class="calstatusbox busy mat-raised-button" fxLayoutAlign="center center">
       obsazeno
   </div>
+
+  <div *ngSwitchCase="'p_on'" class="calstatusbox free mat-raised-button" fxLayoutAlign="center center">
+      otevřeno
+  </div>
+
+  <div *ngSwitchCase="'p_off'" class="calstatusbox off mat-raised-button" fxLayoutAlign="center center">
+      zavřeno
+  </div>
+
 </ng-container>
 
 
