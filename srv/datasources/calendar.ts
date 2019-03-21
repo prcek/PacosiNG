@@ -277,6 +277,8 @@ export class CalendarAPI implements DataSource {
             day,
             begin,
             len,
+            full_len: event_type.len,
+            shortable_len: event_type.short_len,
             comment,
             overlap_check
         });
@@ -313,6 +315,8 @@ export class CalendarAPI implements DataSource {
             day,
             begin,
             len,
+            full_len: event_type.len,
+            shortable_len: event_type.short_len,
             comment,
             overlap_check
         });
@@ -349,6 +353,11 @@ export class CalendarAPI implements DataSource {
 
     async getCalendarStatusDaysMulti(calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarStatusDays[]> {
         console.log('getCalendarStatusDaysMulti', M(start_date).toISOString(), M(end_date).toISOString());
+
+        const calendars = await this.store.calendarModel.find({
+            _id: { $in: calendar_ids},
+        });
+
         const ohs = await this.store.dayOpeningHoursModel.find({
             calendar_id: { $in: calendar_ids},
             day: { '$gte': start_date, '$lt': end_date }
@@ -368,11 +377,18 @@ export class CalendarAPI implements DataSource {
             const gr = R.has(cid, calGroups) ? (R.groupBy<IDayOpeningHours>((i) => M(i.day).utc().toISOString(), calGroups[cid])) : {};
             // tslint:disable-next-line:max-line-length
             const egr = R.has(cid, calEventsGroups) ? (R.groupBy<ICalendarEvent>((i) => M(i.day).utc().toISOString(), calEventsGroups[cid])) : {};
+
+            const cal: ICalendar = R.find<ICalendar>( R.propEq('id', cid), calendars);
             const sdays = days.map(_d => {
                 const d = _d.toISOString();
                 const any_ohs = R.has(d, gr);
                 const any_event = R.has(d, egr);
                 let any_free = true;
+                let any_extra_free = false;
+                const cluster_len = cal ? cal.cluster_len : 1;
+
+                //
+
                 if (any_ohs && any_event) {
                     // console.log(`CS: ${cid} ${d}`);
                     const d_ohs = gr[d];
@@ -380,17 +396,28 @@ export class CalendarAPI implements DataSource {
 
                     // tslint:disable-next-line:max-line-length
                     const ohs_slots = R.uniq(R.flatten<number>(R.map<IDayOpeningHours, number[]>(oh => R.range(oh.begin, oh.begin + oh.len), d_ohs)));
+
+                    const ohs_non_extra_slots = R.filter<number>(s => !(s % cluster_len), ohs_slots);
+
                     // tslint:disable-next-line:max-line-length
                     const event_slots = R.uniq(R.flatten<number>(R.map<ICalendarEvent, number[]>(e => R.range(e.begin, e.begin + e.len), d_events)));
-                    const ints = R.intersection(ohs_slots, event_slots);
-                    any_free = !(ints.length === ohs_slots.length);
+                    // tslint:disable-next-line:max-line-length
+                    const event_slots_short = R.uniq(R.flatten<number>(R.map<ICalendarEvent, number[]>(e => R.range(e.begin, e.begin + e.shortable_len), d_events)));
+                    // console.log("XXX events:",cid,d,event_slots,event_slots_short);
+                    // console.log("XXX ohs:",cid,d,ohs_slots,ohs_non_extra_slots);
+
+
+                    const ints = R.intersection(ohs_non_extra_slots, event_slots);
+                    any_free = !(ints.length === ohs_non_extra_slots.length);
+                    const intse = R.intersection(ohs_slots, event_slots_short);
+                    any_extra_free = !(intse.length === ohs_slots.length);
                 } else {
                     if (any_event) {
                         any_free = false;
                         // events without ohs!!!
                     }
                 }
-                return {day: _d.toDate(), any_ohs, any_free, any_event};
+                return {day: _d.toDate(), any_ohs, any_free, any_extra_free, any_event};
             });
             return { calendar_id: cid, days: sdays};
         });

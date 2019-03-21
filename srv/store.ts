@@ -151,6 +151,8 @@ function createModels(connection: mongoose.Connection) {
         day: Date,
         begin: Number,
         len: Number,
+        shortable_len: Number,
+        full_len: Number,
         comment: String,
         overlap_check: [String],
     });

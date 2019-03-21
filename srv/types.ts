@@ -64,6 +64,8 @@ export interface ICalendarEvent {
     day: Date;
     begin: number;
     len: number;
+    shortable_len: number;
+    full_len: number;
 }
 
 export interface ICalendarEventClient {
