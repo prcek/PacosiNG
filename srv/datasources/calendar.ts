@@ -21,7 +21,7 @@ import { remove as removeDia } from 'diacritics';
 
 function safe_remove_dia(s: string): string {
     if (s) {
-        return removeDia(s).trim();
+        return removeDia(s).trim().toLowerCase();
     }
     return s;
 }
@@ -329,9 +329,12 @@ export class CalendarAPI implements DataSource {
     }
 
     async searchCalendarEvents(search: string, calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarEvent[]> {
+
+        const srch = safe_remove_dia(search);
         const events = await this.store.calendarEventModel.find({
             calendar_id: { $in: calendar_ids},
-            day: { '$gte': start_date, '$lt': end_date }
+            day: { '$gte': start_date, '$lt': end_date },
+            'client_nd_search.last_name': { '$eq': srch}
         });
         return events;
     }
