@@ -8,7 +8,7 @@
  
   <a *appAccess="'view'" mat-button routerLink="/main">Přehled</a>
   <a *ngIf="dev_mode" mat-button routerLink="/test">TEST</a>
-  <a *ngIf="dev_mode" mat-button routerLink="/calendars/search">SRCH</a>
+  <a *ngIf="dev_mode" mat-button [routerLink]="['/calendars/search',{cals: user.calendar_ids}]">SRCH</a>
   <a *appAccess="'setup_ot'" mat-button [routerLink]="['/main', {cals: user.calendar_ids, plan:true} ]">planovani</a>
   <a *appAccess="'super'" mat-button routerLink="/calendars">kalendáře</a>
   <a *appAccess="'super'" mat-button routerLink="/users">uživatelé</a>

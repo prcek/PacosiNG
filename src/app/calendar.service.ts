@@ -667,7 +667,26 @@ export class CalendarService {
       map(res => res.data.deleteCalendarEvent)
     );
   }
+  searchCalendarEvents(search: string, calendar_ids: string[], start_date: Date, end_date: Date): Observable<ICalendarEvent[]> {
+        // tslint:disable-next-line:max-line-length
+        return this.apollo.query<{calendarEventSearch: ICalendarEvent[]}, {search: string, calendar_ids: string[], start_date: string, end_date: string}>({
+          query: gql`query($search: String! $calendar_ids: [ID]! $start_date: Date! $end_date: Date!) {
+                calendarEventSearch(search:$search calendar_ids:$calendar_ids start_date:$start_date end_date: $end_date) {
+                  ${ALL_CALENDAR_EVENT_ATTRS}
+                }
+            }`,
+          variables: {
+            search,
+            calendar_ids,
+            start_date: M(start_date).format('YYYY-MM-DD'),
+            end_date: M(end_date).format('YYYY-MM-DD'),
+          }
+        }).pipe(
+          // tap(res => console.log('apollo res', res)),
+          map(res => res.data.calendarEventSearch)
+        );
 
+  }
 
   getCalendarsStatus_(calendar_ids: string[], start_date: Date, end_date: Date): Observable<ICalendarStatusR[]> {
     // tslint:disable-next-line:max-line-length

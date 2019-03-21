@@ -328,6 +328,13 @@ export class CalendarAPI implements DataSource {
         return {ok: false, _id: _id};
     }
 
+    async searchCalendarEvents(search: string, calendar_ids: string[], start_date: Date, end_date: Date): Promise<ICalendarEvent[]> {
+        const events = await this.store.calendarEventModel.find({
+            calendar_id: { $in: calendar_ids},
+            day: { '$gte': start_date, '$lt': end_date }
+        });
+        return events;
+    }
 
     async getCalendarEventTypes(calendar_id: string): Promise<ICalendarEventType[]> {
         return this.store.calendarEventTypeModel.find({calendar_id: calendar_id});

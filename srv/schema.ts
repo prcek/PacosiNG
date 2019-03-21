@@ -51,6 +51,8 @@ const typeDefs = gql`
     calendarEvent(_id: ID!): CalendarEvent @auth_access(role:"view")
     calendarStatusDays(calendar_id: ID! start_date: Date!, end_date: Date!): CalendarStatusDays @auth_access(role:"view")
     calendarStatusDaysMulti(calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarStatusDays] @auth_access(role:"view")
+    calendarEventSearch(search: String! calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarEvent] @auth_access(role:"view")
+
     me: User
   }
   type Mutation {
@@ -253,6 +255,11 @@ const resolvers: IResolvers<any, IContext> = {
     calendarStatusDaysMulti: async (parent, { calendar_ids, start_date, end_date } , context, info): Promise<ICalendarStatusDays[]> => {
       return await context.dataSources.calendar.getCalendarStatusDaysMulti(calendar_ids, start_date, end_date);
     },
+    //     calendarEventSearch(search: String! calendar_ids: [ID]! start_date: Date!, end_date: Date!): [CalendarEvent] @auth_access(role:"view")
+    calendarEventSearch: async (parent, { search, calendar_ids, start_date, end_date } , context, info): Promise<ICalendarEvent[]> => {
+      return await context.dataSources.calendar.searchCalendarEvents(search, calendar_ids, start_date, end_date);
+    },
+
 
     me: async (parent, args, context, info): Promise<IUser> => {
       return await context.dataSources.user.getMe();

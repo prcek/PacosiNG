@@ -7,6 +7,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class CalendarEventSearchComponent implements OnInit {
   @Input() submitted: boolean;
+  @Input() init_val: string;
   @Output() search = new EventEmitter<string>();
   search_string = '';
   constructor() { }
@@ -17,6 +18,9 @@ export class CalendarEventSearchComponent implements OnInit {
     return true;
   }
   ngOnInit() {
+    if (this.init_val) {
+      this.search_string = this.init_val;
+    }
   }
   onSubmit() {
     this.search.emit(this.search_string);
