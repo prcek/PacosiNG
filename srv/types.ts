@@ -82,6 +82,7 @@ export interface ICalendarStatusDay {
     day: Date;
     any_ohs: boolean;
     any_free: boolean;
+    any_extra_free: boolean;
     any_event: boolean;
 }
 export interface ICalendarStatusDays {

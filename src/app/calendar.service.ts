@@ -120,6 +120,7 @@ export interface ICalendarDayStatus {
   day: Date;
   any_ohs: boolean;
   any_free: boolean;
+  any_extra_free: boolean;
   any_event: boolean;
 }
 export interface ICalendarStatus {
@@ -693,7 +694,7 @@ export class CalendarService {
     return this.apollo.query<{calendarStatusDaysMulti: ICalendarStatusR[]}, {calendar_ids: string[], start_date: string, end_date: string}>({
       query: gql`query($calendar_ids: [ID]! $start_date: Date! $end_date: Date!) {
             calendarStatusDaysMulti(calendar_ids:$calendar_ids start_date:$start_date end_date: $end_date) {
-              calendar_id days { day any_ohs any_free any_event}
+              calendar_id days { day any_ohs any_free any_extra_free any_event}
             }
         }`,
       variables: {

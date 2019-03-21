@@ -150,6 +150,7 @@ const typeDefs = gql`
     day: Date
     any_ohs: Boolean
     any_free: Boolean
+    any_extra_free: Boolean
     any_event: Boolean
   }
 
