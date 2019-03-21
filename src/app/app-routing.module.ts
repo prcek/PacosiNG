@@ -23,11 +23,13 @@ import { LocationsPageComponent } from './locations/locations-page.component';
 import { LocationPageComponent } from './locations/location-page.component';
 import { LocationNewPageComponent } from './locations/location-new-page.component';
 import { CalendarEventSearchPageComponent } from './calendar-page/calendar-event-search-page.component';
+import { PlanPageComponent } from './main-page/plan-page.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'main', canActivate: [AuthGuard, RedirGuard], component: MainPageComponent },
+  { path: 'plan', canActivate: [AuthGuard, RedirGuard], component: PlanPageComponent },
   { path: 'test', canActivate: [AuthGuard], component: TestPageComponent },
   { path: 'users', canActivate: [AuthGuard], component: UsersPageComponent },
   { path: 'users/edit/:id', canActivate: [AuthGuard], component: UserPageComponent },
