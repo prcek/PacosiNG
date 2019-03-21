@@ -10,9 +10,9 @@
   <a *ngIf="dev_mode" mat-button routerLink="/test">TEST</a>
   <a *ngIf="dev_mode" mat-button [routerLink]="['/calendars/search',{cals: user.calendar_ids}]">SRCH</a>
   <a *appAccess="'setup_ot'" mat-button routerLink="/plan">Plánování</a>
-  <a *appAccess="'super'" mat-button routerLink="/calendars">kalendáře</a>
-  <a *appAccess="'super'" mat-button routerLink="/users">uživatelé</a>
-  <a *appAccess="'super'" mat-button routerLink="/locations">pobočky</a>
+  <a *appAccess="'super'" mat-button routerLink="/calendars">Kalendáře</a>
+  <a *appAccess="'super'" mat-button routerLink="/users">Uživatelé</a>
+  <a *appAccess="'super'" mat-button routerLink="/locations">Pobočky</a>
   <span class="spacer"></span>
   <a mat-button *ngIf="!isAuth" routerLink="/login">Přihlásit</a>
   <span *ngIf="isAuth">{{login}}</span>
