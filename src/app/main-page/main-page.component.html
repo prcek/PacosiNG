@@ -9,8 +9,8 @@
         <mat-grid-list fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="70px">
             <mat-grid-tile *ngFor="let cal of grid.calendars">
               <div fxFlexFill fxLayout="column" fxLayoutAlign="start center"> 
-                  <div class="mat-title nomargin" >{{cal.name}}</div>
-                  <div class="mat-body-strong nomargin">{{(cal.location_id | location)?.name}}</div>
+                  <div class="mat-body-strong nomargin" >{{cal.name}}</div>
+                  <div class="mat-small nomargin">{{(cal.location_id | location)?.name}}</div>
               </div>
             </mat-grid-tile>
         </mat-grid-list> 
