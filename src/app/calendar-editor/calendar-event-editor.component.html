@@ -3,7 +3,7 @@
     <form [formGroup]="eventForm"  #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
       <mat-card-header>
           <ng-template #newevent>
-              <mat-card-title> Nova událost</mat-card-title>
+              <mat-card-title> Nová událost</mat-card-title>
           </ng-template>
           <mat-card-title *ngIf="event; else newevent">Událost {{event?.event_name}}/{{event?.client.last_name}}</mat-card-title>
       </mat-card-header>
