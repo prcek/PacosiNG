@@ -110,7 +110,24 @@ export class CalendarEventPageComponent implements OnInit {
     this.location.back();
   }
 
+
   onPrint(): void {
+    const ds = M.utc(this.event.day).format('YYYY-MM-DD');
+    this.calendarService.event2pdf(this.calendar, this.event).subscribe(dd => {
+      const dialogRef = this.dialog.open(DialogPdfComponent, {
+        width: '100vw',
+        height: '100vh',
+        maxHeight: 'none',
+        maxWidth: 'none',
+        data: {title: 'Tisk - Objednávka ' + ds, doc: dd}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed', result);
+      });
+    });
+  }
+/*
+  onPrint_old(): void {
     const ds = M.utc(this.day).format('YYYY-MM-DD');
     const client = this.event.client.last_name + ' ' + this.event.client.first_name;
     const etime = this.calendarService.event2timestring(this.calendar, this.event);
@@ -176,7 +193,7 @@ export class CalendarEventPageComponent implements OnInit {
       console.log('The dialog was closed', result);
     });
   }
-
+  */
   get diag() {
     // tslint:disable-next-line:max-line-length
     return JSON.stringify({calendar: this.calendar, event: this.event, extra: this.extra, free_slots: this.free_slots, start_slots: this.start_slots});

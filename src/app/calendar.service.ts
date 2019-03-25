@@ -5,6 +5,8 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import * as M from 'moment';
 import * as R from 'ramda';
+import { ILocation } from './location.service';
+import { CLR_LOGO } from './pdf/pdf_data';
 
 export interface ICalendar {
   _id: string;
@@ -758,6 +760,70 @@ export class CalendarService {
     const Ho = h.toString().padStart(2, '0');
     const Mi = m.toString().padStart(2, '0');
     return Ho + ':' + Mi;
+  }
+
+  event2pdf(calendar: ICalendar,  event: ICalendarEvent): Observable<object> {
+    return this.apollo.query<{location: ILocation}>({
+      query: gql`query($_id:ID!) { location(_id:$_id) { _id archived name address }}`,
+      variables: {_id: calendar.location_id},
+    }).pipe(map(res => res.data.location), map(location => {
+
+      const ds = M.utc(event.day).format('YYYY-MM-DD');
+      const client = event.client.last_name + ' ' + event.client.first_name;
+      const etime = this.event2timestring(calendar, event);
+      const DD = {
+        content: [
+          {
+            image: CLR_LOGO,
+            width: 200,
+          },
+          {
+            text: client,
+            style: 'header'
+          },
+          {
+            text: 'Datum: ' + ds
+          },
+          {
+            text: 'Čas: ' + etime
+          },
+          {
+            text: 'PROSÍME O PŘÍCHOD 15 MIN. DŘÍVE NEŽ JE UVEDENÝ ČAS OBJEDNÁVKY K LÉKAŘI.'
+          },
+          {
+            text: 'PŘED VSTUPEM DO ORDINACE JE POTŘEBA SE NAHLÁSIT V EVIDENCI K ZAPSÁNÍ DO AMBULANTNÍ KARTY.'
+          },
+          {
+            text: calendar.name,
+            style: 'header'
+          },
+          {
+            text: 'S sebou poukaz na vyšetření/ošetření, pojišťovací kartičku, zdravotní dokumentaci k diagnoze.'
+          },
+          {
+            text: location.address
+          }
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true
+          },
+          subheader: {
+            fontSize: 15,
+            bold: true
+          },
+          quote: {
+            italics: true
+          },
+          small: {
+            fontSize: 8
+          }
+        },
+        pageSize: 'A5'
+      };
+      return DD;
+    }));
   }
 
 
