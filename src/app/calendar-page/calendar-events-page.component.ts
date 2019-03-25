@@ -198,7 +198,9 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   onSlot(slot: ICalendarDaySlot) {
     if (slot.empty && this.auth.accessCheck('edit')) {
       this.onSlotEdit(slot);
-    } else if (!slot.empty && this.auth.accessCheck('view')) {
+    } if (this.extra && slot.extra_slot && this.auth.accessCheck('edit')) {
+      this.onSlotEdit(slot);
+    } else if (!slot.empty && !slot.extra_slot && this.auth.accessCheck('view')) {
       this.onSlotView(slot);
     }
   }
