@@ -1,8 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { timer, Observable, Subscriber, Subject } from 'rxjs';
+import { timer, Observable, Subscriber, Subject, interval, race } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, mapTo } from 'rxjs/operators';
 
 import { git_hash } from './../git-version';
 import { isPlatformServer } from '@angular/common';
@@ -67,11 +67,11 @@ export class ServerInfoService {
     const x = this.apollo.query<{serverHash: string}>({
       query: gql`query {  serverHash }`
     }).pipe( tap((c) => { console.log('check server', c); } ), map(res => res.data.serverHash));
-
+    const to = interval(5000).pipe(mapTo(null));
 
     const ob = Observable.create( (o: Subscriber<string>) => {
-      x.subscribe((s) => {
-        console.log('ok path');
+      race(to, x).subscribe((s) => {
+        console.log('ok path', s);
         o.next(s);
         o.complete();
       }, (err) => {
