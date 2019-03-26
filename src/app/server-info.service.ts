@@ -66,16 +66,16 @@ export class ServerInfoService {
 
     const x = this.apollo.query<{serverHash: string}>({
       query: gql`query {  serverHash }`
-    }).pipe( /*tap((c) => { console.log(c); } ),*/ map(res => res.data.serverHash));
+    }).pipe( tap((c) => { console.log('check server', c); } ), map(res => res.data.serverHash));
 
 
     const ob = Observable.create( (o: Subscriber<string>) => {
       x.subscribe((s) => {
-        // console.log('ok path');
+        console.log('ok path');
         o.next(s);
         o.complete();
       }, (err) => {
-        // console.log('err path');
+        console.log('err path');
         o.next(null);
         o.complete();
       });
