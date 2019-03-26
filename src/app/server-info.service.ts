@@ -39,10 +39,10 @@ export class ServerInfoService {
     }
 
     this.vtick$.pipe(
-      // tap((x) => console.log('version check tick')),
+      tap((x) => console.log('version check tick')),
       switchMap(() => this.checkServer()),
     ).subscribe((sv) => {
-      // console.log('server version = ', sv);
+      console.log('server version = ', sv);
       if (sv) {
         this.serverInfo.online = true;
         this.serverInfo.remote_version = sv;
