@@ -17,6 +17,7 @@ export interface ICalendar {
     day_len: number;
     day_begin: number;
     week_days: number[];
+    print_info: string;
 }
 
 export interface ILocation {

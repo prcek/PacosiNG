@@ -18,6 +18,7 @@ export interface ICalendar {
   day_begin: number;
   day_len: number;
   week_days: number[];
+  print_info: string;
 }
 
 export interface ICalendarEventType {
@@ -168,6 +169,7 @@ const ALL_CALENDAR_ATTRS = `
   day_begin
   day_len
   week_days
+  print_info
 `;
 
 const ALL_CALENDAR_EVENT_ATTRS = `
@@ -243,9 +245,9 @@ export class CalendarService {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
       mutation: gql`
         mutation($_id: ID! $archived: Boolean $location_id: ID $name: String $span: Int $cluster_len: Int
-          $day_begin: Int $day_len: Int $week_days: [Int]) {
+          $day_begin: Int $day_len: Int $week_days: [Int], $print_info: String) {
           updateCalendar(_id: $_id name: $name location_id: $location_id archived: $archived span: $span cluster_len: $cluster_len
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${ALL_CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len week_days: $week_days print_info: $print_info ) { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
@@ -257,9 +259,10 @@ export class CalendarService {
   createCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{createCalendar: ICalendar}, ICalendar>({
       mutation: gql`
-        mutation($name: String! $location_id: ID! $span: Int! $cluster_len: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!) {
+        mutation($name: String! $location_id: ID! $span: Int! $cluster_len: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!,
+        print_info: String!) {
           createCalendar(name: $name  location_id: $location_id span: $span cluster_len: $cluster_len
-            day_begin: $day_begin day_len: $day_len week_days: $week_days ) { ${ALL_CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len week_days: $week_days print_info: $print_info) { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
