@@ -67,7 +67,7 @@ export class ServerInfoService {
     const x = this.apollo.query<{serverHash: string}>({
       query: gql`query {  serverHash }`
     }).pipe( timeout(5000), tap((c) => { console.log('check server', c); } ), map(res => res.data.serverHash));
-    //const to = interval(5000).pipe( tap((c) => { console.log('timeout tick'); }), mapTo(null));
+    // const to = interval(5000).pipe( tap((c) => { console.log('timeout tick'); }), mapTo(null));
 
     const ob = Observable.create( (o: Subscriber<string>) => {
       x.subscribe((s) => {
