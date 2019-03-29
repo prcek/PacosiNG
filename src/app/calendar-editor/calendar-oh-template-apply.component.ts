@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular
 import { ICalendar, IOpeningHours, CalendarService } from '../calendar.service';
 import * as R from 'ramda';
 import * as M from 'moment';
+import { formatDate2String_S } from '../utils';
 
 
 export interface Day {
@@ -34,8 +35,13 @@ export class CalendarOhTemplateApplyComponent implements OnInit, OnChanges {
       return '?';
     }
   }
+
+  _updateDays() {
+    this.days = R.map((i => ({value: i, viewValue: formatDate2String_S(i)})), this.day_list);
+  }
+
   ngOnInit() {
-    this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+    this._updateDays();
     this.ohForm.patchValue({start_day: this.days[0].value});
   }
 
@@ -43,7 +49,7 @@ export class CalendarOhTemplateApplyComponent implements OnInit, OnChanges {
     console.log('ngOnChanges', changes);
     const day_list = changes.day_list;
     if (day_list && !day_list.firstChange)  {
-      this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+      this._updateDays();
       this.ohForm.patchValue({start_day: this.days[0].value});
     }
   }

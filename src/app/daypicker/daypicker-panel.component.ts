@@ -31,14 +31,14 @@ export class DaypickerPanelComponent implements OnInit, OnChanges {
   constructor() { }
 
   setDaysInfo() {
-    const first_day = M(this.first_day).startOf('isoWeek');
+    const first_day = M(this.first_day).utc().startOf('isoWeek');
     const days = R.take(this.dayCount, R.filter((d) => d.working_day, R.map(i => {
-      const date = M(first_day).add(i, 'day');
+      const date = M(first_day).utc().add(i, 'day');
       const day = date.date();
       const working_day = (date.day() !== 0) && (date.day() !== 6);
       const month = date.month();
-      const selected = (this.selected_day && M(this.selected_day).isSame(date, 'day')) ||
-        (this.selected_week && M(this.selected_week).isSame(date, 'isoWeek'));
+      const selected = (this.selected_day && M(this.selected_day).utc().isSame(date, 'day')) ||
+        (this.selected_week && M(this.selected_week).utc().isSame(date, 'isoWeek'));
 
       const first = false;
       const last = false;
@@ -77,15 +77,15 @@ export class DaypickerPanelComponent implements OnInit, OnChanges {
   }
   onToday() {
     console.log('onToday');
-    this.move.emit(M().startOf('isoWeek').toDate());
+    this.move.emit(M().utc().startOf('isoWeek').toDate());
   }
   onBack() {
     console.log('onBack');
-    this.move.emit(M(this.first_day).subtract(7, 'day').startOf('isoWeek').toDate());
+    this.move.emit(M(this.first_day).utc().subtract(7, 'day').startOf('isoWeek').toDate());
   }
   onForward() {
     console.log('onForward');
-    this.move.emit(M(this.first_day).add(7, 'day').startOf('isoWeek').toDate());
+    this.move.emit(M(this.first_day).utc().add(7, 'day').startOf('isoWeek').toDate());
   }
 
 

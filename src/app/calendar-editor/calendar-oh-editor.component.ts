@@ -3,6 +3,7 @@ import { ICalendar, IOpeningHours, CalendarService } from '../calendar.service';
 import { FormGroup, FormControl, Validators, ValidationErrors, ValidatorFn, FormGroupDirective } from '@angular/forms';
 import * as R from 'ramda';
 import * as M from 'moment';
+import { formatDate2String_S } from '../utils';
 
 export const timeIntervalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const time = control.get('time');
@@ -36,15 +37,20 @@ export class CalendarOhEditorComponent implements OnInit, OnChanges {
 
   constructor(private calendarService: CalendarService) { }
 
+  _updateDays() {
+    this.days = R.map((i => ({value: i, viewValue: formatDate2String_S(i)})), this.day_list);
+  }
+
+
   ngOnInit() {
-    this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+    this._updateDays();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('ngOnChanges', changes);
     const day_list = changes.day_list;
     if (day_list && !day_list.firstChange)  {
-      this.days = R.map((i => ({value: i, viewValue: i})), this.day_list);
+      this._updateDays();
       this.ohForm.reset();
     }
   }

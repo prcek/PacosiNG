@@ -13,12 +13,12 @@
         <app-daypicker-panel [first_day]="first_day" [selected_day]="first_day" [selected_week]="first_day" (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker-panel>
         <mat-card fxFlex="1 0 auto">
             <mat-card-header>
-                <mat-card-title>Aktuální provozní doba pro zvolený týden od {{first_day | czdate}}</mat-card-title>
+                <mat-card-title>Aktuální provozní doba pro zvolený týden od {{first_day | czdate:"S"}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <ng-container *ngFor="let ohg of oh_groups">  
           
-                    <p>{{ohg.day | czdate }}</p>
+                    <p>{{ohg.day | czdate:"L" }}</p>
               
                     <mat-chip-list> 
                       <mat-chip *ngFor="let oh of ohg.ohs" (removed)="onDeleteOH(oh)"> 
@@ -38,7 +38,7 @@
     </div>
 </div>
 
-  
+
 
 
  

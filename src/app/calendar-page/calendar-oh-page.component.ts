@@ -14,10 +14,10 @@ function l2g(ts: IOpeningHours[]): IOHGroup[] {
 
 
 
-  const tog = (val: IOpeningHours[], key: string) => ({day: M(key).toDate(), ohs: val});
+  const tog = (val: IOpeningHours[], key: string) => ({day: M.utc(key).toDate(), ohs: val});
 
   const sorted: IOpeningHours[] = R.sortWith<IOpeningHours>([R.ascend(R.prop('day')), R.ascend(R.prop('begin'))], ts);
-  const grouped = R.groupBy<IOpeningHours>( (i) => M(i.day).format('YYYY-MM-DD'), sorted);
+  const grouped = R.groupBy<IOpeningHours>( (i) => M.utc(i.day).format('YYYY-MM-DD'), sorted);
   const x = R.values(R.mapObjIndexed(tog, grouped));
 /*
   const x = R.values(R.mapObjIndexed(tog, R.groupBy<IOpeningHours>(R.prop<Date>('day'),
@@ -43,7 +43,7 @@ export class CalendarOhPageComponent implements OnInit {
   oh_groups: IOHGroup[];
   constructor(private route: ActivatedRoute, private location: Location, private calendarService: CalendarService) { }
   setFirstDay(base?: Date) {
-    this.first_day = M(base).startOf('isoWeek').toDate();
+    this.first_day = M(base).utc().startOf('isoWeek').toDate();
     this.day_list = R.map((d: number) => M(this.first_day).add(d, 'day').format('YYYY-MM-DD'), R.range(0, this.days));
   }
 
@@ -53,6 +53,7 @@ export class CalendarOhPageComponent implements OnInit {
   }
 
   onChangeDay(d: Date) {
+  // alert('xx' + M(d).utc().toISOString());
    this.setFirstDay(d);
    this.getCalendarWithOHs();
   }
@@ -64,7 +65,7 @@ export class CalendarOhPageComponent implements OnInit {
 
   getCalendarWithOHs() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.calendarService.getCalendarWithOpeningHours(id, this.first_day, M(this.first_day).add(this.days, 'day').toDate())
+    this.calendarService.getCalendarWithOpeningHours(id, this.first_day, M(this.first_day).utc().add(this.days, 'day').toDate())
       .subscribe(d => { this.calendar = d.calendar; this.ohs = d.ohs; this.oh_groups = l2g(d.ohs); });
   }
 

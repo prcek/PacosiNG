@@ -1,24 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as M from 'moment';
-const sdayNames = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
-const dayNames = ['Neděle', 'Pondělí', 'Úterý', 'Streda', 'Čtvrtek', 'Pátek', 'Sobota'];
-const monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
-// tslint:disable-next-line:max-line-length
-const smonthNames = ['ledna', 'února', 'března', 'dubna', 'května', 'června', 'července', 'srpna', 'září', 'října', 'listopadu', 'prosince'];
+import { formatDate2String_L, formatDate2String_S, formatDate2String_ISO } from '../utils';
 
 @Pipe({
   name: 'czdate'
 })
 export class CzdatePipe implements PipeTransform {
 
-  transform(value: Date | string, args?: any): string {
-
-    if (value) {
-      const date = (value instanceof Date) ? value : M.utc(value).toDate();
-      return dayNames[date.getDay()] + ' ' + date.getDate() + '. ' + smonthNames[date.getMonth()] + ' ' + date.getFullYear();
-    }
-
-    return '<missing date value>';
+  transform(value: Date | string, format?: string): string {
+    switch (format) {
+      case 'L': return formatDate2String_L(value);
+      case 'S': return formatDate2String_S(value);
+      case 'I': return formatDate2String_ISO(value);
+      default: return formatDate2String_ISO(value);
+    } 
   }
 
 }
