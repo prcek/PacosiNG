@@ -12,7 +12,7 @@ export class CzdatePipe implements PipeTransform {
       case 'S': return formatDate2String_S(value);
       case 'I': return formatDate2String_ISO(value);
       default: return formatDate2String_ISO(value);
-    } 
+    }
   }
 
 }
