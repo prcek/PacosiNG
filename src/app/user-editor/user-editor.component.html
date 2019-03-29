@@ -36,7 +36,7 @@
                     <mat-label>kalendáře</mat-label>
                     <mat-select placeholder="kalendáře"  formControlName="calendar_ids" multiple>
                         <mat-option *ngFor="let cal of all_calendars" [value]="cal._id">
-                            {{cal.name}}
+                            {{cal.name}} ({{(cal.location_id | location)?.name}})
                           </mat-option>
                     </mat-select>
             </mat-form-field>
