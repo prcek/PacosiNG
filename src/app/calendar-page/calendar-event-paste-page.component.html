@@ -2,7 +2,7 @@
 <app-sub-menu [title]="cut_mode?'Přesun události':'Kopie události'" (back)="goBack()" showBack="true">
         <ng-container *ngIf="calendar_id && day">
             <app-calendar-chip  [calendar_id]="calendar_id"></app-calendar-chip>
-            <div>{{day | czdate}}</div>
+            <div>{{day | czdate:"L"}}</div>
         </ng-container>
 </app-sub-menu>
 

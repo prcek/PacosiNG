@@ -3,7 +3,7 @@
 <app-sub-menu title="Nová událost" (back)="goBack()" showBack="true" showEventClip="true">
         <ng-container *ngIf="calendar && day">
             <app-calendar-chip  [calendar_id]="calendar._id"></app-calendar-chip>
-            <div>{{day | czdate}}</div>
+            <div>{{day | czdate:"L"}}</div>
         </ng-container>
 </app-sub-menu>
     

@@ -48,7 +48,14 @@ export class CalendarOhPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setFirstDay();
+    const start_day = this.route.snapshot.paramMap.get('start_day');
+    if (start_day) {
+      // console.log("START_DAY",start_day);
+      this.setFirstDay(M.utc(start_day).startOf('isoWeek').toDate());
+    } else {
+      this.setFirstDay();
+    }
+
     this.getCalendarWithOHs();
   }
 

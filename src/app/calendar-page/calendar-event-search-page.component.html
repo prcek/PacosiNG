@@ -27,7 +27,7 @@
   
         <ng-container matColumnDef="day">
               <th mat-header-cell *matHeaderCellDef> Datum </th>
-              <td mat-cell *matCellDef="let element"> {{element.day | czdate}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.day | czdate:"L"}} </td>
         </ng-container>
   
         <ng-container matColumnDef="time">
