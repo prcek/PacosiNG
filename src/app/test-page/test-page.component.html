@@ -4,6 +4,13 @@
     <button mat-raised-button color="primary" (click)="onTest2()">dialog test!</button>
     <div>{{diagnostic}}</div>
     <form  (ngSubmit)="onSubmit()" #testForm="ngForm"> 
+
+
+        <mat-form-field>
+            <input matInput required  appFirstUp [(ngModel)]="form.firstup" name="firstup">
+        </mat-form-field>
+    
+
       <mat-form-field>
         <input matInput required [disabled]="disabled" [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="form.date" name="date">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

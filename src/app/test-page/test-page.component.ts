@@ -36,7 +36,8 @@ export class TestPageComponent implements OnInit {
   form = {
     date: '',
     time: 5,
-    time2: 10
+    time2: 10,
+    firstup: 'helo',
   };
   submitted = false;
   disabled = false;

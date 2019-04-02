@@ -87,6 +87,7 @@ import { CalendarEventSearchPageComponent } from './calendar-page/calendar-event
 import { CalendarEventSearchComponent } from './calendar/calendar-event-search.component';
 import { CalendarDayBoxComponent } from './calendar/calendar-day-box.component';
 import { PlanPageComponent } from './main-page/plan-page.component';
+import { FirstUpDirective } from './directives/first-up.directive';
 
 @NgModule({
   declarations: [
@@ -150,7 +151,8 @@ import { PlanPageComponent } from './main-page/plan-page.component';
     CalendarEventSearchPageComponent,
     CalendarEventSearchComponent,
     CalendarDayBoxComponent,
-    PlanPageComponent
+    PlanPageComponent,
+    FirstUpDirective
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
