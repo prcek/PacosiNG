@@ -818,7 +818,6 @@ export class CalendarService {
             text: calendar.print_info,
             margin: [0, 20, 0, 0],
           },
-          { text: '#####'}
         ],
         styles: {
           header: {
