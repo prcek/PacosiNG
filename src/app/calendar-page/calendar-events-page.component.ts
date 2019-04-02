@@ -17,7 +17,7 @@ import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
-import { formatDate2String_S } from '../utils';
+import { formatDate2String_S, safeString, safeNumber2String } from '../utils';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -127,13 +127,13 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: [ 30, 'auto', 'auto', '*' ],
+            widths: [ 30, 'auto', 'auto', 'auto', 'auto', '*' ],
             body: [
-              [ 'Čas', 'Typ', 'Klient', 'Poznámka' ],
+              [ 'Čas', 'Typ', 'Klient', 'Ročník', 'Telefon', 'Poznámka' ],
               ...this.events.map(e => {
                 const etime = this.calendarService.event2timestring(this.calendar, e);
                 const name = e.client.last_name + ' ' + e.client.first_name;
-                return [etime, e.event_name, name, e.comment];
+                return [etime, e.event_name, name, safeNumber2String(e.client.year), safeString(e.client.phone), safeString(e.comment)];
               }),
             ]
           }

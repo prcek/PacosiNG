@@ -34,3 +34,18 @@ export function formatDate2String_ISO(value: Date | string) {
     }
     return '?';
 }
+
+
+export function safeString(value: string | null): string {
+    if (value) {
+        return value;
+    }
+    return '';
+}
+
+export function safeNumber2String(value: number | null): string {
+    if (isNaN(value) || value === null) {
+        return '';
+    }
+    return '' + value;
+}
