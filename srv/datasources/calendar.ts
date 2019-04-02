@@ -386,6 +386,7 @@ export class CalendarAPI implements DataSource {
                 const any_event = R.has(d, egr);
                 let any_free = true;
                 let any_extra_free = false;
+                const any_extra = false;  //TODO
                 const cluster_len = cal ? cal.cluster_len : 1;
 
                 //
@@ -418,7 +419,7 @@ export class CalendarAPI implements DataSource {
                         // events without ohs!!!
                     }
                 }
-                return {day: _d.toDate(), any_ohs, any_free, any_extra_free, any_event};
+                return {day: _d.toDate(), any_ohs, any_free, any_extra_free, any_extra, any_event};
             });
             return { calendar_id: cid, days: sdays};
         });

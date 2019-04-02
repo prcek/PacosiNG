@@ -29,9 +29,13 @@ export class CalendarDayBoxComponent implements OnInit {
         if (this.status.any_free) {
           return 'free';
         }
-
+        /*
         if (this.status.any_extra_free) {
           return 'extra_free';
+        }
+        */
+        if (this.status.any_extra) {
+          return 'any_extra';
         }
 
         return 'busy';

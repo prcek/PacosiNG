@@ -153,6 +153,7 @@ const typeDefs = gql`
     any_free: Boolean
     any_extra_free: Boolean
     any_event: Boolean
+    any_extra: Boolean
   }
 
   type CalendarEvent {
