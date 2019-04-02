@@ -1,6 +1,6 @@
 
 <mat-card class="form-container">
-    <form [formGroup]="eventForm"  #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+    <form autocomplete="off" [formGroup]="eventForm"  #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
       <mat-card-header>
           <ng-template #newevent>
               <mat-card-title> Nová událost</mat-card-title>
