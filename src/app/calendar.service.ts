@@ -780,11 +780,26 @@ export class CalendarService {
           {
             image: CLR_LOGO,
             width: 200,
+            margin: [0, 10, 0, 0],
           },
           {
             text: client,
-            style: 'header'
+            style: 'header',
+            margin: [0, 10, 0, 0],
           },
+          {
+            table: {
+              widths: ['auto', '*'],
+              body: [
+                ['Datum:', ds],
+                ['Čas:', etime],
+                ['Lékař:', calendar.name],
+                ['Pobočka:', location.address],
+              ]
+            },
+            layout: 'noBorders',
+          },
+          /*
           {
             text: 'Datum: ' + ds
           },
@@ -797,12 +812,12 @@ export class CalendarService {
           {
             text: 'Pobočka: ' + location.address,
           },
+          */
           {
-            text: ' ',
+            text: calendar.print_info,
+            margin: [0, 20, 0, 0],
           },
-          {
-            text: calendar.print_info
-          },
+          { text: '#####'}
         ],
         styles: {
           header: {
