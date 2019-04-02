@@ -7,6 +7,7 @@ import * as M from 'moment';
 import * as R from 'ramda';
 import { ILocation } from './location.service';
 import { CLR_LOGO } from './pdf/pdf_data';
+import { formatDate2String_S } from './utils';
 
 export interface ICalendar {
   _id: string;
@@ -771,7 +772,7 @@ export class CalendarService {
       variables: {_id: calendar.location_id},
     }).pipe(map(res => res.data.location), map(location => {
 
-      const ds = M.utc(event.day).format('YYYY-MM-DD');
+      const ds = formatDate2String_S(event.day);
       const client = event.client.last_name + ' ' + event.client.first_name;
       const etime = this.event2timestring(calendar, event);
       const DD = {
@@ -791,21 +792,17 @@ export class CalendarService {
             text: 'Čas: ' + etime
           },
           {
-            text: 'PROSÍME O PŘÍCHOD 15 MIN. DŘÍVE NEŽ JE UVEDENÝ ČAS OBJEDNÁVKY K LÉKAŘI.'
+            text: 'Lékař: ' + calendar.name,
           },
           {
-            text: 'PŘED VSTUPEM DO ORDINACE JE POTŘEBA SE NAHLÁSIT V EVIDENCI K ZAPSÁNÍ DO AMBULANTNÍ KARTY.'
+            text: 'Pobočka: ' + location.address,
           },
           {
-            text: calendar.name,
-            style: 'header'
+            text: ' ',
           },
           {
-            text: 'S sebou poukaz na vyšetření/ošetření, pojišťovací kartičku, zdravotní dokumentaci k diagnoze.'
+            text: calendar.print_info
           },
-          {
-            text: location.address
-          }
         ],
         styles: {
           header: {

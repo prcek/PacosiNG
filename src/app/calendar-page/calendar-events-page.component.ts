@@ -17,6 +17,7 @@ import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
+import { formatDate2String_S } from '../utils';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -113,7 +114,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   }
   */
   onPrint(): void {
-    const ds = M.utc(this.day).format('YYYY-MM-DD');
+    const ds = formatDate2String_S(this.day); // M.utc(this.day).format('YYYY-MM-DD');
     const DD = {
       content: [
         {

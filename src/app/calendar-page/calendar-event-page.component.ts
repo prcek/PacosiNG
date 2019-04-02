@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { DialogConfirmComponent } from '../dialogs/dialog-confirm.component';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { CLR_LOGO } from '../pdf/pdf_data';
+import { formatDate2String_S } from '../utils';
 
 
 @Component({
@@ -112,7 +113,7 @@ export class CalendarEventPageComponent implements OnInit {
 
 
   onPrint(): void {
-    const ds = M.utc(this.event.day).format('YYYY-MM-DD');
+    const ds = formatDate2String_S(this.event.day); // M.utc(this.event.day).format('YYYY-MM-DD');
     this.calendarService.event2pdf(this.calendar, this.event).subscribe(dd => {
       const dialogRef = this.dialog.open(DialogPdfComponent, {
         width: '100vw',

@@ -3,6 +3,7 @@ import { ICalendar, ICalendarEvent, CalendarService } from '../calendar.service'
 import { MatDialog } from '@angular/material';
 import * as M from 'moment';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
+import { formatDate2String_S } from '../utils';
 
 @Component({
   selector: 'app-calendar-event-view',
@@ -25,7 +26,7 @@ export class CalendarEventViewComponent implements OnInit {
   }
 
   onPrint(): void {
-    const ds = M.utc(this.event.day).format('YYYY-MM-DD');
+    const ds = formatDate2String_S(this.event.day); // M.utc(this.event.day).format('YYYY-MM-DD');
     this.calendarService.event2pdf(this.calendar, this.event).subscribe(dd => {
       const dialogRef = this.dialog.open(DialogPdfComponent, {
         width: '100vw',
