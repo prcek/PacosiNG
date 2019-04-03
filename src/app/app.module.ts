@@ -20,6 +20,7 @@ import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { UsersPageComponent } from './users-page/users-page.component';
@@ -171,6 +172,7 @@ import { FirstUpDirective } from './directives/first-up.directive';
     MatInputModule,
     MatIconModule,
     MatTableModule,
+    MatTabsModule,
     MatCheckboxModule,
     MatSelectModule,
     MatDatepickerModule,

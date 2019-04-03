@@ -236,4 +236,43 @@ export class AuthService {
     this.userInfoSource.next(null);
     return of(true);
   }
+
+  setUserData(key: string, value: string) {
+    if (this.isServer || !this.isAuth()) {
+      return;
+    }
+    const data = localStorage.getItem('doctors_pref_' + this.userInfo.login);
+    try {
+      const ud = data ? JSON.parse(data) : {};
+      ud[key] = value;
+      localStorage.setItem('doctors_pref_' + this.userInfo.login, JSON.stringify(ud));
+    } catch (e) {
+      this.deleteUserData();
+    }
+  }
+  deleteUserData() {
+    if (this.isServer || !this.isAuth()) {
+      return;
+    }
+    localStorage.removeItem('doctors_pref_' + this.userInfo.login);
+  }
+  getUserData(key: string, default_value: string | null): string | null {
+    if (this.isServer || !this.isAuth()) {
+      return default_value;
+    }
+    const data = localStorage.getItem('doctors_pref_' + this.userInfo.login);
+    if (!data) {
+      return default_value;
+    }
+    try {
+      const ud = JSON.parse(data);
+      const v = ud[key];
+      if (v) {
+        return v;
+      }
+    } catch (e) {
+      // this.deleteUserData();
+    }
+    return default_value;
+  }
 }

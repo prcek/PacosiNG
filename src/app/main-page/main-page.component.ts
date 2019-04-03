@@ -8,6 +8,7 @@ import {
 import * as M from 'moment';
 import * as R from 'ramda';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -17,18 +18,27 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class MainPageComponent implements OnInit {
   cals: ICalendarStatus[];
-  cal_ids: string[];
+  cal_ids: string[] = null;
+  loc_ids: string[];
+  pref_loc_id: string = null;
   // days: string[];
   grid: ICalendarGridInfo;
   first_day: Date;
   selected_day: Date;
   loading = true;
   search_submitted = false;
-  constructor(private calendarService: CalendarService, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private auth: AuthService,
+    private calendarService: CalendarService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.first_day = M().utc().startOf('isoWeek').toDate();
     this.selected_day = M().utc().startOf('day').toDate();
+    if (this.route.snapshot.paramMap.has('pref_loc_id')) {
+      this.pref_loc_id = this.route.snapshot.paramMap.get('pref_loc_id');
+    }
     this.getCalendars();
   }
 
@@ -46,9 +56,14 @@ export class MainPageComponent implements OnInit {
     this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
+          this.loc_ids =  R.uniq(R.map<ICalendarStatus>(cs => cs.calendar.location_id, r));
           // console.log('CALS', r );
-          this.grid = this.calendarService.convertStatuses2Grid(r);
-          // console.log('GRID', this.grid.days[0].day.toISOString() );
+          if (this.pref_loc_id && this.loc_ids.length > 1) {
+            const rf = R.filter( cs => cs.calendar.location_id === this.pref_loc_id, r);
+            this.grid = this.calendarService.convertStatuses2Grid(rf);
+          } else {
+            this.grid = this.calendarService.convertStatuses2Grid(r);
+          }
           this.loading = false;
       } );
   }
@@ -75,5 +90,14 @@ export class MainPageComponent implements OnInit {
      this.search_submitted = true;
      this.router.navigate(['calendars', 'search', {cals: this.cal_ids, str}]);
    }
+
+   onLocation(location_id: string) {
+   // alert('loc pref=' + location_id);
+    this.auth.setUserData('pref_loc_id', location_id);
+    this.pref_loc_id = location_id;
+    this.router.navigate(['/main', {cals: this.auth.userInfo.calendar_ids, pref_loc_id: location_id}]);
+    this.getCalendars();
+   }
+
   get diag() { return JSON.stringify({grid: this.grid, selected_day: M(this.selected_day).toISOString()}); }
 }
