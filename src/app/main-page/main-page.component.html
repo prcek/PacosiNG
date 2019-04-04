@@ -1,7 +1,7 @@
 
 <app-sub-menu title="Přehled" showEventClip="true">
  
-    <nav *ngIf="loc_ids" mat-tab-nav-bar>
+    <nav *ngIf="loc_ids  && loc_ids.length>1" mat-tab-nav-bar>
         <a mat-tab-link *ngFor="let loc_id of loc_ids" class="tablink" [active]="pref_loc_id == loc_id" (click)="onLocation(loc_id)">
           {{(loc_id | location)?.name}} 
         </a>

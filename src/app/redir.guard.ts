@@ -36,7 +36,12 @@ export class RedirGuard implements CanActivate {
       if (next.paramMap.has('cals')) {
         return true;
       } else {
-        this.router.navigate(['/plan', {cals: this.authService.userInfo.calendar_ids}]);
+        const pref_loc_id = this.authService.getUserData('pref_loc_id', null);
+        if (pref_loc_id) {
+          this.router.navigate(['/plan', {cals: this.authService.userInfo.calendar_ids, pref_loc_id}]);
+        } else {
+          this.router.navigate(['/plan', {cals: this.authService.userInfo.calendar_ids}]);
+        }
         return false;
       }
     }

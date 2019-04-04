@@ -1,4 +1,10 @@
-<app-sub-menu title="Plánování otevírací doby"></app-sub-menu>
+<app-sub-menu title="Plánování otevírací doby">
+   <nav *ngIf="loc_ids  && loc_ids.length>1" mat-tab-nav-bar>
+        <a mat-tab-link *ngFor="let loc_id of loc_ids" class="tablink" [active]="pref_loc_id == loc_id" (click)="onLocation(loc_id)">
+          {{(loc_id | location)?.name}} 
+        </a>
+    </nav>
+</app-sub-menu>
 
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 <div class="container">
