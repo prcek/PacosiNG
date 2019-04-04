@@ -56,10 +56,10 @@ export class MainPageComponent implements OnInit {
     this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(10, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
-          this.loc_ids =  R.uniq(R.map<ICalendarStatus>(cs => cs.calendar.location_id, r));
+          this.loc_ids =  R.uniq(R.map<ICalendarStatus, string>((cs: ICalendarStatus) => cs.calendar.location_id, r));
           // console.log('CALS', r );
           if (this.pref_loc_id && this.loc_ids.length > 1) {
-            const rf = R.filter<ICalendarStatus>( cs => cs.calendar.location_id === this.pref_loc_id, r);
+            const rf = r; // R.filter<ICalendarStatus>( cs => cs.calendar.location_id === this.pref_loc_id, r);
             this.grid = this.calendarService.convertStatuses2Grid(rf);
           } else {
             this.grid = this.calendarService.convertStatuses2Grid(r);
