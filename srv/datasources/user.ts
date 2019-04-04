@@ -107,4 +107,19 @@ export class UserAPI implements DataSource {
         }
         return {ok: false, token: null, user: null};
     }
+    async su(login: string): Promise<ILoginResponse> {
+        if (this.context.user && this.context.user.root) {
+            const user = await this.store.userModel.findOne({login});
+            if (!user) {
+                return { ok: false, token: null, user: null};
+            }
+            const token: IToken = {
+                version: TOKEN_VERSION,
+                user: { login, name: user.name, roles: user.roles, root: user.root, calendar_ids: user.calendar_ids},
+            };
+            const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
+            return {ok: true, token: stoken, user: token.user};
+        }
+        return {ok: false, token: null, user: null};
+    }
 }

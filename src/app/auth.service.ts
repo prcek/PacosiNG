@@ -24,6 +24,14 @@ interface ILoginResponse {
     user: IUserInfo;
   };
 }
+interface ISuResponse {
+  su: {
+    ok: boolean;
+    token: string;
+    user: IUserInfo;
+  };
+}
+
 interface IReloginResponse {
   relogin: {
     ok: boolean;
@@ -229,6 +237,48 @@ export class AuthService {
       });
     });
   }
+
+  doSu(login: string): Observable<boolean> {
+    const x =  this.apollo.mutate<ISuResponse, {login: string}>({
+      mutation:  gql`
+        mutation($login: String!) {
+          su(login:$login) {
+            ok
+            token
+            user {
+              login
+              root
+              roles
+              name
+              calendar_ids
+            }
+          }
+        }
+      `,
+      variables: {
+        login
+      }
+    });
+    return Observable.create((o) => {
+      x.subscribe(r => {
+        if (r.data && r.data.su && r.data.su.ok) {
+          console.log('OK - su login response', r.data.su);
+          setCookie('auth', r.data.su.token);
+          this.userInfo = r.data.su.user;
+          this.userInfoSource.next(this.userInfo);
+          o.next(true);
+        } else {
+          console.log('Failed - su login response', r);
+          o.next(false);
+        }
+        o.complete();
+      }, err => {
+        o.error(err);
+        o.complete();
+      });
+    });
+  }
+
 
   doLogout(): Observable<boolean> {
     deleteCookie('auth');

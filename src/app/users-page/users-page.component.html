@@ -25,6 +25,7 @@
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element"> 
           <button mat-icon-button (click)="onEdit(element)" matTooltip="editovat"><mat-icon>edit</mat-icon></button> 
+          <button *appAccessRoot mat-icon-button (click)="onSu(element)" matTooltip="převtělit"><mat-icon>person</mat-icon></button> 
         </td>
       </ng-container>
 

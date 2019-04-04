@@ -70,7 +70,7 @@ import { DialogPdfComponent } from './dialogs/dialog-pdf.component';
 import { CalendarEventClipComponent } from './calendar-page/calendar-event-clip.component';
 import { CalendarEventPastePageComponent } from './calendar-page/calendar-event-paste-page.component';
 import { LocationsPageComponent } from './locations/locations-page.component';
-import { AccessDirective } from './access.directive';
+import { AccessDirective } from './directives/access.directive';
 import { LocationEditorComponent } from './locations/location-editor.component';
 import { LocationPageComponent } from './locations/location-page.component';
 import { LocationNewPageComponent } from './locations/location-new-page.component';
@@ -89,6 +89,7 @@ import { CalendarEventSearchComponent } from './calendar/calendar-event-search.c
 import { CalendarDayBoxComponent } from './calendar/calendar-day-box.component';
 import { PlanPageComponent } from './main-page/plan-page.component';
 import { FirstUpDirective } from './directives/first-up.directive';
+import { AccessRootDirective } from './directives/access-root.directive';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { FirstUpDirective } from './directives/first-up.directive';
     CalendarEventSearchComponent,
     CalendarDayBoxComponent,
     PlanPageComponent,
-    FirstUpDirective
+    FirstUpDirective,
+    AccessRootDirective
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),

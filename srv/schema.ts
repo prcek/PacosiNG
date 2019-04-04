@@ -57,6 +57,7 @@ const typeDefs = gql`
   }
   type Mutation {
     login(login: String! password: String!): LoginResponse!
+    su(login: String!): LoginResponse!
     relogin: LoginResponse!
     updateUser(login: String! password: String name: String root: Boolean roles: [String] calendar_ids: [String]): User! @auth_access(role:"super")
     createUser(login: String! password: String! name: String! root: Boolean! roles: [String]! calendar_ids: [String]!): User!  @auth_access(role:"super")
@@ -274,6 +275,10 @@ const resolvers: IResolvers<any, IContext> = {
 
     relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
         dataSources.user.relogin(),
+
+    su: async (_, { login }, { dataSources }): Promise<ILoginResponse> =>
+        dataSources.user.su(login),
+
 
     updateUser: (_, { login, password, name, root, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
         dataSources.user.updateUser(login, password, name, root, roles, calendar_ids),
