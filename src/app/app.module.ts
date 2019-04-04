@@ -90,6 +90,7 @@ import { CalendarDayBoxComponent } from './calendar/calendar-day-box.component';
 import { PlanPageComponent } from './main-page/plan-page.component';
 import { FirstUpDirective } from './directives/first-up.directive';
 import { AccessRootDirective } from './directives/access-root.directive';
+import { PastWarningComponent } from './calendar/past-warning.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +156,8 @@ import { AccessRootDirective } from './directives/access-root.directive';
     CalendarDayBoxComponent,
     PlanPageComponent,
     FirstUpDirective,
-    AccessRootDirective
+    AccessRootDirective,
+    PastWarningComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
