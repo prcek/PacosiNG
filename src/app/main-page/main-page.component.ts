@@ -59,7 +59,7 @@ export class MainPageComponent implements OnInit {
           this.loc_ids =  R.uniq(R.map<ICalendarStatus, string>((cs: ICalendarStatus) => cs.calendar.location_id, r));
           // console.log('CALS', r );
           if (this.pref_loc_id && this.loc_ids.length > 1) {
-            const rf = r; // R.filter<ICalendarStatus>( cs => cs.calendar.location_id === this.pref_loc_id, r);
+            const rf = R.filter<ICalendarStatus>( (cs: ICalendarStatus)  => cs.calendar.location_id === this.pref_loc_id, r);
             this.grid = this.calendarService.convertStatuses2Grid(rf);
           } else {
             this.grid = this.calendarService.convertStatuses2Grid(r);
