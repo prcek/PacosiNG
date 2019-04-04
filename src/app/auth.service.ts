@@ -11,6 +11,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
 import * as jwtdecode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 
 interface ILoginVariables {
@@ -86,6 +87,7 @@ export class AuthService {
     @Optional() @Inject(REQUEST) private req,
     @Optional() @Inject(AUTH_USER_INFO_TOKEN) private req_user_info,
     @Inject(PLATFORM_ID) platformId,
+    private router: Router,
     private apollo: Apollo,
     private tstate: TransferState,
   ) {
@@ -163,6 +165,7 @@ export class AuthService {
           this.userInfo = null;
           this.userInfoSource.next(this.userInfo);
           o.next(false);
+          this.router.navigate(['/']);
         }
         o.complete();
       }, err => {
