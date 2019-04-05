@@ -9,6 +9,7 @@ import * as M from 'moment';
 import * as R from 'ramda';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SessionDataService } from '../session-data.service';
 
 
 @Component({
@@ -29,13 +30,14 @@ export class MainPageComponent implements OnInit {
   search_submitted = false;
   constructor(
     private auth: AuthService,
+    private sd: SessionDataService,
     private calendarService: CalendarService,
     private router: Router,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.first_day = M().utc().startOf('isoWeek').toDate();
-    this.selected_day = M().utc().startOf('day').toDate();
+    this.first_day = this.sd.main_first_day ? this.sd.main_first_day :  M().utc().startOf('isoWeek').toDate();
+    this.selected_day = this.sd.main_selected_day ? this.sd.main_selected_day : M().utc().startOf('day').toDate();
     if (this.route.snapshot.paramMap.has('pref_loc_id')) {
       this.pref_loc_id = this.route.snapshot.paramMap.get('pref_loc_id');
     }
@@ -70,12 +72,13 @@ export class MainPageComponent implements OnInit {
 
   onChangeDay(d: Date) {
     this.selected_day = d;
-
+    this.sd.main_selected_day = d;
     this.getCalendars();
    }
 
    onMoveCal(d: Date) {
      this.first_day = d;
+     this.sd.main_first_day = d;
     // this.getCalendarWithOHs();
    }
 
