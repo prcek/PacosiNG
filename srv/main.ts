@@ -16,10 +16,12 @@ import {ngExpressEngine} from '@nguniversal/express-engine';
 import { config } from './config';
 import { decodeAuthToken } from './datasources/user';
 import { createAndRegisterPdfRender } from './pdf';
+import { enableAuditLogs } from './audit';
 
 if (config.is_production) {
   console.log('PRODUCTION MODE ON!');
   enableProdMode();
+  enableAuditLogs();
 } else {
   console.log('DEV MODE ON!');
 }
