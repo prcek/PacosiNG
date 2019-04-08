@@ -1,6 +1,7 @@
 import { config } from './config';
 
 import * as WINSTON from 'winston';
+import { IContextBase, IUser } from './types';
 /*
 import * as AWS from 'aws-sdk';
 
@@ -32,5 +33,16 @@ export function enableAuditLogs() {
         ]
     });
 
-    wl.debug({logger: 'startup'});
+    wl.info({logger: 'startup'});
 }
+
+export function A_gql_log(ctx_user: IUser | null, method: string, ...args: any): void  {
+    const ld = {type: 'gql', user: ctx_user ? ctx_user.login : null , method, args: args};
+    console.log('AUDIT INFO:', ld);
+    if (wl) {
+        wl.info(ld);
+    }
+}
+
+// A_dbg:adbg,
+// A_err:aerr,

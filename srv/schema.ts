@@ -19,6 +19,7 @@ import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 import { defaultFieldResolver } from 'graphql';
 
 import { git_hash } from './git-version';
+import { A_gql_log } from './audit';
 
 
 
@@ -270,15 +271,20 @@ const resolvers: IResolvers<any, IContext> = {
     },
   },
   Mutation: {
-    login: async (_, { login, password }, { dataSources }): Promise<ILoginResponse> =>
-        dataSources.user.login(login, password),
+    login: async (_, { login, password }, { user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(user, 'login', { login } );
+      return dataSources.user.login(login, password);
+    },
 
-    relogin: async (_, __, { dataSources }): Promise<ILoginResponse> =>
-        dataSources.user.relogin(),
+    relogin: async (_, __, { user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(user, 'relogin');
+      return dataSources.user.relogin();
+    },
 
-    su: async (_, { login }, { dataSources }): Promise<ILoginResponse> =>
-        dataSources.user.su(login),
-
+    su: async (_, { login }, { user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(user, 'su', { login } );
+      return dataSources.user.su(login);
+    },
 
     updateUser: (_, { login, password, name, root, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
         dataSources.user.updateUser(login, password, name, root, roles, calendar_ids),
