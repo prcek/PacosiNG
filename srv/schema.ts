@@ -286,48 +286,74 @@ const resolvers: IResolvers<any, IContext> = {
       return dataSources.user.su(login);
     },
 
-    updateUser: (_, { login, password, name, root, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
-        dataSources.user.updateUser(login, password, name, root, roles, calendar_ids),
+    updateUser: (_, { login, password, name, root, roles, calendar_ids }, { request_id, user, dataSources }): Promise<IUser> => {
+      A_gql_log(request_id, user, 'updateUser', { login, name, root, roles, calendar_ids } );
+      return dataSources.user.updateUser(login, password, name, root, roles, calendar_ids);
+    },
 
-    createUser: (_, { login, password, name, root, roles, calendar_ids }, { dataSources }): Promise<IUser> =>
-        dataSources.user.createUser(login, password, name, root, roles, calendar_ids),
+    createUser: (_, { login, password, name, root, roles, calendar_ids }, { request_id, user, dataSources }): Promise<IUser> => {
+      A_gql_log(request_id, user, 'createUser', { login, name, root, roles, calendar_ids } );
+      return dataSources.user.createUser(login, password, name, root, roles, calendar_ids);
+    },
 
-    updateCalendar: (_, { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info }, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info),
+    updateCalendar: (_, { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info }, { request_id, user, dataSources }): Promise<ICalendar> => {
+      A_gql_log(request_id, user, 'updateCalendar', { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info } );
+      return dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info);
+    },
+    createCalendar: (_, { name, location_id, span , cluster_len, day_begin, day_len, week_days, print_info}, { request_id, user, dataSources }): Promise<ICalendar> => {
+      A_gql_log(request_id, user, 'createCalendar', { location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info } );
+      return dataSources.calendar.createCalendar(location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info);
+    },
 
-    createCalendar: (_, { name, location_id, span , cluster_len, day_begin, day_len, week_days, print_info}, { dataSources }): Promise<ICalendar> =>
-        dataSources.calendar.createCalendar(location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info),
+    updateLocation: (_, { _id, archived, name, address }, { request_id, user, dataSources }): Promise<ILocation> => {
+      A_gql_log(request_id, user, 'updateLocation', { _id, archived, name, address } );
+      return dataSources.location.updateLocation(_id, archived, name, address);
+    },
 
-    updateLocation: (_, { _id, archived, name, address }, { dataSources }): Promise<ILocation> =>
-        dataSources.location.updateLocation(_id, archived, name, address),
+    createLocation: (_, { name, address }, { request_id, user, dataSources }): Promise<ILocation> => {
+      A_gql_log(request_id, user, 'createLocation', { name, address } );
+      return dataSources.location.createLocation(name, address);
+    },
 
-    createLocation: (_, { name, address }, { dataSources }): Promise<ILocation> =>
-        dataSources.location.createLocation(name, address),
+    createOpeningHoursTemplate: (_, { calendar_id, week_day, begin, len }, { request_id, user, dataSources }): Promise<IOpeningHoursTemplate> => {
+      A_gql_log(request_id, user, 'createOpeningHoursTemplate', { calendar_id, week_day, begin, len } );
+      return dataSources.calendar.createOHTemplate(calendar_id, week_day, begin, len);
+    },
 
+    deleteOpeningHoursTemplate: (_, { _id }, { request_id, user, dataSources }): Promise<IDeleteResponse> => {
+      A_gql_log(request_id, user, 'deleteOpeningHoursTemplate', { _id } );
+      return dataSources.calendar.deleteOHTemplate(_id);
+    },
 
-    createOpeningHoursTemplate: (_, { calendar_id, week_day, begin, len }, { dataSources }): Promise<IOpeningHoursTemplate> =>
-        dataSources.calendar.createOHTemplate(calendar_id, week_day, begin, len),
+    createOpeningHours: (_, { calendar_id, day, begin, len }, { request_id, user, dataSources }): Promise<IDayOpeningHours> => {
+      A_gql_log(request_id, user, 'createOpeningHours', { calendar_id, day, begin, len } );
+      return dataSources.calendar.createOH(calendar_id, day, begin, len);
+    },
 
-    deleteOpeningHoursTemplate: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
-        dataSources.calendar.deleteOHTemplate(_id),
+    planOpeningHours: (_, { calendar_id, start_day, end_day }, { request_id, user, dataSources }): Promise<IDayOpeningHours[]> => {
+      A_gql_log(request_id, user, 'planOpeningHours', { calendar_id, start_day, end_day } );
+      return dataSources.calendar.planOH(calendar_id, start_day, end_day);
+    },
 
-    createOpeningHours: (_, { calendar_id, day, begin, len }, { dataSources }): Promise<IDayOpeningHours> =>
-        dataSources.calendar.createOH(calendar_id, day, begin, len),
+    deleteOpeningHours: (_, { _id }, { request_id, user, dataSources }): Promise<IDeleteResponse> => {
+      A_gql_log(request_id, user, 'deleteOpeningHours', { _id } );
+      return dataSources.calendar.deleteOH(_id);
+    },
 
-    planOpeningHours: (_, { calendar_id, start_day, end_day }, { dataSources }): Promise<IDayOpeningHours[]> =>
-        dataSources.calendar.planOH(calendar_id, start_day, end_day),
+    createCalendarEventType: (_, { calendar_id, name, match_key, color, len, short_len, order }, { request_id, user, dataSources }): Promise<ICalendarEventType> => {
+      A_gql_log(request_id, user, 'createCalendarEventType', { calendar_id, name, match_key, color, len, short_len, order } );
+      return dataSources.calendar.createET(calendar_id, name, match_key, color, len, short_len, order);
+    },
 
-    deleteOpeningHours: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
-        dataSources.calendar.deleteOH(_id),
+    updateCalendarEventType: (_, { _id, name, match_key,  color, len, short_len, order }, { request_id, user, dataSources }): Promise<ICalendarEventType> => {
+      A_gql_log(request_id, user, 'updateCalendarEventType', { _id, name, match_key,  color, len, short_len, order } );
+      return dataSources.calendar.updateET(_id, name, match_key, color, len, short_len, order);
+    },
 
-    createCalendarEventType: (_, { calendar_id, name, match_key, color, len, short_len, order }, { dataSources }): Promise<ICalendarEventType> =>
-        dataSources.calendar.createET(calendar_id, name, match_key, color, len, short_len, order),
-
-    updateCalendarEventType: (_, { _id, name, match_key,  color, len, short_len, order }, { dataSources }): Promise<ICalendarEventType> =>
-      dataSources.calendar.updateET(_id, name, match_key, color, len, short_len, order),
-
-    deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
-        dataSources.calendar.deleteET(_id),
+    deleteCalendarEventType: (_, { _id }, { request_id, user, dataSources }): Promise<IDeleteResponse> => {
+      A_gql_log(request_id, user, 'deleteCalendarEventType', { _id } );
+      return  dataSources.calendar.deleteET(_id);
+    },
 
     createCalendarEvent: (_, { calendar_id, event_type_id, client, day, begin, comment, extra_mode }, { request_id, user, dataSources }): Promise<ICalendarEvent> => {
       A_gql_log(request_id, user, 'createCalendarEvent', { calendar_id, event_type_id, client, day, begin, comment, extra_mode } );
