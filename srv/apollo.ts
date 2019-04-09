@@ -29,7 +29,7 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
         context: async ({ req }): Promise<Context<IContextBase>> => {
             // get the user token from the headers
             let token = null;
-
+            const id = req['id'];
             if ( req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
                 token =  req.headers.authorization.split(' ')[1];
             } else if (req.cookies && req.cookies.auth) {
@@ -42,7 +42,7 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
 
 
             global_counter++;
-            return { user, global_counter, big: new Array(100000).fill('b') };
+            return { request_id: id, user, global_counter, big: new Array(100000).fill('b') };
         },
         introspection: true,
         playground: {

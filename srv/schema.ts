@@ -271,18 +271,18 @@ const resolvers: IResolvers<any, IContext> = {
     },
   },
   Mutation: {
-    login: async (_, { login, password }, { user, dataSources }): Promise<ILoginResponse> => {
-      A_gql_log(user, 'login', { login } );
+    login: async (_, { login, password }, { request_id, user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(request_id, user, 'login', { login } );
       return dataSources.user.login(login, password);
     },
 
-    relogin: async (_, __, { user, dataSources }): Promise<ILoginResponse> => {
-      A_gql_log(user, 'relogin');
+    relogin: async (_, __, { request_id, user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(request_id, user, 'relogin');
       return dataSources.user.relogin();
     },
 
-    su: async (_, { login }, { user, dataSources }): Promise<ILoginResponse> => {
-      A_gql_log(user, 'su', { login } );
+    su: async (_, { login }, { request_id, user, dataSources }): Promise<ILoginResponse> => {
+      A_gql_log(request_id, user, 'su', { login } );
       return dataSources.user.su(login);
     },
 

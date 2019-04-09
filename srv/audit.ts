@@ -36,8 +36,8 @@ export function enableAuditLogs() {
     wl.info({logger: 'startup'});
 }
 
-export function A_gql_log(ctx_user: IUser | null, method: string, ...args: any): void  {
-    const ld = {type: 'gql', user: ctx_user ? ctx_user.login : null , method, args: args};
+export function A_gql_log(request_id: string | null, ctx_user: IUser | null, method: string, ...args: any): void  {
+    const ld = {type: 'gql', request_id: request_id, user: ctx_user ? ctx_user.login : null , method, args: args};
     console.log('AUDIT INFO:', ld);
     if (wl) {
         wl.info(ld);

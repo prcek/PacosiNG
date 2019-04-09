@@ -111,6 +111,7 @@ export interface IDeleteResponse {
 }
 
 export interface IContextBase {
+    request_id: string;
     user: IUser;
     global_counter: number;
     big: any;

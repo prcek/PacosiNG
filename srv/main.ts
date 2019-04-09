@@ -17,6 +17,7 @@ import { config } from './config';
 import { decodeAuthToken } from './datasources/user';
 import { createAndRegisterPdfRender } from './pdf';
 import { enableAuditLogs } from './audit';
+import * as UUID from 'uuid';
 
 if (config.is_production) {
   console.log('PRODUCTION MODE ON!');
@@ -42,9 +43,11 @@ function ssl_redirect(req, res, next) {
 function request_id_fce(req, res, next) {
   const hn = 'X-Request-Id';
   if (req.headers[hn.toLowerCase()]) {
-    console.log('mame X-Request-Id:', req.headers[hn.toLowerCase()]);
+   // console.log('mame X-Request-Id:', req.headers[hn.toLowerCase()]);
+    req['id'] = req.headers[hn.toLowerCase()];
   } else {
-    console.log('nemame X-Request-Id');
+   // console.log('nemame X-Request-Id');
+    req['id'] = UUID.v4();
   }
   next();
 }
