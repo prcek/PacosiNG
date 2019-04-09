@@ -329,14 +329,20 @@ const resolvers: IResolvers<any, IContext> = {
     deleteCalendarEventType: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
         dataSources.calendar.deleteET(_id),
 
-    createCalendarEvent: (_, { calendar_id, event_type_id, client, day, begin, comment, extra_mode }, { dataSources }): Promise<ICalendarEvent> =>
-        dataSources.calendar.createEvent(calendar_id, event_type_id, client, day, begin, comment, extra_mode),
+    createCalendarEvent: (_, { calendar_id, event_type_id, client, day, begin, comment, extra_mode }, { request_id, user, dataSources }): Promise<ICalendarEvent> => {
+      A_gql_log(request_id, user, 'createCalendarEvent', { calendar_id, event_type_id, client, day, begin, comment, extra_mode } );
+      return dataSources.calendar.createEvent(calendar_id, event_type_id, client, day, begin, comment, extra_mode);
+    },
 
-    updateCalendarEvent: (_, { _id, event_type_id, client, day, begin, comment, extra_mode }, { dataSources }): Promise<ICalendarEvent> =>
-      dataSources.calendar.updateEvent(_id, event_type_id, client, day, begin, comment, extra_mode),
+    updateCalendarEvent: (_, { _id, event_type_id, client, day, begin, comment, extra_mode }, { request_id, user, dataSources }): Promise<ICalendarEvent> => {
+      A_gql_log(request_id, user, 'updateCalendarEvent', { _id, event_type_id, client, day, begin, comment, extra_mode } );
+      return dataSources.calendar.updateEvent(_id, event_type_id, client, day, begin, comment, extra_mode);
+    },
 
-    deleteCalendarEvent: (_, { _id }, { dataSources }): Promise<IDeleteResponse> =>
-        dataSources.calendar.deleteEvent(_id),
+    deleteCalendarEvent: (_, { _id }, { request_id, user, dataSources }): Promise<IDeleteResponse> => {
+      A_gql_log(request_id, user, 'deleteCalendarEvent', { _id } );
+      return dataSources.calendar.deleteEvent(_id);
+    },
 
   }
 

@@ -13,6 +13,7 @@ import {
     ICalendarEventClient,
     ICalendarEventClientND,
 } from './../types';
+import { A_ds_log } from './../audit';
 
 import * as R from 'ramda';
 import * as M from 'moment';
@@ -232,9 +233,11 @@ export class CalendarAPI implements DataSource {
 
         const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
         if (!event_type) {
+            A_ds_log(this.context, 'createEvent', {ok: false, msg: 'missing event_type'});
             throw new Error('Something bad happened');
         }
         if (event_type.calendar_id.toString() !== calendar_id.toString()) {
+            A_ds_log(this.context, 'createEvent', {ok: false, msg: 'diff calendar_id'});
             throw new Error('Something bad happened');
         }
 
@@ -255,10 +258,12 @@ export class CalendarAPI implements DataSource {
             if (c_event) {
                 const ce_event_type = await this.store.calendarEventTypeModel.findById(c_event.event_type_id);
                 if (!ce_event_type) {
+                    A_ds_log(this.context, 'createEvent', {ok: false, msg: 'missing event_type 2'});
                     throw new Error('Something bad happened');
                 }
                 const ser = R.range(c_event.begin, c_event.begin + ce_event_type.short_len);
                 if (R.intersection(ser, event_range).length) {
+                    A_ds_log(this.context, 'createEvent', {ok: false, msg: 'no space?'});
                     throw new Error('Something bad happened');
                 }
                 const se = await this._shortenEvent(c_event._id, ce_event_type.short_len);
@@ -268,7 +273,7 @@ export class CalendarAPI implements DataSource {
 
         const overlap_check = R.map( s => (M(day).utc().format('YYYY-MM-DD') + '#' + s), event_range );
         const client_nd_search = remove_client_dia(client);
-        return this.store.calendarEventModel.create({
+        const rs = await this.store.calendarEventModel.create({
             calendar_id,
             event_type_id,
             event_name: event_type.name,
@@ -283,6 +288,8 @@ export class CalendarAPI implements DataSource {
             comment,
             overlap_check
         });
+        A_ds_log(this.context, 'createEvent', {ok: true, event: (rs ? rs.toObject() : null)});
+        return rs;
     }
 
     // tslint:disable-next-line:max-line-length
@@ -291,14 +298,17 @@ export class CalendarAPI implements DataSource {
 
         const event = await this.store.calendarEventModel.findById(_id);
         if (!event) {
+            A_ds_log(this.context, 'updateEvent', {ok: false, msg: 'missing event'});
             throw new Error('Something bad happened');
         }
 
         const event_type = await this.store.calendarEventTypeModel.findById(event_type_id);
         if (!event_type) {
+            A_ds_log(this.context, 'updateEvent', {ok: false, msg: 'missing event_type'});
             throw new Error('Something bad happened');
         }
         if (event_type.calendar_id.toString() !== event.calendar_id.toString()) {
+            A_ds_log(this.context, 'updateEvent', {ok: false, msg: 'diff calendar_id'});
             throw new Error('Something bad happened');
         }
 
@@ -321,15 +331,19 @@ export class CalendarAPI implements DataSource {
             comment,
             overlap_check
         });
-        return event.save();
+        const rs = await event.save();
+        A_ds_log(this.context, 'updateEvent', {ok: true, event: (rs ? rs.toObject() : null)});
+        return rs;
 
     }
 
     async deleteEvent(_id: string): Promise<IDeleteResponse> {
         const del = await this.store.calendarEventModel.findByIdAndRemove(_id);
         if (del) {
+            A_ds_log(this.context, 'deleteEvent', {ok: true});
             return { ok: true, _id: del._id};
         }
+        A_ds_log(this.context, 'deleteEvent', {ok: false});
         return {ok: false, _id: _id};
     }
 

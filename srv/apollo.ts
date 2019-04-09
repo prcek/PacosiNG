@@ -60,6 +60,16 @@ export async function createAndRegisterApolloServer(app: Express, productionMode
 
 export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const dataSources = createDataSources(store);
+    const fake_context: IContextBase = {
+        request_id: 'init',
+        user: null,
+        big: null,
+        global_counter: 0,
+    };
+    dataSources.calendar.context = fake_context;
+    dataSources.location.context = fake_context;
+    dataSources.user.context = fake_context;
+
 
     const loc_A = await dataSources.location.createLocation('Loc_A', 'loc A address');
     const loc_B = await dataSources.location.createLocation('Loc_B', 'loc B address');
