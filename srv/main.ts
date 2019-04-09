@@ -24,6 +24,7 @@ if (config.is_production) {
   enableAuditLogs();
 } else {
   console.log('DEV MODE ON!');
+  // enableAuditLogs();
 }
 
 function ssl_redirect(req, res, next) {
@@ -37,6 +38,15 @@ function ssl_redirect(req, res, next) {
   } else {
     next();
   }
+}
+function request_id_fce(req, res, next) {
+  const hn = 'X-Request-Id';
+  if (req.headers[hn.toLowerCase()]) {
+    console.log('mame X-Request-Id:', req.headers[hn.toLowerCase()]);
+  } else {
+    console.log('nemame X-Request-Id');
+  }
+  next();
 }
 
 const DIST_FOLDER = join(process.cwd(), 'dist/pacosi');
@@ -81,6 +91,7 @@ console.log('testtoken', TEST_TOKEN);
     app.use(ssl_redirect);
     app.use(responseTime());
     app.use(cookieParser());
+    app.use(request_id_fce);
     app.get('*.*', express.static(DIST_FOLDER, {
       maxAge: '1y'
     }));
