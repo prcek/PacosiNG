@@ -44,5 +44,13 @@ export function A_gql_log(request_id: string | null, ctx_user: IUser | null, met
     }
 }
 
+export function A_ds_log(context: IContextBase, method: string, ...args: any): void  {
+    const ld = {type: 'ds', request_id: context.request_id, user: context.user ? context.user.login : null , method, args: args};
+    console.log('AUDIT INFO:', ld);
+    if (wl) {
+        wl.info(ld);
+    }
+}
+
 // A_dbg:adbg,
 // A_err:aerr,

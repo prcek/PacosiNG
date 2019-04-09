@@ -6,6 +6,7 @@ import { IContextBase, IUser, ILoginResponse, IToken } from './../types';
 
 import * as bcrypt from 'bcrypt-nodejs';
 import * as jwt from 'jsonwebtoken';
+import { A_ds_log } from './../audit';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'iddqd';
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '1h';
@@ -78,17 +79,21 @@ export class UserAPI implements DataSource {
 
         const user = await this.store.userModel.findOne({login});
         if (!user) {
-          return { ok: false, token: null, user: null};
+            A_ds_log(this.context, 'login', {ok: false});
+            return { ok: false, token: null, user: null};
         }
         if (!bcrypt.compareSync( password, user.password )) {
-          return { ok: false, token: null, user: null};
+            A_ds_log(this.context, 'login', {ok: false});
+            return { ok: false, token: null, user: null};
         }
         const token: IToken = {
             version: TOKEN_VERSION,
             user: { login, name: user.name, roles: user.roles, root: user.root, calendar_ids: user.calendar_ids},
         };
         const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
-        return {ok: true, token: stoken, user: token.user};
+        const rs = {ok: true, token: stoken, user: token.user};
+        A_ds_log(this.context, 'login', rs);
+        return rs;
     }
 
     async relogin(): Promise<ILoginResponse> {
@@ -96,6 +101,7 @@ export class UserAPI implements DataSource {
             const login = this.context.user.login;
             const user = await this.store.userModel.findOne({login});
             if (!user) {
+                A_ds_log(this.context, 'relogin', {ok: false});
                 return { ok: false, token: null, user: null};
             }
             const token: IToken = {
@@ -103,7 +109,9 @@ export class UserAPI implements DataSource {
                 user: { login, name: user.name, roles: user.roles, root: user.root, calendar_ids: user.calendar_ids},
             };
             const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
-            return {ok: true, token: stoken, user: token.user};
+            const rs = {ok: true, token: stoken, user: token.user};
+            A_ds_log(this.context, 'relogin', rs);
+            return rs;
         }
         return {ok: false, token: null, user: null};
     }
@@ -111,6 +119,7 @@ export class UserAPI implements DataSource {
         if (this.context.user && this.context.user.root) {
             const user = await this.store.userModel.findOne({login});
             if (!user) {
+                A_ds_log(this.context, 'su', {ok: false});
                 return { ok: false, token: null, user: null};
             }
             const token: IToken = {
@@ -118,8 +127,11 @@ export class UserAPI implements DataSource {
                 user: { login, name: user.name, roles: user.roles, root: user.root, calendar_ids: user.calendar_ids},
             };
             const stoken = jwt.sign(token, JWT_SECRET, {expiresIn: JWT_EXPIRE});
-            return {ok: true, token: stoken, user: token.user};
+            const rs = {ok: true, token: stoken, user: token.user};
+            A_ds_log(this.context, 'su', rs);
+            return rs;
         }
+        A_ds_log(this.context, 'su', {ok: false});
         return {ok: false, token: null, user: null};
     }
 }
