@@ -33,17 +33,23 @@
     background-color: lightgray;
 }
 
-
-.leftpanel {
-    margin-top: 0px;
-    max-width: 250px;
-    min-width: 100px;
+.eventpanel {
+    width: 400px;
+}
+.previewpanel {
+    width: 350px;
 }
 
-.rightpanel {
-    min-width: 400px;
-    overflow-x: auto;
-    padding: 5px;
+.mainpanel {
+    min-width: 450px;
+}
+.daypanel {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.navipanel {
+    width: 350px;
 }
 
 .boxitem {

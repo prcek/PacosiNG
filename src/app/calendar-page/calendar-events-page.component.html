@@ -35,20 +35,33 @@
 
 <mat-progress-bar *ngIf="loading" mode="indeterminate" class="loading"></mat-progress-bar>
 
-<div class="container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+<div class="container" >
     <div *ngIf="slots" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" >
-        <div class="leftpanel" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="start center">
-            <app-daycard [date]="day"></app-daycard>
+
+
+        <app-daycard class="daypanel" [date]="day"></app-daycard>
+
+        <div class="mainpanel red" fxFlex="1 1 auto" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px">
+          
+            <div class="eventpanel red mat-elevation-z8">
+                <ng-container *ngFor="let slot of slots">
+                    <ng-content *ngTemplateOutlet='xxx; context:{slot:slot}'></ng-content>
+                </ng-container>
+            </div>
+            <div *ngIf="selected_event" class="previewpanel mat-elevation-z8 red">
+                    <app-calendar-event-view  [event]="selected_event" [calendar]="calendar" (close)="selected_event=null"></app-calendar-event-view>
+            </div>
         </div>
-        <div class="rightpanel mat-elevation-z8" fxFlex="5 1 auto">
-            <ng-container *ngFor="let slot of slots">
-                <ng-content *ngTemplateOutlet='xxx; context:{slot:slot}'></ng-content>
-            </ng-container>
+
+        <div class="navipanel red">
+            <div class="mat-elevation-z8">
+                    pravy kalendar na volbu dne 
+            </div>
+            <div>&nbsp;</div>
+            <div class="mat-elevation-z8">
+                    prehled volna v jinych
+            </div>
         </div>
-        <div *ngIf="selected_event" fxFlex="5 1 auto" class="mat-elevation-z8">
-                <app-calendar-event-view  [event]="selected_event" [calendar]="calendar" (close)="selected_event=null"></app-calendar-event-view>
-        </div>
-       
     </div>
     
 </div>
