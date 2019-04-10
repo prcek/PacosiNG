@@ -48,7 +48,7 @@
                     <ng-content *ngTemplateOutlet='xxx; context:{slot:slot}'></ng-content>
                 </ng-container>
             </div>
-            <div *ngIf="selected_event" class="previewpanel mat-elevation-z8 red">
+            <div *ngIf="selected_event" class="previewpanel mat-elevation-z8">
                     <app-calendar-event-view  [event]="selected_event" [calendar]="calendar" (close)="selected_event=null"></app-calendar-event-view>
             </div>
         </div>
