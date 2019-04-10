@@ -414,9 +414,9 @@ export class CalendarService {
           if ((c_len + 1 ) > short_len) {  //  +1 ?>?>  mozna jen >= ?
             event_s_leg = true;
           }
-          console.log('_convertEvents2List -  et', ce, et, short_len, c_len);
+          // console.log('_convertEvents2List -  et', ce, et, short_len, c_len);
         } else {
-          console.log('_convertEvents2List -  nenalezeny et', ce);
+          // console.log('_convertEvents2List -  nenalezeny et', ce);
         }
       }
 

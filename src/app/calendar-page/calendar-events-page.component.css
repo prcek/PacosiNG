@@ -33,6 +33,9 @@
     background-color: lightgray;
 }
 
+.calstatusbox {
+    width: 90%;
+}
 .eventpanel {
     width: 400px;
 }

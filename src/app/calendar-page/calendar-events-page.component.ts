@@ -8,17 +8,27 @@ import {
   IOpeningHours,
   ICalendarDaySlot,
   IClipBoardRecord,
-  ICalendarEventType
+  ICalendarEventType,
+  ICalendarStatus,
+  ICalendarDayStatus
 } from '../calendar.service';
 import * as M from 'moment';
 import * as R from 'ramda';
 import { MatDialog, MatSlideToggleChange } from '@angular/material';
 import { DialogPdfComponent } from '../dialogs/dialog-pdf.component';
 import { switchMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { formatDate2String_S, safeString, safeNumber2String } from '../utils';
 import { SessionDataService } from '../session-data.service';
+
+
+export interface IOtherCalendarStatus {
+  calendar: ICalendar;
+  day_status: ICalendarDayStatus;
+}
+
+
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -33,6 +43,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   allow_extra = true;
   ohs: IOpeningHours[];
   slots: ICalendarDaySlot[];
+  ocs:  IOtherCalendarStatus[];
   loading = true;
   extra = false;
   sub: Subscription;
@@ -59,10 +70,20 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
         this.day = day;
         this.extra = (params.get('extra') === 'yes');
         this.calendar_id = params.get('id');
-        return this.calendarService.getCalendarWithEvents(this.calendar_id, day);
+        const oc_ids: string[] = R.filter<string>( (cid: string) => cid !== this.calendar_id, this.auth.userInfo.calendar_ids);
+        return forkJoin(
+          this.calendarService.getCalendarWithEvents(this.calendar_id, day),
+          this.calendarService.getCalendarsStatus(oc_ids, day, M(day).add(1, 'day').toDate())
+        );
+
       })
-    ).subscribe(d => {
+    ).subscribe(df => {
       console.log('CalendarEventsPageComponent params change!');
+      const d = df[0];
+      // tslint:disable-next-line:max-line-length
+      this.ocs =  R.filter<IOtherCalendarStatus>( (o: IOtherCalendarStatus) => !!o.day_status, R.map<ICalendarStatus, IOtherCalendarStatus>((o: ICalendarStatus) => {
+        return { calendar: o.calendar, day_status: o.days.length ? o.days[0] : null };
+      }, df[1]));
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
       this.event_types = d.event_types;
       if (R.find<ICalendarEventType>((et) => {
@@ -116,6 +137,10 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
 
   onCalMoveCal(d: Date) {
     this.cal_first_day = d;
+  }
+  onSelectCal(cal: ICalendar) {
+    // tslint:disable-next-line:max-line-length
+    this.router.navigate(['calendars', 'events', cal._id, 'day', M(this.day).utc().format('YYYY-MM-DD') , { extra: this.extra ? 'yes' : 'no' }]);
   }
 
   /*

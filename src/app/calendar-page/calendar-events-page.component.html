@@ -41,9 +41,9 @@
 
         <app-daycard class="daypanel" [date]="day"></app-daycard>
 
-        <div class="mainpanel red" fxFlex="1 1 auto" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px">
+        <div class="mainpanel" fxFlex="1 1 auto" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px">
           
-            <div class="eventpanel red mat-elevation-z8">
+            <div class="eventpanel mat-elevation-z8">
                 <ng-container *ngFor="let slot of slots">
                     <ng-content *ngTemplateOutlet='xxx; context:{slot:slot}'></ng-content>
                 </ng-container>
@@ -53,12 +53,17 @@
             </div>
         </div>
 
-        <div class="navipanel red">
+        <div class="navipanel">
             <app-daypicker-panel [first_day]="cal_first_day" [selected_day]="day"  (select)="onCalChangeDay($event)" (move)="onCalMoveCal($event)"></app-daypicker-panel>
             <div>&nbsp;</div>
-            <div class="mat-elevation-z8">
-                    prehled volna v jinych
+           
+            <div *ngFor="let cs of ocs"> 
+                <div class="mat-body-strong"> {{cs.calendar.name}} </div>
+                <app-calendar-day-box class="calstatusbox" [status]="cs.day_status" (click)="onSelectCal(cs.calendar)">
+                </app-calendar-day-box>
+                <div> &nbsp; </div>
             </div>
+        
         </div>
     </div>
     
