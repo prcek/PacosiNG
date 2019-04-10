@@ -18,6 +18,7 @@ import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { formatDate2String_S, safeString, safeNumber2String } from '../utils';
+import { SessionDataService } from '../session-data.service';
 @Component({
   selector: 'app-calendar-events-page',
   templateUrl: './calendar-events-page.component.html',
@@ -44,10 +45,13 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private calendarService: CalendarService,
+    private sd: SessionDataService,
     private auth: AuthService,
     public dialog: MatDialog) {}
 
   ngOnInit() {
+    this.cal_first_day = this.sd.main_first_day ? this.sd.main_first_day :  M().utc().startOf('isoWeek').toDate();
+
     this.sub = this.route.paramMap.pipe(
       switchMap( params => {
         this.loading = true;
