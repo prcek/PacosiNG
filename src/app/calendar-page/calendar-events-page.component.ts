@@ -38,6 +38,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   clip: IClipBoardRecord;
   ce_sub: Subscription;
   selected_event: ICalendarEvent = null;
+  cal_first_day: Date;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -100,8 +101,19 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['main']);
   }
+
+  onCalChangeDay(d: Date) {
+   // tslint:disable-next-line:max-line-length
+   this.router.navigate(['calendars', 'events', this.calendar_id, 'day', M(d).utc().format('YYYY-MM-DD') , { extra: this.extra ? 'yes' : 'no' }]);
+  }
+
+  onCalMoveCal(d: Date) {
+    this.cal_first_day = d;
+  }
+
   /*
   onNextDay(): void {
     // 'calendars/events/5c780c3983788bfdbf9e5b57/day/2019-03-07'

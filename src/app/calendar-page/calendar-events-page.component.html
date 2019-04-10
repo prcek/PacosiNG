@@ -54,9 +54,7 @@
         </div>
 
         <div class="navipanel red">
-            <div class="mat-elevation-z8">
-                    pravy kalendar na volbu dne 
-            </div>
+            <app-daypicker-panel [first_day]="cal_first_day" [selected_day]="day"  (select)="onCalChangeDay($event)" (move)="onCalMoveCal($event)"></app-daypicker-panel>
             <div>&nbsp;</div>
             <div class="mat-elevation-z8">
                     prehled volna v jinych
