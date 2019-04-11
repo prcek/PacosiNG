@@ -23,11 +23,11 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.user = this.auth.userInfo;
     this.userContext = this.auth.userContextInfo;
 
-    this.auth.userInfo$.subscribe({
+    this.userSubs = this.auth.userInfo$.subscribe({
       next: (v) => { this.user = v; console.log('main-menu new user', v); }
     });
 
-    this.auth.userContextInfo$.subscribe({
+    this.userContextSubs = this.auth.userContextInfo$.subscribe({
       next: (v) => { this.userContext = v; console.log('main-menu new user context', v); }
     });
 
