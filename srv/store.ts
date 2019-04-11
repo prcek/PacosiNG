@@ -159,6 +159,7 @@ function createModels(connection: mongoose.Connection) {
     });
 
     calendarEventSchema.index({calendar_id: 1, overlap_check: 1}, { unique: true });
+    calendarEventSchema.index({day: 1, calendar_id: 1});
 
     const CalendarEventModel = connection.model<ICalendarEventModel>('CalendarEvent',
         calendarEventSchema, 'calendar_events');
