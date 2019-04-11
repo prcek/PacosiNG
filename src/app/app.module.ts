@@ -51,6 +51,7 @@ import { CalendarNewPageComponent } from './calendar-page/calendar-new-page.comp
 import { CalendarOhEditorComponent } from './calendar-editor/calendar-oh-editor.component';
 import { DaypickerPanelComponent } from './daypicker/daypicker-panel.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
 import { UserNewPageComponent } from './user-page/user-new-page.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { CalendarEtPageComponent } from './calendar-page/calendar-et-page.component';
@@ -187,6 +188,7 @@ import { PastWarningComponent } from './calendar/past-warning.component';
     MatTooltipModule,
     MatProgressBarModule,
     MatSlideToggleModule,
+    MatMenuModule,
 // last
     GraphQLModule,
   ],

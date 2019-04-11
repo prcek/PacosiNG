@@ -4,15 +4,16 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 
-import { Subject, Observable, of, timer, Subscriber, Observer } from 'rxjs';
-import { tap, filter, switchMap, map, catchError } from 'rxjs/operators';
+import { Subject, Observable, of, timer, Subscriber, Observer, BehaviorSubject, iif } from 'rxjs';
+import { tap, filter, switchMap, map, catchError, mergeMap, mapTo } from 'rxjs/operators';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { environment } from '../environments/environment';
 import * as jwtdecode from 'jwt-decode';
 import { Router } from '@angular/router';
-
+import { ICalendar, CalendarService } from './calendar.service';
+import * as R from 'ramda';
 
 interface ILoginVariables {
   login: string;
@@ -53,6 +54,11 @@ export interface IUserInfo {
   calendar_ids: string[];
 }
 
+export interface IUserContextInfo {
+  current_location_id: string;
+  possible_location_ids: string[];
+}
+
 const AUTH_USER_INFO_KEY = makeStateKey<IUserInfo>('auth_user_info');
 export const AUTH_USER_INFO_TOKEN = new InjectionToken<IUserInfo>('auth_user_info');
 
@@ -77,18 +83,26 @@ export class AuthService {
   private isBrowser: boolean;
   private isServer: boolean;
   public redirectUrl: string;  // filled by auth guard (when redirecting to /login)
-  private userInfoSource = new Subject<IUserInfo>();
+  private userInfoSource = new BehaviorSubject<IUserInfo>(null);
+  private userContextInfoSource = new BehaviorSubject<IUserContextInfo>(null);
   private tick$ = timer(10000, 5 * 60000);
   private vtick$ = timer(2000, 10000);
   // private effectiveUserSource = new Subject<IUser>();
   userInfo$ = this.userInfoSource.asObservable();
   userInfo: IUserInfo;
+  userContextInfo$ = this.userContextInfoSource.asObservable();
+  userContextInfo: IUserContextInfo = {
+    possible_location_ids: [],
+    current_location_id: null
+  };
+
   constructor(
     @Optional() @Inject(REQUEST) private req,
     @Optional() @Inject(AUTH_USER_INFO_TOKEN) private req_user_info,
     @Inject(PLATFORM_ID) platformId,
     private router: Router,
     private apollo: Apollo,
+    private calendar_service: CalendarService,
     private tstate: TransferState,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -121,6 +135,12 @@ export class AuthService {
           console.log('auth token missing');
         }
       }
+
+      if (this.userInfo) {
+         this.userInfoSource.next(this.userInfo);
+      }
+
+
       this.tick$.pipe(
         // tap((x) => console.log('tap', x)),
         filter(() => this.isAuth()),
@@ -128,6 +148,19 @@ export class AuthService {
         switchMap(() => this.renewToken()),
         tap((x) => console.log('renew token result', x)),
         ).subscribe();
+      this.userInfo$.pipe(
+        tap(u => console.log('XXXX- userinfo', u )),
+        switchMap( u => iif(
+          () => !!u,
+          this.calendar_service.getCalendarsByIds(u ? u.calendar_ids : []),
+          of<ICalendar[]>([])
+        )),
+        tap(u => console.log('XXXY- userinfo', u )),
+      ).subscribe((u) => {
+        console.log('XXXX SUB', u);
+        this.userContextInfo.possible_location_ids = R.uniq(u.map((c) => c.location_id));
+        this.userContextInfoSource.next(this.userContextInfo);
+      });
     }
 
   }
@@ -288,6 +321,10 @@ export class AuthService {
     this.userInfo = null;
     this.userInfoSource.next(null);
     return of(true);
+  }
+
+  switchLocation(location_id: string) {
+
   }
 
   setUserData(key: string, value: string) {

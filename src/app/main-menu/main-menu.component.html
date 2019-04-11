@@ -8,16 +8,26 @@
  
   <a *appAccess="'view'" mat-button routerLink="/main">Přehled</a>
   <a *ngIf="dev_mode" mat-button routerLink="/test">TEST</a>
-  <a *ngIf="dev_mode" mat-button [routerLink]="['/calendars/search',{cals: user.calendar_ids}]">SRCH</a>
   <a *appAccess="'setup_ot'" mat-button routerLink="/plan">Plánování</a>
   <a *appAccess="'super'" mat-button routerLink="/calendars">Kalendáře</a>
   <a *appAccess="'super'" mat-button routerLink="/users">Uživatelé</a>
   <a *appAccess="'super'" mat-button routerLink="/locations">Pobočky</a>
   <span class="spacer"></span>
+
+
   <a mat-button *ngIf="!isAuth" routerLink="/login">Přihlásit</a>
-  <span *ngIf="isAuth">{{login}}</span>
-  <button mat-icon-button *ngIf="isAuth" (click)="onLogout()">
-    <mat-icon>power_settings_new</mat-icon>
-  </button>
+  <ng-container *ngIf="isAuth">
+      <ng-container *ngIf="userContext">
+          <button mat-button [matMenuTriggerFor]="menu">Lokalita<mat-icon>arrow_drop_down</mat-icon></button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let loc_id of userContext.possible_location_ids">{{ (loc_id|location)?.name}}</button>
+          </mat-menu>
+      </ng-container>
+      <span>{{login}}</span>
+      <button mat-icon-button (click)="onLogout()">
+        <mat-icon>power_settings_new</mat-icon>
+      </button>
+  </ng-container>
+  
   
 </div>
