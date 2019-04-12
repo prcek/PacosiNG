@@ -2,6 +2,15 @@
     test-page works!
     <button mat-raised-button color="primary" (click)="onTest()">click me!</button>
     <button mat-raised-button color="primary" (click)="onTest2()">dialog test!</button>
+    <div class="app-daypicker2">
+        <app-daypicker2 _start_month="2019-02-01" ></app-daypicker2>
+    </div>
+    <div class="app-daypicker2">
+      <app-daypicker2 _start_month="2019-03-01" ></app-daypicker2>
+   </div>
+   <div class="app-daypicker2">
+    <app-daypicker2 _start_month="2019-04-01" ></app-daypicker2>
+ </div>
     <div>{{diagnostic}}</div>
     <form  (ngSubmit)="onSubmit()" #testForm="ngForm"> 
 

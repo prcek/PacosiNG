@@ -1,0 +1,15 @@
+<div class=" red">
+
+    <mat-grid-list  gutterSize="2" cols="7" rowHeight="1em">
+        <mat-grid-tile *ngFor="let name of dayNames">
+            <div class="mat-caption">{{name}}</div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list gutterSize="4" cols="7" rowHeight="2em">
+            <mat-grid-tile *ngFor="let slot of slots" class="red">
+                <div class="mat-caption red if">{{slot}}</div>
+            </mat-grid-tile>
+    </mat-grid-list>
+    
+</div>

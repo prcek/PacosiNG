@@ -92,6 +92,7 @@ import { PlanPageComponent } from './main-page/plan-page.component';
 import { FirstUpDirective } from './directives/first-up.directive';
 import { AccessRootDirective } from './directives/access-root.directive';
 import { PastWarningComponent } from './calendar/past-warning.component';
+import { Daypicker2Component } from './daypicker/daypicker2.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { PastWarningComponent } from './calendar/past-warning.component';
     PlanPageComponent,
     FirstUpDirective,
     AccessRootDirective,
-    PastWarningComponent
+    PastWarningComponent,
+    Daypicker2Component
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
