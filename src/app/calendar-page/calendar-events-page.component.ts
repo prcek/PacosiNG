@@ -84,6 +84,8 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
       this.ocs =  R.filter<IOtherCalendarStatus>( (o: IOtherCalendarStatus) => !!o.day_status, R.map<ICalendarStatus, IOtherCalendarStatus>((o: ICalendarStatus) => {
         return { calendar: o.calendar, day_status: o.days.length ? o.days[0] : null };
       }, df[1]));
+
+
       this.calendar = d.calendar; this.events = d.events; this.ohs = d.ohs; this.slots = d.slots;
       this.event_types = d.event_types;
       if (R.find<ICalendarEventType>((et) => {
@@ -155,6 +157,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
   }
   */
   onPrint(): void {
+    const sortfce = R.sortBy<ICalendarEvent>((e) => e.begin);
     const ds = formatDate2String_S(this.day); // M.utc(this.day).format('YYYY-MM-DD');
     const DD = {
       content: [
@@ -171,7 +174,7 @@ export class CalendarEventsPageComponent implements OnInit, OnDestroy {
             widths: [ 30, 'auto', 'auto', 'auto', 'auto', '*' ],
             body: [
               [ 'Čas', 'Typ', 'Klient', 'Ročník', 'Telefon', 'Poznámka' ],
-              ...this.events.map(e => {
+              ...sortfce(this.events).map(e => {
                 const etime = this.calendarService.event2timestring(this.calendar, e);
                 const name = e.client.last_name + ' ' + e.client.first_name;
                 return [etime, e.event_name, name, safeNumber2String(e.client.year), safeString(e.client.phone), safeString(e.comment)];
