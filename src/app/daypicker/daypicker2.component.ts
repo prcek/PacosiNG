@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import * as R from 'ramda';
 import * as M from 'moment';
 
@@ -74,26 +74,48 @@ function _calcMonthPage(year: number, month: number): IMonthPage {
   templateUrl: './daypicker2.component.html',
   styleUrls: ['./daypicker2.component.css']
 })
-export class Daypicker2Component implements OnInit {
+
+export class Daypicker2Component implements OnInit , OnChanges {
   dayNames = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'];
   monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
 
-  @Input() _start_month: string; // = '2019-06-01';
-
+  @Input() first_day: Date;
+  @Output() select = new EventEmitter<Date>();
+  @Output() move = new EventEmitter<Date>();
+  @Input() selected_day: Date;
+  @Input() selected_week: Date;
 
   monthPage: IMonthPage;
 
   constructor() { }
 
 
-
   ngOnInit() {
-    console.log('Daypicker2Component.ngOnInit', this._start_month);
+    this.setDaysInfo();
+  }
 
-
-    const sd = M.utc(this._start_month).startOf('month');
-
+  setDaysInfo() {
+    const sd = M.utc(this.first_day).startOf('month');
     this.monthPage = _calcMonthPage(sd.year(), sd.month() + 1);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ((changes.first_day && !changes.first_day.firstChange) ||
+        (changes.selected_day && !changes.selected_day.firstChange) ||
+        (changes.selected_week && !changes.selected_week.firstChange)
+        ) {
+      this.setDaysInfo();
     }
+  }
+
+  onMoveLeft() {
+    this.move.emit(M(this.first_day).utc().startOf('month').subtract(1, 'month').toDate());
+  }
+  onMoveRight() {
+    this.move.emit(M(this.first_day).utc().startOf('month').add(1, 'month').toDate());
+  }
+  onMoveToday() {
+    this.move.emit(M().utc().startOf('month').toDate());
+  }
 
 }
