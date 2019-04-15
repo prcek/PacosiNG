@@ -27,7 +27,7 @@
     
 
 <ng-template #dayTemplate let-day="day"> 
-        <div class="mat-title nomargin">{{day}}</div>
+        <div class="mat-title nomargin if daybox">{{day}}</div>
 </ng-template>
 
 <ng-template #blankDayTemplate> 
@@ -59,9 +59,9 @@
 <ng-template #monthHeaderTemplate let-month="month" let-year="year">
         <mat-grid-list cols="7" rowHeight="2em">
             <mat-grid-tile colspan="2">
-                <mat-icon class="rb">arrow_left</mat-icon>
-                <mat-icon class="rb">today</mat-icon>
-                <mat-icon class="rb">arrow_right</mat-icon>
+                <mat-icon class="rb mat-elevation-z2">arrow_left</mat-icon>
+                <mat-icon class="rb mat-elevation-z2">today</mat-icon>
+                <mat-icon class="rb mat-elevation-z2">arrow_right</mat-icon>
             </mat-grid-tile>
             <mat-grid-tile colspan="3">
                 <div class="mat-title nomargin">{{monthNames[month-1]}}</div>
