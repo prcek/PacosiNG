@@ -26,8 +26,8 @@
 </ng-template>
     
 
-<ng-template #dayTemplate let-day="day"> 
-        <div class="mat-title nomargin if daybox">{{day}}</div>
+<ng-template #dayTemplate let-day="day" let-date="date"> 
+        <div class="mat-title nomargin if daybox" (click)="onDayClick(date)">{{day}}</div>
 </ng-template>
 
 <ng-template #blankDayTemplate> 
@@ -37,7 +37,7 @@
 <ng-template #weekDaysTemplate let-days="days"> 
         <mat-grid-list cols="7" rowHeight="2em">
             <mat-grid-tile *ngFor="let day of days">
-                    <ng-container *ngTemplateOutlet="day.blank ? blankDayTemplate : dayTemplate;context:{day:day.day}">
+                    <ng-container *ngTemplateOutlet="day.blank ? blankDayTemplate : dayTemplate;context:day">
                     </ng-container>
             </mat-grid-tile> 
         </mat-grid-list>    

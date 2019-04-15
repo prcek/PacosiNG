@@ -51,7 +51,7 @@ function _calcMonthPage(year: number, month: number): IMonthPage {
  // const total_slots = first_day_off + month_days + last_day_addon;
 
   const xa = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, first_day_off));
-  const xb = R.map<number, IDaySlot>( i => ({ blank: false, day: i}), R.range(1, month_days + 1));
+  const xb = R.map<number, IDaySlot>( i => ({ blank: false, day: i, date: '' + year + '-' + month + '-' + i}), R.range(1, month_days + 1));
   const xc = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, last_day_addon));
   const all_days = [...xa, ...xb, ...xc];
   const weeks = R.map<IDaySlot[], IWeekRow>( w => ({
@@ -106,6 +106,10 @@ export class Daypicker2Component implements OnInit , OnChanges {
         ) {
       this.setDaysInfo();
     }
+  }
+
+  onDayClick(d: string) {
+   this.select.emit(M.utc(d, 'YYYY-MM-DD').toDate());
   }
 
   onMoveLeft() {
