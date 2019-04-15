@@ -14,6 +14,28 @@ interface IMonthPage {
   year: number;
   month: number;
   days: IDaySlot[];
+  weeks: IWeekRow[];
+}
+
+interface IWeekRow {
+  days: IDaySlot[];
+  span_blank_l: number;
+  span_days: number;
+  span_blank_r: number;
+}
+
+function _week_spans(days: IDaySlot[]) {
+  return R.reduce((a, v ) => {
+    if (v.blank) {
+      if (a.span_days) {
+        return {span_blank_l: a.span_blank_l, span_days: a.span_days, span_blank_r: a.span_blank_r + 1};
+      } else {
+        return {span_blank_l: a.span_blank_l + 1, span_days: 0, span_blank_r: 0};
+      }
+    } else {
+      return {span_blank_l: a.span_blank_l, span_days: a.span_days + 1, span_blank_r: 0};
+    }
+  }, {span_blank_l: 0, span_days: 0, span_blank_r: 0 }, days);
 }
 
 function _calcMonthPage(year: number, month: number): IMonthPage {
@@ -31,11 +53,17 @@ function _calcMonthPage(year: number, month: number): IMonthPage {
   const xa = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, first_day_off));
   const xb = R.map<number, IDaySlot>( i => ({ blank: false, day: i}), R.range(1, month_days + 1));
   const xc = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, last_day_addon));
+  const all_days = [...xa, ...xb, ...xc];
+  const weeks = R.map<IDaySlot[], IWeekRow>( w => ({
+      days: w,
+      ..._week_spans(w),
+    }), R.splitEvery(7, all_days));
 
   return {
     year,
     month,
-    days: [...xa, ...xb, ...xc]
+    days: all_days,
+    weeks
   };
 }
 

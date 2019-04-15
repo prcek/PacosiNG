@@ -3,32 +3,61 @@
 
 
 <ng-template #daysHeaderTemplate>
-    <mat-grid-list  class="graybg" gutterSize="2" cols="7" rowHeight="1em">
+    <mat-grid-list  class="graybg" cols="7" rowHeight="1em">
         <mat-grid-tile *ngFor="let name of dayNames">
             <div class="mat-caption">{{name}}</div>
         </mat-grid-tile>
     </mat-grid-list>
 </ng-template>
 
+
+<ng-template #spitterTemplate let-sbl="span_blank_l" let-sbr="span_blank_r" let-sd="span_days">
+    <mat-grid-list   cols="7" rowHeight="1px">
+    
+        <mat-grid-tile *ngIf="sbl" [colspan]="sbl">
+        </mat-grid-tile>
+
+        <mat-grid-tile *ngIf="sd" [colspan]="sd" class="graybg">
+        </mat-grid-tile>
+    
+        <mat-grid-tile *ngIf="sbr" [colspan]="sbr">
+        </mat-grid-tile>
+    </mat-grid-list>
+</ng-template>
+    
+
 <ng-template #dayTemplate let-day="day"> 
-        <div class="mat-caption red if">{{day}}</div>
+        <div class="mat-caption">{{day}}</div>
 </ng-template>
 
 <ng-template #blankDayTemplate> 
-        <div class="mat-caption red if"> B </div>
+        <div class="mat-caption"> &nbsp; </div>
 </ng-template>
 
-<ng-template #monthDaysTemplate let-days="days"> 
-        <mat-grid-list gutterSize="4" cols="7" rowHeight="2em">
-            <mat-grid-tile *ngFor="let day of days" class="red">
+<ng-template #weekDaysTemplate let-days="days"> 
+        <mat-grid-list cols="7" rowHeight="2em">
+            <mat-grid-tile *ngFor="let day of days">
                     <ng-container *ngTemplateOutlet="day.blank ? blankDayTemplate : dayTemplate;context:{day:day.day}">
                     </ng-container>
             </mat-grid-tile> 
         </mat-grid-list>    
 </ng-template>
 
+
+<ng-template #monthDaysTemplate let-weeks="weeks"> 
+        <ng-container *ngFor="let week of weeks">
+            
+            <ng-container *ngTemplateOutlet = "weekDaysTemplate; context:{days:week.days}">
+            </ng-container>
+                    
+            <ng-container *ngTemplateOutlet = "spitterTemplate; context:week">
+            </ng-container>
+                
+        </ng-container>
+</ng-template>
+
 <ng-template #monthHeaderTemplate let-month="month" let-year="year">
-        <mat-grid-list  gutterSize="2" cols="7" rowHeight="2em">
+        <mat-grid-list cols="7" rowHeight="2em">
             <mat-grid-tile colspan="5">
                 <div class="mat-title nomargin">{{monthNames[month-1]}}</div>
             </mat-grid-tile>
@@ -40,18 +69,16 @@
 
 
 
-
-
-
 <ng-container *ngTemplateOutlet = "monthHeaderTemplate; context:{year:monthPage.year, month:monthPage.month}">
 </ng-container>
-    
+
+
 <ng-container *ngTemplateOutlet = "daysHeaderTemplate">
 </ng-container>
     
-<ng-container *ngTemplateOutlet = "monthDaysTemplate; context:{days:monthPage.days}">
+<ng-container *ngTemplateOutlet = "monthDaysTemplate; context:{weeks:monthPage.weeks}">
 </ng-container>
 
-
+    
     
 </div>
