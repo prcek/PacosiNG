@@ -17,7 +17,7 @@
 
   <a mat-button *ngIf="!isAuth" routerLink="/login">Přihlásit</a>
   <ng-container *ngIf="isAuth">
-      <ng-container *ngIf="userContext">
+      <ng-container *ngIf="false && userContext">
           <button mat-button [matMenuTriggerFor]="menu">Lokalita<mat-icon>arrow_drop_down</mat-icon></button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item *ngFor="let loc_id of userContext.possible_location_ids">{{ (loc_id|location)?.name}}</button>
