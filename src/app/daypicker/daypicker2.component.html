@@ -56,12 +56,14 @@
         </ng-container>
 </ng-template>
 
-<ng-template #monthHeaderTemplate let-month="month" let-year="year">
+<ng-template #monthHeaderTemplate let-month="month" let-year="year" let-sc="showControl">
         <mat-grid-list cols="7" rowHeight="2em">
             <mat-grid-tile colspan="2">
-                <mat-icon (click)="onMoveLeft()" class="rb mat-elevation-z2">arrow_left</mat-icon>
-                <mat-icon (click)="onMoveToday()" class="rb mat-elevation-z2">today</mat-icon>
-                <mat-icon (click)="onMoveRight()" class="rb mat-elevation-z2">arrow_right</mat-icon>
+                <ng-container *ngIf="sc">
+                        <mat-icon (click)="onMoveLeft()" class="rb mat-elevation-z2">arrow_left</mat-icon>
+                        <mat-icon (click)="onMoveToday()" class="rb mat-elevation-z2">today</mat-icon>
+                        <mat-icon (click)="onMoveRight()" class="rb mat-elevation-z2">arrow_right</mat-icon>
+                </ng-container>
             </mat-grid-tile>
             <mat-grid-tile colspan="3">
                 <div class="mat-title nomargin">{{monthNames[month-1]}}</div>
@@ -73,16 +75,16 @@
 </ng-template>
 
 
-
-<ng-container *ngTemplateOutlet = "monthHeaderTemplate; context:{year:monthPage.year, month:monthPage.month}">
-</ng-container>
-
-
-<ng-container *ngTemplateOutlet = "daysHeaderTemplate">
-</ng-container>
     
-<ng-container *ngTemplateOutlet = "monthDaysTemplate; context:{weeks:monthPage.weeks}">
+<ng-container *ngFor="let monthPage of monthPages;let first = first;">
+        <ng-container *ngTemplateOutlet = "monthHeaderTemplate; context:{year:monthPage.year, month:monthPage.month, showControl:first}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet = "daysHeaderTemplate">
+        </ng-container>
+        <ng-container *ngTemplateOutlet = "monthDaysTemplate; context:{weeks:monthPage.weeks}">
+        </ng-container>
 </ng-container>
+
 
     
     

@@ -102,12 +102,13 @@ export class Daypicker2Component implements OnInit , OnChanges {
   monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
 
   @Input() first_day: Date;
+  @Input() dual: boolean;
   @Output() select = new EventEmitter<Date>();
   @Output() move = new EventEmitter<Date>();
   @Input() selected_day: Date;
   @Input() selected_week: Date;
 
-  monthPage: IMonthPage;
+  monthPages: IMonthPage[];
 
   constructor() { }
 
@@ -119,7 +120,17 @@ export class Daypicker2Component implements OnInit , OnChanges {
   setDaysInfo() {
     const sd = M.utc(this.first_day).startOf('month');
     const selected: Date[] = this.selected_day ? [this.selected_day] : [];
-    this.monthPage = _calcMonthPage(sd.year(), sd.month() + 1, selected );
+    if (this.dual) {
+      const sd_next = M(sd).add(1, 'month');
+      this.monthPages = [
+        _calcMonthPage(sd.year(), sd.month() + 1, selected ),
+        _calcMonthPage(sd_next.year(), sd_next.month() + 1, selected ),
+      ];
+    } else {
+      this.monthPages = [
+        _calcMonthPage(sd.year(), sd.month() + 1, selected )
+      ];
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
