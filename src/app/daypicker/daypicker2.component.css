@@ -22,13 +22,16 @@
 }
 
 .daybox {
-   background-color: bisque;
+   cursor: pointer;
    border-radius: 10px;
    align-items: center;
    justify-content: center;
    display: flex;
 }
-
+.dayselected {
+    background-color:#673ab7;
+    color: #fff;
+}
 
 .rb {
     margin: 2px;

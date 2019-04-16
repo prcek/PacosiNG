@@ -7,6 +7,7 @@ const FIRST_DAY_CORR = [6, 0, 1, 2, 3, 4, 5];
 
 interface IDaySlot {
   blank: boolean;
+  selected: boolean;
   day: number;
 }
 
@@ -38,7 +39,13 @@ function _week_spans(days: IDaySlot[]) {
   }, {span_blank_l: 0, span_days: 0, span_blank_r: 0 }, days);
 }
 
-function _calcMonthPage(year: number, month: number): IMonthPage {
+function _isSelected(year: number, month: number, day: number, selected_days: Date[]): boolean {
+  const d = M.utc('' + year + '-' + month + '-' + day, 'YYYY-MM-DD');
+  return R.any<Date>( (i) => d.isSame(i, 'day'), selected_days);
+  
+}
+
+function _calcMonthPage(year: number, month: number, selected_days: Date[]): IMonthPage {
   const first_day = M.utc('' + year + '-' + month + '-01', 'YYYY-MM-DD');
   // console.log('FIRST_DAY', first_day.toISOString());
 
@@ -50,9 +57,25 @@ function _calcMonthPage(year: number, month: number): IMonthPage {
 
  // const total_slots = first_day_off + month_days + last_day_addon;
 
-  const xa = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, first_day_off));
-  const xb = R.map<number, IDaySlot>( i => ({ blank: false, day: i, date: '' + year + '-' + month + '-' + i}), R.range(1, month_days + 1));
-  const xc = R.map<number, IDaySlot>( i => ({ blank: true, day: -1}), R.range(0, last_day_addon));
+  const xa = R.map<number, IDaySlot>( i => ({
+      blank: true,
+      day: -1,
+      selected: false
+    }), R.range(0, first_day_off));
+
+  const xb = R.map<number, IDaySlot>( i => ({
+      blank: false,
+      day: i,
+      selected: _isSelected(year, month, i, selected_days),
+      date: '' + year + '-' + month + '-' + i
+    }), R.range(1, month_days + 1));
+
+  const xc = R.map<number, IDaySlot>( i => ({
+      blank: true,
+      day: -1,
+      selected: false
+    }), R.range(0, last_day_addon));
+
   const all_days = [...xa, ...xb, ...xc];
   const weeks = R.map<IDaySlot[], IWeekRow>( w => ({
       days: w,
@@ -96,7 +119,8 @@ export class Daypicker2Component implements OnInit , OnChanges {
 
   setDaysInfo() {
     const sd = M.utc(this.first_day).startOf('month');
-    this.monthPage = _calcMonthPage(sd.year(), sd.month() + 1);
+    const selected: Date[] = this.selected_day ? [this.selected_day] : [];
+    this.monthPage = _calcMonthPage(sd.year(), sd.month() + 1, selected );
   }
 
   ngOnChanges(changes: SimpleChanges) {

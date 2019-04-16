@@ -26,8 +26,8 @@
 </ng-template>
     
 
-<ng-template #dayTemplate let-day="day" let-date="date"> 
-        <div class="mat-title nomargin if daybox" (click)="onDayClick(date)">{{day}}</div>
+<ng-template #dayTemplate let-day="day" let-date="date" let-selected="selected"> 
+        <div class="mat-title nomargin if daybox" [class.dayselected]="selected" (click)="onDayClick(date)">{{day}}</div>
 </ng-template>
 
 <ng-template #blankDayTemplate> 
