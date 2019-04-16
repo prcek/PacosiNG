@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import * as M from 'moment';
 
 
-const FIRST_DAY_CORR = [6, 0, 1, 2, 3, 4, 5];
+const FIRST_DAY_CORR = [0, 1, 2, 3, 4, 5, 6];
 
 interface IDaySlot {
   blank: boolean;
@@ -45,10 +45,12 @@ function _isSelected(year: number, month: number, day: number, selected_days: Da
 }
 
 function _calcMonthPage(year: number, month: number, selected_days: Date[]): IMonthPage {
+  // console.log('_calcMonthPage',year,month);
   const first_day = M.utc('' + year + '-' + month + '-01', 'YYYY-MM-DD');
   // console.log('FIRST_DAY', first_day.toISOString());
 
-  const first_day_off = FIRST_DAY_CORR[first_day.isoWeekday()];
+  const first_day_off = FIRST_DAY_CORR[first_day.isoWeekday() - 1];
+  // console.log('first_day_off', first_day.isoWeekday(), first_day_off);
   const month_days = M(first_day).add(1, 'month').diff(first_day, 'days');
 
   const dr = (first_day_off + month_days) % 7;
@@ -118,6 +120,7 @@ export class Daypicker2Component implements OnInit , OnChanges {
   }
 
   setDaysInfo() {
+    console.log('setDaysInfo', this.first_day);
     const sd = M.utc(this.first_day).startOf('month');
     const selected: Date[] = this.selected_day ? [this.selected_day] : [];
     if (this.dual) {
