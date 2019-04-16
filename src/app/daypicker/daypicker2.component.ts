@@ -42,7 +42,6 @@ function _week_spans(days: IDaySlot[]) {
 function _isSelected(year: number, month: number, day: number, selected_days: Date[]): boolean {
   const d = M.utc('' + year + '-' + month + '-' + day, 'YYYY-MM-DD');
   return R.any<Date>( (i) => d.isSame(i, 'day'), selected_days);
-  
 }
 
 function _calcMonthPage(year: number, month: number, selected_days: Date[]): IMonthPage {
