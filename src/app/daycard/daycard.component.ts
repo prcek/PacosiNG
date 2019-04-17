@@ -7,12 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DaycardComponent implements OnInit {
   @Input() date: Date;
+  @Input() small: boolean;
   dayNames = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
   monthNames = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
 
   constructor() { }
 
   ngOnInit() {
+    this.small = this.small !== undefined;
   }
   get month() {
     if (this.date) {

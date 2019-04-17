@@ -18,6 +18,7 @@ import { SessionDataService } from '../session-data.service';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
+  show_days = 20;
   cals: ICalendarStatus[];
   cal_ids: string[] = null;
   loc_ids: string[];
@@ -55,7 +56,7 @@ export class MainPageComponent implements OnInit {
     }
     // const cal_ids: string[] = R.filter(R.compose(R.not, R.isEmpty), this.route.snapshot.paramMap.get('cals'));
     // console.log('MainPageComponent, cal_ids', cal_ids);
-    this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(10, 'days').toDate())
+    this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(this.show_days, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
           this.loc_ids =  R.uniq(R.map<ICalendarStatus, string>((cs: ICalendarStatus) => cs.calendar.location_id, r));

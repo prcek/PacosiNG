@@ -11,3 +11,9 @@
  .no-margin  {
     margin: 0;
 }
+
+.smallbox {
+    border: solid 1px red;
+    height: 2em;
+    width: 100px;
+}
