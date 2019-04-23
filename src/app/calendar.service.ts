@@ -146,6 +146,7 @@ export interface ICalendarsStatusRow {
 export interface ICalendarGridInfo {
   calendars: ICalendar[];
   days: ICalendarsStatusRow[];
+  weeks: ICalendarsStatusRow[][];
 }
 
 export interface IClipBoardRecord {
@@ -753,9 +754,14 @@ export class CalendarService {
           return { ...cc, calendar_id: v.calendar._id};
       } , cals)
     }), day_dates);
-   // console.log('C:', x[0].day.toISOString());
 
-    return {calendars, days: x };
+
+    // const yow = (val: ICalendarsStatusRow[], key: string) => (val);
+    const y = R.groupBy<ICalendarsStatusRow>( (r) => M(r.day).utc().startOf('isoWeek').format('YYYY-MM-DD'), x);
+    const weeks = R.values(y);
+    // console.log('WEEKS', weeks);
+
+    return {calendars, days: x , weeks };
   }
 
   event2timestring(cal: ICalendar,  e: ICalendarEvent) {

@@ -23,16 +23,24 @@
             </mat-grid-tile>
         </mat-grid-list> 
       </div>
-      <div fxLayout="row" *ngFor="let day of grid.days">
-        <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> <app-daycard small [date]="day.day"></app-daycard></div>
-        <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="2em">
-            <mat-grid-tile *ngFor="let status of day.statuses"> 
-                <app-calendar-day-box class="calstatusbox" [status]="status" (click)="onSelect(status)">
-                  
-                </app-calendar-day-box>
-             </mat-grid-tile> 
-        </mat-grid-list>  
-      </div> 
+
+      <ng-container *ngFor="let week of grid.weeks; let last = last;">
+        <ng-container *ngFor="let day of week">
+            <div fxLayout="row">
+                <div class="daypanel" fxFlex="1 0 auto" fxLayoutAlign="center center"> 
+                  <app-daycard small [date]="day.day"></app-daycard>
+                </div>
+                <mat-grid-list  fxFlex="10 1 auto" [cols]="grid.calendars.length" rowHeight="2em">
+                    <mat-grid-tile *ngFor="let status of day.statuses"> 
+                        <app-calendar-day-box class="calstatusbox" [status]="status" (click)="onSelect(status)">
+                          
+                        </app-calendar-day-box>
+                    </mat-grid-tile> 
+                </mat-grid-list>  
+            </div> 
+        </ng-container>
+        <div *ngIf="!last" class="separator">  </div>
+      </ng-container>
     </div>
     <div class="rightpanel" fxFlex="1 0 auto">
         <app-daypicker2 [dual]="true" [first_day]="first_day" [selected_day]="selected_day"  (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker2>

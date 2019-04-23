@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatDate2String_L, formatDate2String_S, formatDate2String_ISO } from '../utils';
+import { formatDate2String_L, formatDate2String_S, formatDate2String_ISO, formatDate2String_C } from '../utils';
 
 @Pipe({
   name: 'czdate'
@@ -10,6 +10,7 @@ export class CzdatePipe implements PipeTransform {
     switch (format) {
       case 'L': return formatDate2String_L(value);
       case 'S': return formatDate2String_S(value);
+      case 'C': return formatDate2String_C(value);
       case 'I': return formatDate2String_ISO(value);
       default: return formatDate2String_ISO(value);
     }

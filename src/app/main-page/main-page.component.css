@@ -31,6 +31,12 @@
     max-width: 250px;
 }
 
+.separator {
+    background-color: lightgrey;
+    height: 4px;
+    margin-right: 10px;
+}
+
 .calstatusbox {
     width: 90%;
     height: 80%;

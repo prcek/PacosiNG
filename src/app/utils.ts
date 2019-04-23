@@ -17,6 +17,14 @@ export function formatDate2String_L(value: Date | string) {
     return '?';
 }
 
+export function formatDate2String_C(value: Date | string) {
+    if (value) {
+        const date = (value instanceof Date) ? value : M.utc(value).toDate();
+        return sdayNames[date.getDay()] + ',  ' + date.getDate() + '. ' + smonthNames[date.getMonth()];
+    }
+    return '?';
+}
+
 
 export function formatDate2String_S(value: Date | string) {
     if (value) {

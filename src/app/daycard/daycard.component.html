@@ -1,16 +1,8 @@
 
 <ng-template #smallTemplate>
-  <mat-grid-list class="smallbox" cols="7" rowHeight="2em">
-      <mat-grid-tile>
-          <div class="mat-caption no-margin"> {{week_day}}</div> 
-      </mat-grid-tile> 
-      <mat-grid-tile>
-          <div class="mat-caption no-margin"> {{day}}</div> 
-      </mat-grid-tile> 
-      <mat-grid-tile [colspan]='5'>
-          <div class="mat-caption no-margin"> {{month}}</div> 
-      </mat-grid-tile> 
-  </mat-grid-list>    
+  <div class="smallbox mat-caption no-margin"> 
+      {{ date | czdate:"C"}}
+  </div>
 </ng-template>
 
 <div *ngIf="!small; else smallTemplate" class="box mat-elevation-z2" fxLayout="column" fxLayoutAlign="center stretch">
