@@ -54,7 +54,8 @@
         </div>
 
         <div class="navipanel">
-            <app-daypicker-panel [first_day]="cal_first_day" [selected_day]="day"  (select)="onCalChangeDay($event)" (move)="onCalMoveCal($event)"></app-daypicker-panel>
+            <app-daypicker2 [dual]="true" [first_day]="cal_first_day" [selected_day]="day"  (select)="onCalChangeDay($event)" (move)="onCalMoveCal($event)"></app-daypicker2>
+
             <div>&nbsp;</div>
            
             <div *ngFor="let cs of ocs"> 
