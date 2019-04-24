@@ -18,7 +18,7 @@
 .rightpanel {
     margin-top: 0px;
     max-width: 400px;
-    min-width: 200px;
+    min-width: 250px;
 }
 
 .leftpanel {
@@ -41,4 +41,11 @@
 
 .tablink {
     height: 44px;
+}
+
+
+.separator {
+    background-color: lightgrey;
+    height: 4px;
+    margin-right: 10px;
 }

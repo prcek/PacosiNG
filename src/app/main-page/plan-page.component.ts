@@ -16,6 +16,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./plan-page.component.css']
 })
 export class PlanPageComponent implements OnInit {
+  show_days = 20;
   cals: ICalendarStatus[];
   cal_ids: string[];
   loc_ids: string[];
@@ -49,7 +50,7 @@ export class PlanPageComponent implements OnInit {
       }
     }
 
-    this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(10, 'days').toDate())
+    this.calendarService.getCalendarsStatus(this.cal_ids, this.selected_day, M(this.selected_day).add(this.show_days, 'days').toDate())
       .subscribe((r) => {
           this.cals = r;
           this.loc_ids =  R.uniq(R.map<ICalendarStatus, string>((cs: ICalendarStatus) => cs.calendar.location_id, r));
