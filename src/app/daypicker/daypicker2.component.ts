@@ -157,6 +157,7 @@ export class Daypicker2Component implements OnInit , OnChanges {
   }
   onMoveToday() {
     this.move.emit(M().utc().startOf('month').toDate());
+    this.select.emit(M().utc().startOf('day').toDate());
   }
 
 }
