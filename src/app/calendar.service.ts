@@ -780,7 +780,7 @@ export class CalendarService {
     }).pipe(map(res => res.data.location), map(location => {
 
       const ds = formatDate2String_S(event.day);
-      const client = event.client.last_name + ' ' + event.client.first_name;
+      const client = event.client.last_name + ' ' + event.client.first_name + (event.client.year ? (' (' + event.client.year + ')') : '') ;
       const etime = this.event2timestring(calendar, event);
       const DD = {
         content: [
