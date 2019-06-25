@@ -3,7 +3,8 @@ import {
   CalendarService,
   ICalendarStatus,
   ICalendarGridInfo,
-  ICalendarDayStatusE
+  ICalendarDayStatusE,
+  ICalendar
 } from '../calendar.service';
 import * as M from 'moment';
 import * as R from 'ramda';
@@ -83,4 +84,8 @@ export class PlanPageComponent implements OnInit {
   onSelect(status: ICalendarDayStatusE) {
     this.router.navigate(['calendars', 'oh', status.calendar_id, {start_day: status.day}]);
   }
+  onEditOHT(cal: ICalendar) {
+    this.router.navigate(['/calendars/oht', cal._id]);
+  }
+
 }

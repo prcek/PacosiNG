@@ -42,6 +42,16 @@
     </div>
     <div class="rightpanel" fxFlex="1 0 auto">
         <app-daypicker2 [dual]="true" [first_day]="first_day" [selected_day]="selected_day"  (select)="onChangeDay($event)" (move)="onMoveCal($event)"></app-daypicker2>
+        <div>&nbsp;</div>
+        <mat-card>
+            <mat-card-header><mat-card-title>Nastavení šablon</mat-card-title></mat-card-header>
+            <mat-card-content>
+              <div *ngFor="let cal of grid.calendars">
+                 {{cal.name}}
+                 <button mat-icon-button (click)="onEditOHT(cal)" matTooltip="upravit šablonu provozní doby"><mat-icon>update</mat-icon></button> 
+              </div>
+            </mat-card-content>
+        </mat-card>
     </div>
   </div>
 </div>
