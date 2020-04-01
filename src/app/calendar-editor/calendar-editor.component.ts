@@ -28,7 +28,7 @@ export class CalendarEditorComponent implements OnInit {
     cluster_len: new FormControl(2, { validators: [Validators.required, Validators.min(1), Validators.max(10)]}),
     day_begin: new FormControl(7 * 4, { validators: [Validators.required, Validators.min(0), Validators.max(60)]}),
     day_len: new FormControl(10 * 4, { validators: [Validators.required, Validators.min(1), Validators.max(100)]}),
-    day_offset: new FormControl(10, { validators: [Validators.required, Validators.min(5), Validators.max(30)]}),
+    day_offset: new FormControl(10, { validators: [Validators.required, Validators.min(0), Validators.max(30)]}),
     week_days: new FormControl([1, 2, 3, 4, 5], {validators: Validators.required}),
     print_info: new FormControl(''),
     archived: new FormControl(false),
