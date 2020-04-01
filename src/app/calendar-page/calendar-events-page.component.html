@@ -14,7 +14,7 @@
 
 <ng-template #xxx let-slot='slot'>
         <div *ngIf="(extra && slot.extra_slot) || (!extra && slot.normal_slot)" fxLayout="row"  class="boxitem">
-             <div class="time mat-body"> {{slot.slot | tstime:calendar.span }} </div> 
+             <div class="time mat-body"> {{slot.slot | tstime:calendar.span:0:calendar.day_offset }} </div> 
              <div class="slot mat-body" fxFlex="1 1 auto" fxLayout="row"> 
                 <div *ngIf="slot.event && slot.event_leg==0" class="type_color"  [ngStyle]="{'background-color': slot.event.color}">&nbsp;</div>         
                 <div  class="name" fxFlex="1 1 auto" (click)="onSlot(slot)">

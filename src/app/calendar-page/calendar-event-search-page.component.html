@@ -34,7 +34,7 @@
             <th mat-header-cell *matHeaderCellDef> Čas </th>
             <td mat-cell *matCellDef="let element"> 
                 <ng-container *ngIf="element.calendar_id | calendar; let cal" >
-                  {{ element.begin | tstime:cal.span }}
+                  {{ element.begin | tstime:cal.span:0:cal.day_offset }}
                 </ng-container>
             </td>
       </ng-container>

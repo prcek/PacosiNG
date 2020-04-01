@@ -74,9 +74,9 @@ export async function createStoreDummyData(store: IStore): Promise<boolean> {
     const loc_A = await dataSources.location.createLocation('Loc_A', 'loc A address');
     const loc_B = await dataSources.location.createLocation('Loc_B', 'loc B address');
 
-    const cal1 = await dataSources.calendar.createCalendar(loc_A._id, 'cal1', 10, 2, 42, 72, [1, 2, 3, 4, 5], 'print info line');
-    const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 15, 2, 6 * 7, 6 * 10, [1, 2, 3, 4, 5], 'print info line');
-    const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 15, 1, 28, 2 * 10, [1, 2, 3, 4, 5], 'print info line');
+    const cal1 = await dataSources.calendar.createCalendar(loc_A._id, 'cal1', 10, 2, 42, 72, 0, [1, 2, 3, 4, 5], 'print info line');
+    const cal2 = await dataSources.calendar.createCalendar(loc_A._id, 'cal2', 15, 2, 6 * 7, 6 * 10, 0, [1, 2, 3, 4, 5], 'print info line');
+    const cal3 = await dataSources.calendar.createCalendar(loc_B._id, 'cal3', 15, 1, 28, 2 * 10, 0, [1, 2, 3, 4, 5], 'print info line');
 
     // tslint:disable-next-line:max-line-length
     const auser = await dataSources.user.createUser('admin', 'secret', 'Administrator', true, ['super', 'view', 'edit', 'setup_ot'], [cal1._id, cal2._id, cal3._id]);

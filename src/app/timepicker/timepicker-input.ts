@@ -33,6 +33,7 @@ export interface TimepickerOptions {
   timeSpan: number;
   timeBegin: number;
   timeLen: number;
+  timeOffset: number;
 }
 
 export class TimepickerInputEvent {
@@ -73,6 +74,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   private _timeSpan = 5;
   private _timeBegin = 5;
   private _timeLen = 10;
+  private _timeOffset = 0;
   private _validator: ValidatorFn | null;
   private _cvaOnChange: (value: any) => void = () => {};
   private _validatorOnChange = () => {};
@@ -110,7 +112,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   set timeSpan(value: number) {
     if (this._timeSpan !== value) {
       this._timeSpan = value;
-      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeOffset: this._timeOffset, timeLen: this._timeLen});
     }
   }
   @Input()
@@ -118,7 +120,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   set timeBegin(value: number) {
     if (this._timeBegin !== value) {
       this._timeBegin = value;
-      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeOffset: this._timeOffset, timeLen: this._timeLen});
     }
   }
   @Input()
@@ -126,10 +128,19 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
   set timeLen(value: number) {
     if (this._timeLen !== value) {
       this._timeLen = value;
-      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeLen: this._timeLen});
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeOffset: this._timeOffset, timeLen: this._timeLen});
     }
   }
 
+  @Input()
+  get timeOffset(): number { return this._timeOffset; }
+  set timeOffset(value: number) {
+    console.log('timeOffset set', value);
+    if (this._timeOffset !== value) {
+      this._timeOffset = value;
+      this._optionChange.emit({timeSpan: this._timeSpan, timeBegin: this._timeBegin, timeOffset: this._timeOffset, timeLen: this._timeLen});
+    }
+  }
 
   @Input()
   get disabled(): boolean { return !!this._disabled; }
@@ -256,7 +267,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
     if (value) {
       const tp = value.match(/^(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/);
       if (tp) {
-        const v = parseInt(tp[1], 10) * 60 + parseInt(tp[2], 10);
+        const v = parseInt(tp[1], 10) * 60 + parseInt(tp[2], 10) -  this.timeOffset;
         if (v % this.timeSpan) {
           return null;
         }
@@ -287,7 +298,7 @@ export class TimepickerDirective implements ControlValueAccessor, OnDestroy, Val
 
   private _formatValue(value: number| null) {
     if (value !== null) {
-      const time = (value * this.timeSpan);
+      const time = (value * this.timeSpan) + this.timeOffset;
       const minutes = time % 60;
       const hours = (time - minutes) / 60;
       const H = hours.toString().padStart(2, '0');

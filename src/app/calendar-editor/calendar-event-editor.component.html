@@ -31,7 +31,7 @@
         
         <mat-form-field>
             <mat-label>Čas</mat-label>
-            <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="begin" formControlName="begin" required>
+            <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" [timeOffset]="calendar.day_offset" id="begin" formControlName="begin" required>
             <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
             <app-timepicker #picker1></app-timepicker>
         </mat-form-field>

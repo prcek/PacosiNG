@@ -62,8 +62,8 @@ const typeDefs = gql`
     relogin: LoginResponse!
     updateUser(login: String! password: String name: String root: Boolean roles: [String] calendar_ids: [String]): User! @auth_access(role:"super")
     createUser(login: String! password: String! name: String! root: Boolean! roles: [String]! calendar_ids: [String]!): User!  @auth_access(role:"super")
-    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int cluster_len: Int day_begin: Int day_len: Int week_days: [Int], print_info: String): Calendar!  @auth_access(role:"super")
-    createCalendar(location_id: ID! name: String! span: Int! cluster_len: Int! day_begin: Int! day_len: Int! week_days: [Int]!  print_info: String!): Calendar!  @auth_access(role:"super")
+    updateCalendar(_id: ID! archived: Boolean location_id: ID name: String span: Int cluster_len: Int day_begin: Int day_len: Int  day_offset: Int, week_days: [Int], print_info: String): Calendar!  @auth_access(role:"super")
+    createCalendar(location_id: ID! name: String! span: Int! cluster_len: Int! day_begin: Int! day_len: Int! day_offset: Int! week_days: [Int]!  print_info: String!): Calendar!  @auth_access(role:"super")
 
     updateLocation(_id: ID! archived: Boolean name: String address: String): Location!  @auth_access(role:"super")
     createLocation(name: String! address: String!): Location!  @auth_access(role:"super")
@@ -116,6 +116,7 @@ const typeDefs = gql`
     cluster_len: Int
     day_begin: Int
     day_len: Int
+    day_offset: Int
     week_days: [Int]
     print_info: String
   }
@@ -296,13 +297,13 @@ const resolvers: IResolvers<any, IContext> = {
       return dataSources.user.createUser(login, password, name, root, roles, calendar_ids);
     },
 
-    updateCalendar: (_, { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info }, { request_id, user, dataSources }): Promise<ICalendar> => {
-      A_gql_log(request_id, user, 'updateCalendar', { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info } );
-      return dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info);
+    updateCalendar: (_, { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, day_offset, week_days, print_info }, { request_id, user, dataSources }): Promise<ICalendar> => {
+      A_gql_log(request_id, user, 'updateCalendar', { _id, archived, location_id, name, span, cluster_len, day_begin, day_len, day_offset, week_days, print_info } );
+      return dataSources.calendar.updateCalendar(_id, archived, location_id, name, span, cluster_len, day_begin, day_len, day_offset, week_days, print_info);
     },
-    createCalendar: (_, { name, location_id, span , cluster_len, day_begin, day_len, week_days, print_info}, { request_id, user, dataSources }): Promise<ICalendar> => {
-      A_gql_log(request_id, user, 'createCalendar', { location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info } );
-      return dataSources.calendar.createCalendar(location_id, name, span, cluster_len, day_begin, day_len, week_days, print_info);
+    createCalendar: (_, { name, location_id, span , cluster_len, day_begin, day_len, day_offset, week_days, print_info}, { request_id, user, dataSources }): Promise<ICalendar> => {
+      A_gql_log(request_id, user, 'createCalendar', { location_id, name, span, cluster_len, day_begin, day_offset, day_len, week_days, print_info } );
+      return dataSources.calendar.createCalendar(location_id, name, span, cluster_len, day_begin, day_len, day_offset, week_days, print_info);
     },
 
     updateLocation: (_, { _id, archived, name, address }, { request_id, user, dataSources }): Promise<ILocation> => {

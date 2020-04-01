@@ -15,6 +15,7 @@ export class TimepickerPanelComponent implements OnInit {
   @Input() timeBegin = 4 * 7;
   @Input() timeLen = 4 * 10;
   @Input() timeSpan = 5;
+  @Input() timeOffset = 0;
   @Output() close = new EventEmitter<void>();
   @Output() new_value = new EventEmitter<number>();
 
@@ -27,7 +28,7 @@ export class TimepickerPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // console.log('TimepickerPanelComponent.ngOnInit', this.selected, this.timeSpan);
+    console.log('TimepickerPanelComponent.ngOnInit', this.selected, this.timeSpan, this.timeOffset);
     const sf = R.compose(R.sortBy<TimePickValue>(R.prop('value')), R.uniq);
     this.hours = sf(R.map((v) => this._calcTV_hour(v), this._range()));
     this.minutes = sf(R.map((v) => this._calcTV_minute(v), this._range()));
@@ -70,7 +71,7 @@ export class TimepickerPanelComponent implements OnInit {
     const m = this.selected_minute;
     const h = this.selected_hour;
     if (h !== null && m !== null) {
-      const t = h * 60 + m;
+      const t = h * 60 + m - this.timeOffset;
       if ((t % this.timeSpan) === 0) {
         this.new_value.emit(t / this.timeSpan);
       }
@@ -87,13 +88,13 @@ export class TimepickerPanelComponent implements OnInit {
    return R.range(this.timeBegin, this.timeBegin + this.timeLen);
   }
   private _calcTV_hour(val: number): TimePickValue {
-    const minutes = (val * this.timeSpan);
+    const minutes = (val * this.timeSpan) + this.timeOffset;
     const min_rest = minutes % 60;
     const hour = (minutes - min_rest) / 60;
     return { value: hour, viewValue:  hour.toString().padStart(2, '0') };
   }
   private _calcTV_minute(val: number): TimePickValue {
-    const minutes = (val * this.timeSpan);
+    const minutes = (val * this.timeSpan) + this.timeOffset;
     const minute = minutes % 60;
     return { value: minute, viewValue:  minute.toString().padStart(2, '0') };
   }

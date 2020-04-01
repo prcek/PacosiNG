@@ -18,6 +18,7 @@ export interface ICalendar {
   cluster_len: number;
   day_begin: number;
   day_len: number;
+  day_offset: number;
   week_days: number[];
   print_info: string;
 }
@@ -171,6 +172,7 @@ const ALL_CALENDAR_ATTRS = `
   name span cluster_len
   day_begin
   day_len
+  day_offset
   week_days
   print_info
 `;
@@ -248,9 +250,10 @@ export class CalendarService {
     return this.apollo.mutate<{updateCalendar: ICalendar}, ICalendar>({
       mutation: gql`
         mutation($_id: ID! $archived: Boolean $location_id: ID $name: String $span: Int $cluster_len: Int
-          $day_begin: Int $day_len: Int $week_days: [Int], $print_info: String) {
+          $day_begin: Int $day_len: Int $day_offset: Int $week_days: [Int], $print_info: String) {
           updateCalendar(_id: $_id name: $name location_id: $location_id archived: $archived span: $span cluster_len: $cluster_len
-            day_begin: $day_begin day_len: $day_len week_days: $week_days print_info: $print_info ) { ${ALL_CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len day_offset: $day_offset week_days: $week_days print_info: $print_info )
+            { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
@@ -262,10 +265,12 @@ export class CalendarService {
   createCalendar(calendar: ICalendar): Observable<ICalendar> {
     return this.apollo.mutate<{createCalendar: ICalendar}, ICalendar>({
       mutation: gql`
-        mutation($name: String! $location_id: ID! $span: Int! $cluster_len: Int! $day_begin: Int! $day_len: Int! $week_days: [Int]!,
+        mutation($name: String! $location_id: ID! $span: Int! $cluster_len: Int! $day_begin: Int!
+          $day_len: Int! $day_offset: Int! $week_days: [Int]!,
         $print_info: String!) {
           createCalendar(name: $name  location_id: $location_id span: $span cluster_len: $cluster_len
-            day_begin: $day_begin day_len: $day_len week_days: $week_days print_info: $print_info) { ${ALL_CALENDAR_ATTRS} }
+            day_begin: $day_begin day_len: $day_len day_offset: $day_offset week_days: $week_days print_info: $print_info)
+            { ${ALL_CALENDAR_ATTRS} }
         }
       `,
       variables: {
@@ -765,7 +770,7 @@ export class CalendarService {
   }
 
   event2timestring(cal: ICalendar,  e: ICalendarEvent) {
-    const t = cal.span * (e.begin);
+    const t = cal.span * (e.begin) + cal.day_offset;
     const m = t % 60;
     const h =  (t - m) / 60;
     const Ho = h.toString().padStart(2, '0');

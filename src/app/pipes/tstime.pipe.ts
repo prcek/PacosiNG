@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TstimePipe implements PipeTransform {
 
-  transform(value: number, span: number, offset?: number): string {
-    const t = span * (value + (offset ? offset : 0));
+  transform(value: number, span: number, offset?: number, min_offset?: number): string {
+    const t = (span * (value + (offset ? offset : 0))) + (min_offset ? min_offset : 0);
     const m = t % 60;
     const h =  (t - m) / 60;
     const H = h.toString().padStart(2, '0');

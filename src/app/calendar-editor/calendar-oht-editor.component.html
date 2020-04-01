@@ -17,14 +17,14 @@
 
             <mat-form-field>
                 <mat-label>začátek</mat-label>
-                <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time" formControlName="time">
+                <input matInput [appTimepicker]="picker1" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" [timeOffset]="calendar.day_offset" id="time" formControlName="time">
                 <app-timepicker-toggle matSuffix [for]="picker1"></app-timepicker-toggle>
                 <app-timepicker #picker1></app-timepicker>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>konec</mat-label>
-                <input matInput [appTimepicker]="picker2" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" id="time_end" formControlName="time_end">
+                <input matInput [appTimepicker]="picker2" [timeSpan]="calendar.span" [timeLen]="calendar.day_len" [timeBegin]="calendar.day_begin" [timeOffset]="calendar.day_offset" id="time_end" formControlName="time_end">
                 <app-timepicker-toggle matSuffix [for]="picker2"></app-timepicker-toggle>
                 <app-timepicker #picker2></app-timepicker>
             </mat-form-field>

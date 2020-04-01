@@ -70,6 +70,7 @@ function createModels(connection: mongoose.Connection) {
         cluster_len: Number,
         day_begin: Number,
         day_len: Number,
+        day_offset: Number,
         week_days: [Number],
         print_info: String,
     });

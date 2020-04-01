@@ -1,6 +1,6 @@
 
 <ng-template #chip let-begin="begin" let-len="len">
-   {{begin | tstime:calendar.span}} - {{len | tstime:calendar.span:begin}}
+   {{begin | tstime:calendar.span:0:calendar.day_offset}} - {{len | tstime:calendar.span:begin:calendar.day_offset}}
   
 </ng-template>
 

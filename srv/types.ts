@@ -16,6 +16,7 @@ export interface ICalendar {
     cluster_len: number;
     day_len: number;
     day_begin: number;
+    day_offset: number;
     week_days: number[];
     print_info: string;
 }
