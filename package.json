@@ -55,7 +55,7 @@
     "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
     "logrocket": "^0.6.19",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb-memory-server": "^3.0.0",
     "mongoose": "^5.4.5",
     "pdfmake": "^0.1.53",
