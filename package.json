@@ -52,7 +52,7 @@
     "graphql": "^14.1.0",
     "graphql-iso-date": "^3.6.1",
     "hammerjs": "^2.0.8",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^2.2.0",
     "logrocket": "^0.6.19",
     "moment": "^2.24.0",
